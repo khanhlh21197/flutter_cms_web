@@ -1,17 +1,18 @@
 class StationModel {
-  String stationId;
-  String adminId;
-  String name;
-  String description;
-  String location;
+  String? stationId;
+  String? adminId;
+  String? name;
+  String? description;
+  String? location;
+  bool? selected;
 
-  StationModel(
+  StationModel({
     this.stationId,
     this.adminId,
     this.name,
     this.description,
     this.location,
-  );
+  });
 
   StationModel.fromJson(Map<String, dynamic> json)
       : adminId = json['adminId'] ?? '',

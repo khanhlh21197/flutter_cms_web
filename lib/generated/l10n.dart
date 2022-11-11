@@ -900,6 +900,51 @@ class S {
     );
   }
 
+  String get adminId {
+    return Intl.message(
+      'Admin ID',
+      name: 'adminId',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get stationId {
+    return Intl.message(
+      'Station ID',
+      name: 'stationId',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get deviceId {
+    return Intl.message(
+      'Device ID',
+      name: 'deviceId',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get location {
+    return Intl.message(
+      'Location',
+      name: 'location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get description {
+    return Intl.message(
+      'Description',
+      name: 'description',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Sub Title`
   String get subTitle {
     return Intl.message(

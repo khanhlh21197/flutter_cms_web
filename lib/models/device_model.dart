@@ -1,16 +1,16 @@
 class DeviceModel {
-  String deviceId;
-  String stationId;
-  String adminId;
-  String name;
-  String description;
-  String location;
-  String threshold1;
-  String threshold2;
-  String threshold3;
-  String status;
+  String? deviceId;
+  String? stationId;
+  String? adminId;
+  String? name;
+  String? description;
+  String? location;
+  String? threshold1;
+  String? threshold2;
+  String? threshold3;
+  String? status;
 
-  DeviceModel(
+  DeviceModel({
     this.deviceId,
     this.stationId,
     this.adminId,
@@ -21,7 +21,7 @@ class DeviceModel {
     this.threshold2,
     this.threshold3,
     this.status,
-  );
+  });
 
   DeviceModel.fromJson(Map<String, dynamic> json)
       : deviceId = json['deviceId'],

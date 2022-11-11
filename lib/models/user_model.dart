@@ -1,15 +1,15 @@
 class UserModel {
-  String user;
-  String pass;
-  String passmoi;
-  String name;
-  String phone;
-  String address;
-  String birthDate;
-  String playerId;
-  String adminId;
+  String? user;
+  String? pass;
+  String? passmoi;
+  String? name;
+  String? phone;
+  String? address;
+  String? birthDate;
+  String? playerId;
+  String? adminId;
 
-  UserModel(
+  UserModel({
     this.user,
     this.pass,
     this.passmoi,
@@ -19,7 +19,7 @@ class UserModel {
     this.birthDate,
     this.playerId,
     this.adminId,
-  );
+  });
 
   UserModel.fromJson(Map<String, dynamic> json)
       : user = json['user'],

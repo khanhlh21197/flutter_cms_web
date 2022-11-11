@@ -1,14 +1,14 @@
 class AdminModel {
-  String user;
-  String pass;
-  String passmoi;
-  String name;
-  String phone;
-  String address;
-  String birthDate;
-  String playerId;
+  String? user;
+  String? pass;
+  String? passmoi;
+  String? name;
+  String? phone;
+  String? address;
+  String? birthDate;
+  String? playerId;
 
-  AdminModel(
+  AdminModel({
     this.user,
     this.pass,
     this.passmoi,
@@ -17,7 +17,7 @@ class AdminModel {
     this.address,
     this.birthDate,
     this.playerId,
-  );
+  });
 
   AdminModel.fromJson(Map<String, dynamic> json)
       : user = json['user'],
