@@ -8,32 +8,29 @@ import 'package:cry/cry.dart';
 import 'package:cry/cry_button_bar.dart';
 import 'package:cry/cry_buttons.dart';
 import 'package:cry/cry_dialog.dart';
-import 'package:cry/form/cry_input.dart';
-import 'package:cry/form/cry_select.dart';
-import 'package:cry/form/cry_select_date.dart';
+import 'package:cry/form1/cry_input.dart';
 import 'package:cry/model/page_model.dart';
 import 'package:cry/utils/cry_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
-import 'package:flutter_admin/constants/constant_dict.dart';
+import 'package:flutter_admin/api/article_api.dart';
 import 'package:flutter_admin/generated/l10n.dart';
-import 'package:flutter_admin/models/station_model.dart';
-import 'package:flutter_admin/pages/station/station_edit.dart';
-import 'package:flutter_admin/utils/dict_util.dart';
+import 'package:flutter_admin/models/admin_model.dart';
+import 'package:flutter_admin/pages/admin/admin_edit.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-class StationMain extends StatefulWidget {
+class AdminMain extends StatefulWidget {
   @override
-  _StationMainState createState() => _StationMainState();
+  _AdminMainState createState() => _AdminMainState();
 }
 
-class _StationMainState extends State<StationMain> {
-  StationDataSource ds = StationDataSource();
+class _AdminMainState extends State<AdminMain> {
+  AdminDataSource ds = AdminDataSource();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  StationModel stationModel = StationModel();
+  AdminModel adminModel = AdminModel();
 
   @override
   void initState() {
@@ -55,47 +52,43 @@ class _StationMainState extends State<StationMain> {
         alignment: WrapAlignment.start,
         children: [
           CryInput(
-            label: S.of(context).stationId,
-            value: stationModel.stationId,
-            width: 100,
+            label: S.of(context).user,
+            value: adminModel.user,
+            width: 200,
             onSaved: (v) {
-              stationModel.stationId = v;
+              adminModel.user = v;
             },
           ),
           CryInput(
-            label: S.of(context).adminId,
-            value: stationModel.adminId,
-            width: 100,
-            onSaved: (v) {
-              stationModel.adminId = v;
-            },
-          ),
-          CrySelect(
             label: S.of(context).name,
-            value: stationModel.name,
+            value: adminModel.name,
             width: 200,
-            dataList: DictUtil.getDictSelectOptionList(
-                ConstantDict.CODE_ARTICLE_STATUS),
             onSaved: (v) {
-              stationModel.name = v;
+              adminModel.name = v;
             },
           ),
-          CrySelectDate(
-            context,
-            label: S.of(context).description,
-            value: stationModel.description,
+          CryInput(
+            label: S.of(context).phone,
+            value: adminModel.phone,
             width: 200,
             onSaved: (v) {
-              stationModel.description = v;
+              adminModel.phone = v;
             },
           ),
-          CrySelectDate(
-            context,
-            label: S.of(context).location,
-            value: stationModel.location,
+          CryInput(
+            label: S.of(context).address,
+            value: adminModel.address,
             width: 200,
             onSaved: (v) {
-              stationModel.location = v;
+              adminModel.address = v;
+            },
+          ),
+          CryInput(
+            label: S.of(context).birthDate,
+            value: adminModel.birthDate,
+            width: 200,
+            onSaved: (v) {
+              adminModel.birthDate = v;
             },
           ),
         ],
@@ -122,23 +115,12 @@ class _StationMainState extends State<StationMain> {
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.centerLeft,
             child: Text(
-              S.of(context).stationId,
+              S.of(context).user,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          width: 80,
+          width: 120,
         ),
-        GridColumn(
-            columnName: 'Admin ID',
-            label: Container(
-              padding: EdgeInsets.all(8.0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                S.of(context).adminId,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            width: 80),
         GridColumn(
             columnName: 'Name',
             label: Container(
@@ -149,14 +131,14 @@ class _StationMainState extends State<StationMain> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 80),
+            width: 120),
         GridColumn(
           columnName: 'Description',
           label: Container(
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.centerLeft,
             child: Text(
-              S.of(context).description,
+              S.of(context).phone,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -168,7 +150,19 @@ class _StationMainState extends State<StationMain> {
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.centerLeft,
             child: Text(
-              S.of(context).location,
+              S.of(context).address,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          width: 120,
+        ),
+        GridColumn(
+          columnName: 'Location',
+          label: Container(
+            padding: EdgeInsets.all(8.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              S.of(context).birthDate,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -207,13 +201,13 @@ class _StationMainState extends State<StationMain> {
   }
 
   reset() async {
-    stationModel = StationModel();
+    adminModel = AdminModel();
     formKey.currentState!.reset();
     await ds.loadData(params: {});
   }
 }
 
-class StationDataSource extends DataGridSource {
+class AdminDataSource extends DataGridSource {
   PageModel pageModel = PageModel();
   Map params = {};
   List<DataGridRow> _rows = [];
@@ -222,11 +216,11 @@ class StationDataSource extends DataGridSource {
     if (params != null) {
       this.params = params;
     }
-    List<StationModel> stations = (await ApiDioController.getAllStation());
+    List<AdminModel> admins = (await ApiDioController.getAllAdmin());
 
-    _rows = stations.map<DataGridRow>((v) {
+    _rows = admins.map<DataGridRow>((v) {
       return DataGridRow(cells: [
-        DataGridCell(columnName: 'stationModel', value: v),
+        DataGridCell(columnName: 'adminModel', value: v),
       ]);
     }).toList(growable: false);
     notifyDataSourceListeners();
@@ -244,13 +238,13 @@ class StationDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    StationModel stationModel = row.getCells()[0].value;
+    AdminModel adminModel = row.getCells()[0].value;
     return DataGridRowAdapter(cells: [
       CryButtonBar(
         children: [
-          CryButtons.edit(Cry.context, () => edit(stationModel: stationModel),
+          CryButtons.edit(Cry.context, () => edit(adminModel: adminModel),
               showLabel: false),
-          CryButtons.delete(Cry.context, () => delete([stationModel.stationId]),
+          CryButtons.delete(Cry.context, () => delete([adminModel.user]),
               showLabel: false),
         ],
       ),
@@ -258,7 +252,7 @@ class StationDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.stationId ?? '--',
+          adminModel.user ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -266,7 +260,7 @@ class StationDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.adminId ?? '--',
+          adminModel.name ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -274,7 +268,7 @@ class StationDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.name ?? '--',
+          adminModel.phone ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -282,7 +276,7 @@ class StationDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.description ?? '--',
+          adminModel.address ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -290,7 +284,7 @@ class StationDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.location ?? '--',
+          adminModel.birthDate ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -299,16 +293,16 @@ class StationDataSource extends DataGridSource {
 
   delete(ids) async {
     cryConfirm(Cry.context, S.of(Cry.context).confirmDelete, (context) async {
-      if ((await ApiDioController.deleteStation(ids))) {
+      if ((await ArticleApi.removeByIds(ids)).success!) {
         loadData();
         CryUtils.message(S.of(Cry.context).success);
       }
     });
   }
 
-  edit({StationModel? stationModel}) async {
+  edit({AdminModel? adminModel}) async {
     var result =
-        await Utils.fullscreenDialog(StationEdit(stationModel: stationModel));
+        await Utils.fullscreenDialog(AdminEdit(adminModel: adminModel));
     if (result ?? false) {
       loadData();
     }

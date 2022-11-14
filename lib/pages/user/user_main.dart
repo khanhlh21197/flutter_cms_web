@@ -9,18 +9,14 @@ import 'package:cry/cry_button_bar.dart';
 import 'package:cry/cry_buttons.dart';
 import 'package:cry/cry_dialog.dart';
 import 'package:cry/form/cry_input.dart';
-import 'package:cry/form/cry_select.dart';
 import 'package:cry/model/page_model.dart';
 import 'package:cry/utils/cry_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/api/article_api.dart';
-import 'package:flutter_admin/constants/constant_dict.dart';
 import 'package:flutter_admin/generated/l10n.dart';
-import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/models/user_model.dart';
-import 'package:flutter_admin/pages/station/station_edit.dart';
-import 'package:flutter_admin/utils/dict_util.dart';
+import 'package:flutter_admin/pages/user/user_edit.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -64,71 +60,43 @@ class _UserMainState extends State<UserMain> {
             },
           ),
           CryInput(
-            label: S.of(context).adminId,
-            value: userModel.pass,
-            width: 100,
+            label: S.of(context).name,
+            value: userModel.adminId,
+            width: 200,
             onSaved: (v) {
-              userModel.pass = v;
+              userModel.adminId = v;
             },
           ),
-          CrySelect(
+          CryInput(
             label: S.of(context).name,
             value: userModel.name,
             width: 200,
-            dataList: DictUtil.getDictSelectOptionList(
-                ConstantDict.CODE_ARTICLE_STATUS),
             onSaved: (v) {
               userModel.name = v;
             },
           ),
-          CrySelect(
+          CryInput(
             label: S.of(context).name,
             value: userModel.phone,
             width: 200,
-            dataList: DictUtil.getDictSelectOptionList(
-                ConstantDict.CODE_ARTICLE_STATUS),
             onSaved: (v) {
               userModel.phone = v;
             },
           ),
-          CrySelect(
+          CryInput(
             label: S.of(context).name,
             value: userModel.address,
             width: 200,
-            dataList: DictUtil.getDictSelectOptionList(
-                ConstantDict.CODE_ARTICLE_STATUS),
             onSaved: (v) {
               userModel.address = v;
             },
           ),
-          CrySelect(
+          CryInput(
             label: S.of(context).name,
             value: userModel.birthDate,
             width: 200,
-            dataList: DictUtil.getDictSelectOptionList(
-                ConstantDict.CODE_ARTICLE_STATUS),
             onSaved: (v) {
               userModel.birthDate = v;
-            },
-          ),
-          CrySelect(
-            label: S.of(context).name,
-            value: userModel.playerId,
-            width: 200,
-            dataList: DictUtil.getDictSelectOptionList(
-                ConstantDict.CODE_ARTICLE_STATUS),
-            onSaved: (v) {
-              userModel.playerId = v;
-            },
-          ),
-          CrySelect(
-            label: S.of(context).name,
-            value: userModel.adminId,
-            width: 200,
-            dataList: DictUtil.getDictSelectOptionList(
-                ConstantDict.CODE_ARTICLE_STATUS),
-            onSaved: (v) {
-              userModel.adminId = v;
             },
           ),
         ],
@@ -155,7 +123,7 @@ class _UserMainState extends State<UserMain> {
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.centerLeft,
             child: Text(
-              S.of(context).stationId,
+              S.of(context).user,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -189,7 +157,7 @@ class _UserMainState extends State<UserMain> {
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.centerLeft,
             child: Text(
-              S.of(context).description,
+              S.of(context).phone,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -201,7 +169,7 @@ class _UserMainState extends State<UserMain> {
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.centerLeft,
             child: Text(
-              S.of(context).location,
+              S.of(context).address,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -213,31 +181,7 @@ class _UserMainState extends State<UserMain> {
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.centerLeft,
             child: Text(
-              S.of(context).location,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          width: 120,
-        ),
-        GridColumn(
-          columnName: 'Location',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).location,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          width: 120,
-        ),
-        GridColumn(
-          columnName: 'Location',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).location,
+              S.of(context).birthDate,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -313,13 +257,13 @@ class UserDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    StationModel stationModel = row.getCells()[0].value;
+    UserModel userModel = row.getCells()[0].value;
     return DataGridRowAdapter(cells: [
       CryButtonBar(
         children: [
-          CryButtons.edit(Cry.context, () => edit(stationModel: stationModel),
+          CryButtons.edit(Cry.context, () => edit(userModel: userModel),
               showLabel: false),
-          CryButtons.delete(Cry.context, () => delete([stationModel.stationId]),
+          CryButtons.delete(Cry.context, () => delete([userModel.user]),
               showLabel: false),
         ],
       ),
@@ -327,7 +271,7 @@ class UserDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.stationId!,
+          userModel.user ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -335,7 +279,7 @@ class UserDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.adminId ?? '--',
+          userModel.adminId ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -343,7 +287,7 @@ class UserDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.name ?? '--',
+          userModel.name ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -351,7 +295,7 @@ class UserDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.description ?? '--',
+          userModel.phone ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -359,7 +303,15 @@ class UserDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.location ?? '--',
+          userModel.address ?? '--',
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.all(8),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          userModel.birthDate ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -375,9 +327,8 @@ class UserDataSource extends DataGridSource {
     });
   }
 
-  edit({StationModel? stationModel}) async {
-    var result =
-        await Utils.fullscreenDialog(StationEdit(stationModel: stationModel));
+  edit({UserModel? userModel}) async {
+    var result = await Utils.fullscreenDialog(UserEdit(userModel: userModel));
     if (result ?? false) {
       loadData();
     }

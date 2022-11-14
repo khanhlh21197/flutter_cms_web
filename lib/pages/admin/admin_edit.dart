@@ -11,24 +11,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/api/article_api.dart';
 import 'package:flutter_admin/generated/l10n.dart';
-import 'package:flutter_admin/models/device_model.dart';
+import 'package:flutter_admin/models/admin_model.dart';
 
-class DeviceEdit extends StatefulWidget {
-  final DeviceModel? deviceModel;
+class AdminEdit extends StatefulWidget {
+  final AdminModel? adminModel;
 
-  const DeviceEdit({Key? key, this.deviceModel}) : super(key: key);
+  const AdminEdit({Key? key, this.adminModel}) : super(key: key);
 
   @override
-  _DeviceEditState createState() => _DeviceEditState();
+  _AdminEditState createState() => _AdminEditState();
 }
 
-class _DeviceEditState extends State<DeviceEdit> {
+class _AdminEditState extends State<AdminEdit> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  late DeviceModel deviceModel;
+  late AdminModel adminModel;
 
   @override
   void initState() {
-    deviceModel = widget.deviceModel ?? DeviceModel();
+    adminModel = widget.adminModel ?? AdminModel();
 
     super.initState();
   }
@@ -42,51 +42,59 @@ class _DeviceEditState extends State<DeviceEdit> {
           Wrap(
             children: [
               CryInput(
-                label: S.of(context).deviceId,
-                value: deviceModel.deviceId,
+                label: S.of(context).user,
+                value: adminModel.user,
                 width: 400,
                 onSaved: (v) {
-                  deviceModel.deviceId = v;
+                  adminModel.user = v;
                 },
               ),
               CryInput(
-                label: S.of(context).stationId,
-                value: deviceModel.stationId,
+                label: S.of(context).pass,
+                value: adminModel.pass,
                 width: 400,
                 onSaved: (v) {
-                  deviceModel.stationId = v;
-                },
-              ),
-              CryInput(
-                label: S.of(context).adminId,
-                value: deviceModel.adminId,
-                width: 400,
-                onSaved: (v) {
-                  deviceModel.adminId = v;
+                  adminModel.pass = v;
                 },
               ),
               CryInput(
                 label: S.of(context).name,
-                value: deviceModel.name,
+                value: adminModel.name,
                 width: 400,
                 onSaved: (v) {
-                  deviceModel.name = v;
+                  adminModel.name = v;
                 },
               ),
               CryInput(
-                label: S.of(context).description,
-                value: deviceModel.description,
+                label: S.of(context).phone,
+                value: adminModel.phone,
                 width: 400,
                 onSaved: (v) {
-                  deviceModel.description = v;
+                  adminModel.phone = v;
                 },
               ),
               CryInput(
-                label: S.of(context).location,
-                value: deviceModel.location,
+                label: S.of(context).address,
+                value: adminModel.address,
                 width: 400,
                 onSaved: (v) {
-                  deviceModel.location = v;
+                  adminModel.address = v;
+                },
+              ),
+              CryInput(
+                label: S.of(context).birthDate,
+                value: adminModel.birthDate,
+                width: 400,
+                onSaved: (v) {
+                  adminModel.birthDate = v;
+                },
+              ),
+              CryInput(
+                label: S.of(context).playerId,
+                value: adminModel.playerId,
+                width: 400,
+                onSaved: (v) {
+                  adminModel.playerId = v;
                 },
               ),
             ],
@@ -107,12 +115,12 @@ class _DeviceEditState extends State<DeviceEdit> {
   }
 
   save() {
-    if (widget.deviceModel == null) {
+    if (widget.adminModel == null) {
       print('save');
-      action((data) async => await ApiDioController.registerDevice(data));
+      action((data) async => await ApiDioController.registerAdmin(data));
     } else {
       print('edit');
-      action((data) async => await ApiDioController.updateDevice(data));
+      action((data) async => await ApiDioController.updateAdmin(data));
     }
   }
 
@@ -130,7 +138,7 @@ class _DeviceEditState extends State<DeviceEdit> {
     }
     formKey.currentState!.save();
 
-    bool isSuccess = await action(deviceModel);
+    bool isSuccess = await action(adminModel);
     if (isSuccess) {
       CryUtils.message(S.of(context).success);
       Navigator.pop(context, true);

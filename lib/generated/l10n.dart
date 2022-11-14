@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -415,6 +416,15 @@ class S {
     return Intl.message(
       'Add',
       name: 'add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get update {
+    return Intl.message(
+      'Update',
+      name: 'Update',
       desc: '',
       args: [],
     );
@@ -900,6 +910,60 @@ class S {
     );
   }
 
+  String get user {
+    return Intl.message(
+      'Username',
+      name: 'Username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get pass {
+    return Intl.message(
+      'Password',
+      name: 'Password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get phone {
+    return Intl.message(
+      'Phone',
+      name: 'Phone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get address {
+    return Intl.message(
+      'Address',
+      name: 'Address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get birthDate {
+    return Intl.message(
+      'Birth Date',
+      name: 'Birth Date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get playerId {
+    return Intl.message(
+      'PlayerId',
+      name: 'PlayerId',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get adminId {
     return Intl.message(
       'Admin ID',
@@ -1248,8 +1312,10 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
+
   @override
   Future<S> load(Locale locale) => S.load(locale);
+
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 

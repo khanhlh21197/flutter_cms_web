@@ -6,6 +6,7 @@
 /// @description:
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/models/tab_page.dart';
+import 'package:flutter_admin/pages/admin/admin_main.dart';
 import 'package:flutter_admin/pages/article/article_main.dart';
 import 'package:flutter_admin/pages/charts/s_area_age_gender/s_area_age_gender_main.dart';
 import 'package:flutter_admin/pages/common/only_text.dart';
@@ -26,6 +27,7 @@ import 'package:flutter_admin/pages/role/role_list.dart';
 import 'package:flutter_admin/pages/setting/setting_base.dart';
 import 'package:flutter_admin/pages/station/station_main.dart';
 import 'package:flutter_admin/pages/subsystem/subsystem_main.dart';
+import 'package:flutter_admin/pages/user/user_main.dart';
 import 'package:flutter_admin/pages/userInfo/user_info_list.dart';
 import 'package:flutter_admin/pages/userInfo/user_info_mine.dart';
 import 'package:flutter_admin/pages/video/video_upload.dart';
@@ -47,7 +49,9 @@ class Routes {
     '/videoUpload': VideoUpload(),
     '/articleMain': ArticleMain(),
     '/stationMain': StationMain(),
-    '/deviceMain': DeviceMain(stationId: 'stationId1',),
+    '/deviceMain': DeviceMain(),
+    '/adminMain': AdminMain(),
+    '/userMain': UserMain(),
     '/userInfoMine': UserInfoMine(),
     '/layout401': Page401(),
     '/layout404': Page404(),

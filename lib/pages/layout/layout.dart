@@ -4,12 +4,8 @@
 /// @date: 2021/6/21
 /// @version: 1.0
 /// @description:
-
-import 'package:cry/common/application_context.dart';
 import 'package:cry/cry.dart';
-import 'package:cry/cry_all.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/menu.dart';
 import 'package:flutter_admin/pages/layout/layout_center.dart';
@@ -92,31 +88,31 @@ class _LayoutState extends State {
               )),
       title: Row(children: [
         Text(currentSubsystem?.name ?? '--'),
-        PopupMenuButton(
-            tooltip: '选择子系统',
-            onSelected: (String v) async {
-              var subsystem = subsystemList.firstWhere((element) => element.id == v);
-              StoreUtil.write(Constant.KEY_CURRENT_SUBSYSTEM, subsystem.toMap());
-              await StoreUtil.loadMenuData();
-              StoreUtil.init();
-              setState(() {});
-            },
-            itemBuilder: (context) => subsystemList.map<PopupMenuEntry<String>>(
-                  (e) {
-                    var enabled = e.id != currentSubsystem?.id;
-
-                    return PopupMenuItem<String>(
-                      enabled: enabled,
-                      value: e.id,
-                      child: ListTile(
-                        title: Text(
-                          e.name ?? '--',
-                          style: TextStyle(color: enabled ? null : Colors.black12),
-                        ),
-                      ),
-                    );
-                  },
-                ).toList()),
+        // PopupMenuButton(
+        //     tooltip: 'da;sfj;lasdjf;',
+        //     onSelected: (String v) async {
+        //       var subsystem = subsystemList.firstWhere((element) => element.id == v);
+        //       StoreUtil.write(Constant.KEY_CURRENT_SUBSYSTEM, subsystem.toMap());
+        //       await StoreUtil.loadMenuData();
+        //       StoreUtil.init();
+        //       setState(() {});
+        //     },
+        //     itemBuilder: (context) => subsystemList.map<PopupMenuEntry<String>>(
+        //           (e) {
+        //             var enabled = e.id != currentSubsystem?.id;
+        //
+        //             return PopupMenuItem<String>(
+        //               enabled: enabled,
+        //               value: e.id,
+        //               child: ListTile(
+        //                 title: Text(
+        //                   e.name ?? '--',
+        //                   style: TextStyle(color: enabled ? null : Colors.black12),
+        //                 ),
+        //               ),
+        //             );
+        //           },
+        //         ).toList()),
       ]),
       actions: <Widget>[
         Tooltip(
@@ -167,97 +163,97 @@ class _LayoutState extends State {
             ],
           ),
         ),
-        PopupMenuButton(
-          onSelected: (dynamic v) {
-            switch (v) {
-              case 'code':
-                Utils.launchURL("https://github.com/cairuoyu/flutter_admin");
-                break;
-              case 'android':
-                var about = Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/app_download.png',
-                      width: 150,
-                    ),
-                    SizedBox(height: 20),
-                    CryButton(
-                      label: '下载apk',
-                      onPressed: () {
-                        Utils.launchURL("http://www.cairuoyu.com/f/lib/app.apk");
-                      },
-                    ),
-                  ],
-                );
-                cryAlertWidget(context, about);
-                break;
-              case 'about':
-                var about = Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Author：CaiRuoyu'),
-                    SizedBox(height: 20),
-                    Text('Github：https://github.com/cairuoyu/flutter_admin'),
-                    SizedBox(height: 20),
-                    Text('Flutter admin版本：1.4.0'),
-                    SizedBox(height: 20),
-                    Text('Flutter SDK版本：stable, 2.5.1'),
-                  ],
-                );
-                cryAlertWidget(context, about);
-                break;
-              case 'feedback':
-                Utils.openTab('message');
-                break;
-              case 'privacy':
-                var privacy = ApplicationContext.instance.privacy;
-                cryAlert(context, privacy);
-                break;
-            }
-          },
-          itemBuilder: (context) => <PopupMenuEntry<String>>[
-            PopupMenuItem<String>(
-              value: 'code',
-              child: ListTile(
-                leading: const Icon(Icons.code),
-                title: Text('源码'),
-              ),
-            ),
-            const PopupMenuDivider(),
-            PopupMenuItem<String>(
-              value: 'android',
-              child: ListTile(
-                leading: const Icon(Icons.android),
-                title: Text('android'),
-              ),
-            ),
-            const PopupMenuDivider(),
-            PopupMenuItem<String>(
-              value: 'feedback',
-              child: ListTile(
-                leading: const Icon(Icons.feedback),
-                title: Text('反馈'),
-              ),
-            ),
-            const PopupMenuDivider(),
-            PopupMenuItem<String>(
-              value: 'about',
-              child: ListTile(
-                leading: const Icon(Icons.vertical_split),
-                title: Text('关于'),
-              ),
-            ),
-            const PopupMenuDivider(),
-            PopupMenuItem<String>(
-              value: 'privacy',
-              child: ListTile(
-                leading: const Icon(Icons.privacy_tip),
-                title: Text('隐私'),
-              ),
-            ),
-          ],
-        ),
+        // PopupMenuButton(
+        //   onSelected: (dynamic v) {
+        //     switch (v) {
+        //       case 'code':
+        //         Utils.launchURL("https://github.com/cairuoyu/flutter_admin");
+        //         break;
+        //       case 'android':
+        //         var about = Column(
+        //           crossAxisAlignment: CrossAxisAlignment.center,
+        //           children: [
+        //             Image.asset(
+        //               'assets/images/app_download.png',
+        //               width: 150,
+        //             ),
+        //             SizedBox(height: 20),
+        //             CryButton(
+        //               label: '下载apk',
+        //               onPressed: () {
+        //                 Utils.launchURL("http://www.cairuoyu.com/f/lib/app.apk");
+        //               },
+        //             ),
+        //           ],
+        //         );
+        //         cryAlertWidget(context, about);
+        //         break;
+        //       case 'about':
+        //         var about = Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Text('Author：CaiRuoyu'),
+        //             SizedBox(height: 20),
+        //             Text('Github：https://github.com/cairuoyu/flutter_admin'),
+        //             SizedBox(height: 20),
+        //             Text('Flutter admin版本：1.4.0'),
+        //             SizedBox(height: 20),
+        //             Text('Flutter SDK版本：stable, 2.5.1'),
+        //           ],
+        //         );
+        //         cryAlertWidget(context, about);
+        //         break;
+        //       case 'feedback':
+        //         Utils.openTab('message');
+        //         break;
+        //       case 'privacy':
+        //         var privacy = ApplicationContext.instance.privacy;
+        //         cryAlert(context, privacy);
+        //         break;
+        //     }
+        //   },
+        //   itemBuilder: (context) => <PopupMenuEntry<String>>[
+        //     PopupMenuItem<String>(
+        //       value: 'code',
+        //       child: ListTile(
+        //         leading: const Icon(Icons.code),
+        //         title: Text('源码'),
+        //       ),
+        //     ),
+        //     const PopupMenuDivider(),
+        //     PopupMenuItem<String>(
+        //       value: 'android',
+        //       child: ListTile(
+        //         leading: const Icon(Icons.android),
+        //         title: Text('android'),
+        //       ),
+        //     ),
+        //     const PopupMenuDivider(),
+        //     PopupMenuItem<String>(
+        //       value: 'feedback',
+        //       child: ListTile(
+        //         leading: const Icon(Icons.feedback),
+        //         title: Text('反馈'),
+        //       ),
+        //     ),
+        //     const PopupMenuDivider(),
+        //     PopupMenuItem<String>(
+        //       value: 'about',
+        //       child: ListTile(
+        //         leading: const Icon(Icons.vertical_split),
+        //         title: Text('关于'),
+        //       ),
+        //     ),
+        //     const PopupMenuDivider(),
+        //     PopupMenuItem<String>(
+        //       value: 'privacy',
+        //       child: ListTile(
+        //         leading: const Icon(Icons.privacy_tip),
+        //         title: Text('隐私'),
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }

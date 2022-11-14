@@ -19,8 +19,7 @@ import 'package:flutter_admin/api/article_api.dart';
 import 'package:flutter_admin/constants/constant_dict.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/device_model.dart';
-import 'package:flutter_admin/models/station_model.dart';
-import 'package:flutter_admin/pages/station/station_edit.dart';
+import 'package:flutter_admin/pages/device/device_edit.dart';
 import 'package:flutter_admin/utils/dict_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
@@ -28,26 +27,18 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class DeviceMain extends StatefulWidget {
-  final stationId;
-
-  const DeviceMain({Key? key, required this.stationId}) : super(key: key);
-
   @override
-  _DeviceMainState createState() => _DeviceMainState(stationId);
+  _DeviceMainState createState() => _DeviceMainState();
 }
 
 class _DeviceMainState extends State<DeviceMain> {
-  final stationId;
-
-  _DeviceMainState(this.stationId);
-
   late DeviceDataSource ds;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DeviceModel deviceModel = DeviceModel();
 
   @override
   void initState() {
-    ds = DeviceDataSource(stationId);
+    ds = DeviceDataSource();
     super.initState();
   }
 
@@ -65,6 +56,14 @@ class _DeviceMainState extends State<DeviceMain> {
       child: Wrap(
         alignment: WrapAlignment.start,
         children: [
+          CryInput(
+            label: S.of(context).deviceId,
+            value: deviceModel.deviceId,
+            width: 100,
+            onSaved: (v) {
+              deviceModel.deviceId = v;
+            },
+          ),
           CryInput(
             label: S.of(context).stationId,
             value: deviceModel.stationId,
@@ -126,6 +125,18 @@ class _DeviceMainState extends State<DeviceMain> {
             ),
           ),
           width: 120,
+        ),
+        GridColumn(
+          columnName: 'Station ID',
+          label: Container(
+            padding: EdgeInsets.all(8.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              S.of(context).deviceId,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          width: 80,
         ),
         GridColumn(
           columnName: 'Station ID',
@@ -228,16 +239,14 @@ class DeviceDataSource extends DataGridSource {
   PageModel pageModel = PageModel();
   Map params = {};
   List<DataGridRow> _rows = [];
-  final String stationId;
 
-  DeviceDataSource(this.stationId);
+  DeviceDataSource();
 
   loadData({Map? params}) async {
     if (params != null) {
       this.params = params;
     }
-    List<DeviceModel> devices =
-        (await ApiDioController.getDeviceByStationId(stationId));
+    List<DeviceModel> devices = (await ApiDioController.getAllDevice());
 
     _rows = devices.map<DataGridRow>((v) {
       return DataGridRow(cells: [
@@ -259,13 +268,13 @@ class DeviceDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    StationModel stationModel = row.getCells()[0].value;
+    DeviceModel deviceModel = row.getCells()[0].value;
     return DataGridRowAdapter(cells: [
       CryButtonBar(
         children: [
-          CryButtons.edit(Cry.context, () => edit(stationModel: stationModel),
+          CryButtons.edit(Cry.context, () => edit(deviceModel: deviceModel),
               showLabel: false),
-          CryButtons.delete(Cry.context, () => delete([stationModel.stationId]),
+          CryButtons.delete(Cry.context, () => delete([deviceModel.deviceId]),
               showLabel: false),
         ],
       ),
@@ -273,7 +282,7 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.stationId!,
+          deviceModel.deviceId!,
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -281,7 +290,7 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.adminId ?? '--',
+          deviceModel.stationId!,
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -289,7 +298,7 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.name ?? '--',
+          deviceModel.adminId ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -297,7 +306,7 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.description ?? '--',
+          deviceModel.name ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -305,7 +314,15 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          stationModel.location ?? '--',
+          deviceModel.description ?? '--',
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.all(8),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          deviceModel.location ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -321,9 +338,9 @@ class DeviceDataSource extends DataGridSource {
     });
   }
 
-  edit({StationModel? stationModel}) async {
+  edit({DeviceModel? deviceModel}) async {
     var result =
-        await Utils.fullscreenDialog(StationEdit(stationModel: stationModel));
+        await Utils.fullscreenDialog(DeviceEdit(deviceModel: deviceModel));
     if (result ?? false) {
       loadData();
     }

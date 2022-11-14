@@ -4,18 +4,18 @@
 /// @date: 2021/6/21
 /// @version: 1.0
 /// @description: 存储工具类:ffi';
+import 'dart:convert';
+
 import 'package:cry/model/response_body_api.dart';
 import 'package:flutter_admin/api/dict_api.dart';
 import 'package:flutter_admin/api/menu_api.dart';
 import 'package:flutter_admin/api/setting_default_tab.dart';
 import 'package:flutter_admin/api/subsystem_api.dart';
-import 'package:flutter_admin/common/routes.dart';
 import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/models/menu.dart';
 import 'package:flutter_admin/models/subsystem.dart';
 import 'package:flutter_admin/models/tab_page.dart';
 import 'package:flutter_admin/models/user_info.dart';
-import 'package:flutter_admin/pages/device/device_main.dart';
 import 'package:get_storage/get_storage.dart';
 
 class StoreUtil {
@@ -45,7 +45,6 @@ class StoreUtil {
 
   static List<TabPage?> readOpenedTabPageList() {
     var data = read(Constant.KEY_OPENED_TAB_PAGE_LIST);
-    print('readOpenedTabPageList $data');
     return data == null
         ? []
         : List.from(data).map((e) => TabPage.fromMap(e)).toList();
@@ -53,7 +52,6 @@ class StoreUtil {
 
   static writeOpenedTabPageList(List<TabPage?> list) {
     var data = list.map((e) => e!.toMap()).toList();
-    print('writeOpenedTabPageList $data');
     write(Constant.KEY_OPENED_TAB_PAGE_LIST, data);
   }
 
@@ -74,11 +72,11 @@ class StoreUtil {
     var data = GetStorage().read(Constant.KEY_MENU_LIST);
     final menuJson = [
       {
-        "id": "12312312asdfa",
+        "id": "stationMenuId",
         "createTime": "2020-08-22 02:11:26",
         "updateTime": "2021-08-27 07:42:38",
-        "name": "Station Manage",
-        "nameEn": "Station Manage",
+        "name": "Stations",
+        "nameEn": "Stations",
         "subsystemId": "1",
         "icon": "role",
         "pid": null,
@@ -88,15 +86,43 @@ class StoreUtil {
         "orderBy": 1
       },
       {
-        "id": "12312312asadfdfa",
+        "id": "deviceMenuId",
         "createTime": "2020-08-22 02:11:26",
         "updateTime": "2021-08-27 07:42:38",
-        "name": "Station 1",
-        "nameEn": "Station 1",
+        "name": "Devices",
+        "nameEn": "Devices",
         "subsystemId": "1",
         "icon": "role",
         "pid": null,
         "url": "/deviceMain",
+        "module": null,
+        "remark": "",
+        "orderBy": 1
+      },
+      {
+        "id": "adminMenuId",
+        "createTime": "2020-08-22 02:11:26",
+        "updateTime": "2021-08-27 07:42:38",
+        "name": "Admins",
+        "nameEn": "Admins",
+        "subsystemId": "1",
+        "icon": "role",
+        "pid": null,
+        "url": "/adminMain",
+        "module": null,
+        "remark": "",
+        "orderBy": 1
+      },
+      {
+        "id": "userMenuId",
+        "createTime": "2020-08-22 02:11:26",
+        "updateTime": "2021-08-27 07:42:38",
+        "name": "Users",
+        "nameEn": "Users",
+        "subsystemId": "1",
+        "icon": "role",
+        "pid": null,
+        "url": "/userMain",
         "module": null,
         "remark": "",
         "orderBy": 1
@@ -118,12 +144,13 @@ class StoreUtil {
 
   static Subsystem? getCurrentSubsystem() {
     var data = GetStorage().read(Constant.KEY_CURRENT_SUBSYSTEM);
+    data = jsonDecode(
+        '{"id":"1","code":"flutterAdmin","name":"Evn Manage System","url":"","orderBy":"1","remark":"1","state":"1","createTime":"2021-01-07 01:43:16","updateTime":"2021-01-07 08:49:12","createrId":null,"updateId":null}');
     return data == null ? null : Subsystem.fromMap(data);
   }
 
   static List<TabPage> getDefaultTabs() {
     var data = GetStorage().read(Constant.KEY_DEFAULT_TABS);
-    print('getDefaultTabs $data');
     return data == null
         ? []
         : List.from(data).map((e) => TabPage.fromMap(e)).toList();
@@ -163,6 +190,7 @@ class StoreUtil {
     if (responseBodyApi.success!) {
       StoreUtil.write(Constant.KEY_MENU_LIST, responseBodyApi.data);
     }
+
     return responseBodyApi.success;
   }
 

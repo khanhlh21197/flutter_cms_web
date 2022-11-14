@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/api/article_api.dart';
 import 'package:flutter_admin/generated/l10n.dart';
-import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/models/user_model.dart';
 
 class UserEdit extends StatefulWidget {
@@ -43,7 +42,7 @@ class _UserEditState extends State<UserEdit> {
           Wrap(
             children: [
               CryInput(
-                label: S.of(context).stationId,
+                label: S.of(context).user,
                 value: userModel.user,
                 width: 400,
                 onSaved: (v) {
@@ -51,7 +50,7 @@ class _UserEditState extends State<UserEdit> {
                 },
               ),
               CryInput(
-                label: S.of(context).stationId,
+                label: S.of(context).pass,
                 value: userModel.pass,
                 width: 400,
                 onSaved: (v) {
@@ -59,7 +58,7 @@ class _UserEditState extends State<UserEdit> {
                 },
               ),
               CryInput(
-                label: S.of(context).stationId,
+                label: S.of(context).name,
                 value: userModel.name,
                 width: 400,
                 onSaved: (v) {
@@ -67,7 +66,7 @@ class _UserEditState extends State<UserEdit> {
                 },
               ),
               CryInput(
-                label: S.of(context).stationId,
+                label: S.of(context).phone,
                 value: userModel.phone,
                 width: 400,
                 onSaved: (v) {
@@ -75,7 +74,7 @@ class _UserEditState extends State<UserEdit> {
                 },
               ),
               CryInput(
-                label: S.of(context).stationId,
+                label: S.of(context).address,
                 value: userModel.address,
                 width: 400,
                 onSaved: (v) {
@@ -83,7 +82,7 @@ class _UserEditState extends State<UserEdit> {
                 },
               ),
               CryInput(
-                label: S.of(context).stationId,
+                label: S.of(context).birthDate,
                 value: userModel.birthDate,
                 width: 400,
                 onSaved: (v) {
@@ -91,7 +90,7 @@ class _UserEditState extends State<UserEdit> {
                 },
               ),
               CryInput(
-                label: S.of(context).stationId,
+                label: S.of(context).playerId,
                 value: userModel.playerId,
                 width: 400,
                 onSaved: (v) {
@@ -99,7 +98,7 @@ class _UserEditState extends State<UserEdit> {
                 },
               ),
               CryInput(
-                label: S.of(context).stationId,
+                label: S.of(context).adminId,
                 value: userModel.adminId,
                 width: 400,
                 onSaved: (v) {
