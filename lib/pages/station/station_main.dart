@@ -250,7 +250,7 @@ class StationDataSource extends DataGridSource {
         children: [
           CryButtons.edit(Cry.context, () => edit(stationModel: stationModel),
               showLabel: false),
-          CryButtons.delete(Cry.context, () => delete([stationModel.stationId]),
+          CryButtons.delete(Cry.context, () => delete(stationModel.stationId),
               showLabel: false),
         ],
       ),

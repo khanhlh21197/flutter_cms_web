@@ -244,7 +244,7 @@ class AdminDataSource extends DataGridSource {
         children: [
           CryButtons.edit(Cry.context, () => edit(adminModel: adminModel),
               showLabel: false),
-          CryButtons.delete(Cry.context, () => delete([adminModel.user]),
+          CryButtons.delete(Cry.context, () => delete(adminModel.user),
               showLabel: false),
         ],
       ),
@@ -293,7 +293,7 @@ class AdminDataSource extends DataGridSource {
 
   delete(ids) async {
     cryConfirm(Cry.context, S.of(Cry.context).confirmDelete, (context) async {
-      if ((await ArticleApi.removeByIds(ids)).success!) {
+      if ((await ApiDioController.deleteAdmin(ids))) {
         loadData();
         CryUtils.message(S.of(Cry.context).success);
       }

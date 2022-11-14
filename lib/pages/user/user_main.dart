@@ -13,7 +13,6 @@ import 'package:cry/model/page_model.dart';
 import 'package:cry/utils/cry_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
-import 'package:flutter_admin/api/article_api.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/user_model.dart';
 import 'package:flutter_admin/pages/user/user_edit.dart';
@@ -263,7 +262,7 @@ class UserDataSource extends DataGridSource {
         children: [
           CryButtons.edit(Cry.context, () => edit(userModel: userModel),
               showLabel: false),
-          CryButtons.delete(Cry.context, () => delete([userModel.user]),
+          CryButtons.delete(Cry.context, () => delete(userModel.user),
               showLabel: false),
         ],
       ),
@@ -320,7 +319,7 @@ class UserDataSource extends DataGridSource {
 
   delete(ids) async {
     cryConfirm(Cry.context, S.of(Cry.context).confirmDelete, (context) async {
-      if ((await ArticleApi.removeByIds(ids)).success!) {
+      if ((await ApiDioController.deleteUser(ids))) {
         loadData();
         CryUtils.message(S.of(Cry.context).success);
       }

@@ -173,12 +173,13 @@ class ApiDioController {
     required Function(Map<String, dynamic>) asModel,
   }) async {
     try {
+      print('Request body: $body');
+      print('Request url: $url');
       Response<Map<String, dynamic>> response = await dio.delete(
         url,
         data: body,
       );
-      print('Request body: $body');
-      print('Request url: $url');
+      print('Response: ${response.data}');
       if (response.statusCode == 200) {
         if (response.data!['message'] == 'success') {
           return asModel(response.data!);

@@ -15,7 +15,6 @@ import 'package:cry/model/page_model.dart';
 import 'package:cry/utils/cry_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
-import 'package:flutter_admin/api/article_api.dart';
 import 'package:flutter_admin/constants/constant_dict.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/device_model.dart';
@@ -274,7 +273,7 @@ class DeviceDataSource extends DataGridSource {
         children: [
           CryButtons.edit(Cry.context, () => edit(deviceModel: deviceModel),
               showLabel: false),
-          CryButtons.delete(Cry.context, () => delete([deviceModel.deviceId]),
+          CryButtons.delete(Cry.context, () => delete(deviceModel.deviceId),
               showLabel: false),
         ],
       ),
@@ -331,7 +330,7 @@ class DeviceDataSource extends DataGridSource {
 
   delete(ids) async {
     cryConfirm(Cry.context, S.of(Cry.context).confirmDelete, (context) async {
-      if ((await ArticleApi.removeByIds(ids)).success!) {
+      if ((await ApiDioController.deleteDevice(ids))) {
         loadData();
         CryUtils.message(S.of(Cry.context).success);
       }
