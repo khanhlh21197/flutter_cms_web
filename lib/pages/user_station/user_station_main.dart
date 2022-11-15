@@ -8,29 +8,28 @@ import 'package:cry/cry.dart';
 import 'package:cry/cry_button_bar.dart';
 import 'package:cry/cry_buttons.dart';
 import 'package:cry/cry_dialog.dart';
-import 'package:cry/form1/cry_input.dart';
+import 'package:cry/form/cry_input.dart';
 import 'package:cry/model/page_model.dart';
 import 'package:cry/utils/cry_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/generated/l10n.dart';
-import 'package:flutter_admin/models/admin_model.dart';
-import 'package:flutter_admin/pages/admin/admin_edit.dart';
-import 'package:flutter_admin/utils/store_util.dart';
+import 'package:flutter_admin/models/user_station_model.dart';
+import 'package:flutter_admin/pages/user_station/user_station_edit.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-class AdminMain extends StatefulWidget {
+class UserStationMain extends StatefulWidget {
   @override
-  _AdminMainState createState() => _AdminMainState();
+  _UserStationMainState createState() => _UserStationMainState();
 }
 
-class _AdminMainState extends State<AdminMain> {
-  AdminDataSource ds = AdminDataSource();
+class _UserStationMainState extends State<UserStationMain> {
+  UserStationDataSource ds = UserStationDataSource();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  AdminModel adminModel = AdminModel();
+  UserStationModel userStation = UserStationModel();
 
   @override
   void initState() {
@@ -52,43 +51,27 @@ class _AdminMainState extends State<AdminMain> {
         alignment: WrapAlignment.start,
         children: [
           CryInput(
-            label: S.of(context).user,
-            value: adminModel.user,
-            width: 200,
+            label: S.of(context).stationId,
+            value: userStation.userId,
+            width: 100,
             onSaved: (v) {
-              adminModel.user = v;
+              userStation.userId = v;
             },
           ),
           CryInput(
             label: S.of(context).name,
-            value: adminModel.name,
+            value: userStation.stationId,
             width: 200,
             onSaved: (v) {
-              adminModel.name = v;
+              userStation.stationId = v;
             },
           ),
           CryInput(
-            label: S.of(context).phone,
-            value: adminModel.phone,
+            label: S.of(context).name,
+            value: userStation.adminId,
             width: 200,
             onSaved: (v) {
-              adminModel.phone = v;
-            },
-          ),
-          CryInput(
-            label: S.of(context).address,
-            value: adminModel.address,
-            width: 200,
-            onSaved: (v) {
-              adminModel.address = v;
-            },
-          ),
-          CryInput(
-            label: S.of(context).birthDate,
-            value: adminModel.birthDate,
-            width: 200,
-            onSaved: (v) {
-              adminModel.birthDate = v;
+              userStation.adminId = v;
             },
           ),
         ],
@@ -119,8 +102,19 @@ class _AdminMainState extends State<AdminMain> {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          width: 120,
+          width: 80,
         ),
+        GridColumn(
+            columnName: 'Admin ID',
+            label: Container(
+              padding: EdgeInsets.all(8.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                S.of(context).adminId,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            width: 80),
         GridColumn(
             columnName: 'Name',
             label: Container(
@@ -131,43 +125,7 @@ class _AdminMainState extends State<AdminMain> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 120),
-        GridColumn(
-          columnName: 'Description',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).phone,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          columnWidthMode: ColumnWidthMode.fill,
-        ),
-        GridColumn(
-          columnName: 'Location',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).address,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          width: 120,
-        ),
-        GridColumn(
-          columnName: 'Location',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).birthDate,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          width: 120,
-        ),
+            width: 80),
       ],
     );
     var pager = SfDataPagerTheme(
@@ -201,13 +159,13 @@ class _AdminMainState extends State<AdminMain> {
   }
 
   reset() async {
-    adminModel = AdminModel();
+    userStation = UserStationModel();
     formKey.currentState!.reset();
     await ds.loadData(params: {});
   }
 }
 
-class AdminDataSource extends DataGridSource {
+class UserStationDataSource extends DataGridSource {
   PageModel pageModel = PageModel();
   Map params = {};
   List<DataGridRow> _rows = [];
@@ -216,15 +174,12 @@ class AdminDataSource extends DataGridSource {
     if (params != null) {
       this.params = params;
     }
-    List<AdminModel> admins = (await ApiDioController.getAllAdmin());
+    List<UserStationModel> userStations =
+        (await ApiDioController.getAllUserStation());
 
-    if (admins.isNotEmpty) {
-      StoreUtil.writeAdmins(admins);
-    }
-
-    _rows = admins.map<DataGridRow>((v) {
+    _rows = userStations.map<DataGridRow>((v) {
       return DataGridRow(cells: [
-        DataGridCell(columnName: 'adminModel', value: v),
+        DataGridCell(columnName: 'userModel', value: v),
       ]);
     }).toList(growable: false);
     notifyDataSourceListeners();
@@ -242,13 +197,13 @@ class AdminDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    AdminModel adminModel = row.getCells()[0].value;
+    UserStationModel userStation = row.getCells()[0].value;
     return DataGridRowAdapter(cells: [
       CryButtonBar(
         children: [
-          CryButtons.edit(Cry.context, () => edit(adminModel: adminModel),
+          CryButtons.edit(Cry.context, () => edit(userStation: userStation),
               showLabel: false),
-          CryButtons.delete(Cry.context, () => delete(adminModel.user),
+          CryButtons.delete(Cry.context, () => delete(userStation.adminId),
               showLabel: false),
         ],
       ),
@@ -256,7 +211,7 @@ class AdminDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          adminModel.user ?? '--',
+          userStation.userId ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -264,7 +219,7 @@ class AdminDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          adminModel.name ?? '--',
+          userStation.adminId ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -272,23 +227,7 @@ class AdminDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          adminModel.phone ?? '--',
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      Container(
-        padding: const EdgeInsets.all(8),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          adminModel.address ?? '--',
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      Container(
-        padding: const EdgeInsets.all(8),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          adminModel.birthDate ?? '--',
+          userStation.stationId ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -297,16 +236,16 @@ class AdminDataSource extends DataGridSource {
 
   delete(ids) async {
     cryConfirm(Cry.context, S.of(Cry.context).confirmDelete, (context) async {
-      if ((await ApiDioController.deleteAdmin(ids))) {
+      if ((await ApiDioController.deleteUser(ids))) {
         loadData();
         CryUtils.message(S.of(Cry.context).success);
       }
     });
   }
 
-  edit({AdminModel? adminModel}) async {
-    var result =
-        await Utils.fullscreenDialog(AdminEdit(adminModel: adminModel));
+  edit({UserStationModel? userStation}) async {
+    var result = await Utils.fullscreenDialog(
+        UserStationEdit(userStationModel: userStation));
     if (result ?? false) {
       loadData();
     }

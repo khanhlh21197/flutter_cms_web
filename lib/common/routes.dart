@@ -30,6 +30,7 @@ import 'package:flutter_admin/pages/subsystem/subsystem_main.dart';
 import 'package:flutter_admin/pages/user/user_main.dart';
 import 'package:flutter_admin/pages/userInfo/user_info_list.dart';
 import 'package:flutter_admin/pages/userInfo/user_info_mine.dart';
+import 'package:flutter_admin/pages/user_station/user_station_main.dart';
 import 'package:flutter_admin/pages/video/video_upload.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
@@ -49,6 +50,7 @@ class Routes {
     '/videoUpload': VideoUpload(),
     '/articleMain': ArticleMain(),
     '/stationMain': StationMain(),
+    '/userStationMain': UserStationMain(),
     '/deviceMain': DeviceMain(),
     '/adminMain': AdminMain(),
     '/userMain': UserMain(),

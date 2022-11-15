@@ -9,13 +9,15 @@ import 'dart:convert';
 import 'package:cry/model/response_body_api.dart';
 import 'package:flutter_admin/api/dict_api.dart';
 import 'package:flutter_admin/api/menu_api.dart';
-import 'package:flutter_admin/api/setting_default_tab.dart';
 import 'package:flutter_admin/api/subsystem_api.dart';
 import 'package:flutter_admin/constants/constant.dart';
+import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/menu.dart';
+import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/models/subsystem.dart';
 import 'package:flutter_admin/models/tab_page.dart';
 import 'package:flutter_admin/models/user_info.dart';
+import 'package:flutter_admin/models/user_model.dart';
 import 'package:get_storage/get_storage.dart';
 
 class StoreUtil {
@@ -25,6 +27,37 @@ class StoreUtil {
 
   static write(String key, value) {
     GetStorage().write(key, value);
+  }
+
+  static writeStations(List<StationModel> stations) {
+    GetStorage().write(Constant.EVN_STATIONS, stations);
+  }
+
+  static writeAdmins(List<AdminModel> admins) {
+    GetStorage().write(Constant.EVN_ADMINS, admins);
+  }
+
+  static writeUsers(List<UserModel> users) {
+    GetStorage().write(Constant.EVN_USERS, users);
+  }
+
+  static List<StationModel> readStations() {
+    List<StationModel> stations =
+        GetStorage().read(Constant.EVN_STATIONS) ?? <StationModel>[];
+    return stations;
+  }
+
+  static List<UserModel> readUsers() {
+    List<UserModel> users =
+        GetStorage().read(Constant.EVN_USERS) ?? <UserModel>[];
+    return users;
+  }
+
+  static List<AdminModel> readAdmins() {
+    List<AdminModel> admins =
+        GetStorage().read(Constant.EVN_ADMINS) ?? <AdminModel>[];
+    print('readAdmins: $admins');
+    return admins;
   }
 
   static hasData(String key) {
@@ -72,6 +105,34 @@ class StoreUtil {
     var data = GetStorage().read(Constant.KEY_MENU_LIST);
     final menuJson = [
       {
+        "id": "ebf18e86fa0e086c629e1017a9972bc9",
+        "createTime": "2020-10-14 02:51:39",
+        "updateTime": null,
+        "name": "数据字典管理",
+        "nameEn": "Dict List",
+        "subsystemId": "1",
+        "icon": "dict",
+        "pid": null,
+        "url": "/dictList",
+        "module": null,
+        "remark": "",
+        "orderBy": 8
+      },
+      {
+        "id": "d03a977b151634f66a117a8d552c5c05fb",
+        "createTime": "2021-03-19 05:56:18",
+        "updateTime": "2021-07-05 08:10:11",
+        "name": "文章管理",
+        "nameEn": "Article",
+        "subsystemId": "1",
+        "icon": "dept",
+        "pid": "45f78d3f93e1165e1ffdd114f81ad02c",
+        "url": "/articleMain",
+        "module": null,
+        "remark": "",
+        "orderBy": 9
+      },
+      {
         "id": "stationMenuId",
         "createTime": "2020-08-22 02:11:26",
         "updateTime": "2021-08-27 07:42:38",
@@ -81,6 +142,20 @@ class StoreUtil {
         "icon": "role",
         "pid": null,
         "url": "/stationMain",
+        "module": null,
+        "remark": "",
+        "orderBy": 1
+      },
+      {
+        "id": "userStationMenuId",
+        "createTime": "2020-08-22 02:11:26",
+        "updateTime": "2021-08-27 07:42:38",
+        "name": "User Stations",
+        "nameEn": "User Stations",
+        "subsystemId": "1",
+        "icon": "role",
+        "pid": null,
+        "url": "/userStationMain",
         "module": null,
         "remark": "",
         "orderBy": 1
@@ -158,6 +233,9 @@ class StoreUtil {
 
   static Future<bool?> loadDict() async {
     ResponseBodyApi responseBodyApi = await DictApi.map();
+
+    print('loadDict: ${(responseBodyApi)}');
+
     if (responseBodyApi.success!) {
       StoreUtil.write(Constant.KEY_DICT_ITEM_LIST, responseBodyApi.data);
     }
@@ -166,6 +244,9 @@ class StoreUtil {
 
   static Future<bool?> loadSubsystem() async {
     ResponseBodyApi responseBodyApi = await SubsystemApi.listEnable();
+
+    print('loadSubSystem: ${(responseBodyApi)}');
+
     if (responseBodyApi.success!) {
       StoreUtil.write(Constant.KEY_SUBSYSTEM_LIST, responseBodyApi.data);
       List<Subsystem> list = responseBodyApi.data == null
@@ -195,7 +276,9 @@ class StoreUtil {
   }
 
   static Future<bool?> loadDefaultTabs() async {
-    ResponseBodyApi responseBodyApi = await SettingDefaultTabApi.list();
+    ResponseBodyApi responseBodyApi =
+        ResponseBodyApi(success: true, code: '0', message: null, data: []);
+
     if (responseBodyApi.success!) {
       StoreUtil.write(Constant.KEY_DEFAULT_TABS, responseBodyApi.data);
     }

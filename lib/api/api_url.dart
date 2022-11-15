@@ -10,11 +10,14 @@ class ApiURL {
   static const String updatePassAdmin = "/updatepassadmin";
   static const String deleteAdmin = "/deleteadmin";
   static const String deleteUser = "/deleteuser";
+  static const String deleteUserStation = "/deleteusertram";
   static const String registerUser = "/registeruser";
+  static const String registerUserStation = "/registerusertram";
+  static const String updateUserStation = "/updateusertram";
   static const String registerStation = "/registertram";
   static const String getStation = "/gettram";
   static const String getAllStation = "/getalltram";
-  static const String getAllUserStation = "/getalluserstation";
+  static const String getAllUserStation = "/getallusertram";
   static const String getAllUser = "/getalluser";
   static const String getAllAdmin = "/getalladmin";
   static const String updateStation = "/updatetram";

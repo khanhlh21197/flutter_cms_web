@@ -16,6 +16,7 @@ import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/user_model.dart';
 import 'package:flutter_admin/pages/user/user_edit.dart';
+import 'package:flutter_admin/utils/store_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -234,9 +235,13 @@ class UserDataSource extends DataGridSource {
     if (params != null) {
       this.params = params;
     }
-    List<UserModel> stations = (await ApiDioController.getAllUser());
+    List<UserModel> users = (await ApiDioController.getAllUser());
 
-    _rows = stations.map<DataGridRow>((v) {
+    if (users.isNotEmpty) {
+      StoreUtil.writeUsers(users);
+    }
+
+    _rows = users.map<DataGridRow>((v) {
       return DataGridRow(cells: [
         DataGridCell(columnName: 'userModel', value: v),
       ]);

@@ -23,7 +23,7 @@ class StationModel {
 
   Map<String, dynamic> toJson() => {
         'stationId': stationId,
-        'adminID': adminId,
+        'adminId': adminId,
         'name': name,
         'description': description,
         'location': location,

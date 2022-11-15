@@ -1,4 +1,5 @@
 class UserModel {
+  String? userId;
   String? user;
   String? pass;
   String? passmoi;
@@ -8,7 +9,6 @@ class UserModel {
   String? birthDate;
   String? playerId;
   String? adminId;
-
 
   UserModel({
     this.user,
@@ -25,6 +25,7 @@ class UserModel {
   UserModel.fromJson(Map<String, dynamic> json)
       : user = json['user'],
         pass = json['pass'],
+        userId = json['_id'],
         passmoi = json['passmoi'],
         name = json['name'],
         phone = json['phone'],

@@ -4,7 +4,6 @@
 /// @date: 2021/6/21
 /// @version: 1.0
 /// @description: 常用工具类
-
 import 'package:cry/cry.dart';
 import 'package:cry/cry_dialog.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,8 @@ class Utils {
   }
 
   static openTab(String id) {
-    TabPage? tabPage = (StoreUtil.getDefaultTabs() + Routes.otherTabPage).firstWhereOrNull((element) => element.id == id);
+    TabPage? tabPage = (StoreUtil.getDefaultTabs() + Routes.otherTabPage)
+        .firstWhereOrNull((element) => element.id == id);
     if (tabPage == null) {
       var menuList = StoreUtil.getMenuList();
       var menu = menuList.firstWhereOrNull((element) => element.id == id);
@@ -60,7 +60,8 @@ class Utils {
     openedTabPageList.removeAt(index);
     StoreUtil.writeOpenedTabPageList(openedTabPageList);
     if (StoreUtil.readCurrentOpenedTabPageId() == tabPage!.id) {
-      StoreUtil.writeCurrentOpenedTabPageId(openedTabPageList.length > 0 ? openedTabPageList.last!.id : null);
+      StoreUtil.writeCurrentOpenedTabPageId(
+          openedTabPageList.length > 0 ? openedTabPageList.last!.id : null);
     }
     LayoutController layoutController = Get.find();
     layoutController.update();
@@ -74,7 +75,9 @@ class Utils {
 
   static closeOtherTab(TabPage tabPage) {
     List<TabPage?> openedTabPageList = StoreUtil.readOpenedTabPageList();
-    openedTabPageList.removeWhere((element) => element!.id != tabPage.id && !StoreUtil.getDefaultTabs().contains(element));
+    openedTabPageList.removeWhere((element) =>
+        element!.id != tabPage.id &&
+        !StoreUtil.getDefaultTabs().contains(element));
     StoreUtil.writeCurrentOpenedTabPageId(tabPage.id);
     StoreUtil.writeOpenedTabPageList(openedTabPageList);
     LayoutController layoutController = Get.find();
@@ -84,7 +87,9 @@ class Utils {
   static closeAllToTheRightTab(TabPage tabPage) {
     List<TabPage?> openedTabPageList = StoreUtil.readOpenedTabPageList();
     int index = openedTabPageList.indexWhere((note) => note!.id == tabPage.id);
-    openedTabPageList.removeWhere((element) => openedTabPageList.indexOf(element) > index && !StoreUtil.getDefaultTabs().contains(element));
+    openedTabPageList.removeWhere((element) =>
+        openedTabPageList.indexOf(element) > index &&
+        !StoreUtil.getDefaultTabs().contains(element));
     StoreUtil.writeCurrentOpenedTabPageId(tabPage.id);
     StoreUtil.writeOpenedTabPageList(openedTabPageList);
     LayoutController layoutController = Get.find();
@@ -94,7 +99,9 @@ class Utils {
   static closeAllToTheLeftTab(TabPage tabPage) {
     List<TabPage?> openedTabPageList = StoreUtil.readOpenedTabPageList();
     int index = openedTabPageList.indexWhere((note) => note!.id == tabPage.id);
-    openedTabPageList.removeWhere((element) => openedTabPageList.indexOf(element) < index && !StoreUtil.getDefaultTabs().contains(element));
+    openedTabPageList.removeWhere((element) =>
+        openedTabPageList.indexOf(element) < index &&
+        !StoreUtil.getDefaultTabs().contains(element));
     StoreUtil.writeCurrentOpenedTabPageId(tabPage.id);
     StoreUtil.writeOpenedTabPageList(openedTabPageList);
     LayoutController layoutController = Get.find();
@@ -110,7 +117,8 @@ class Utils {
     return layoutController.menuDisplayType == MenuDisplayType.drawer;
   }
 
-  static getThemeData({Color? themeColor, String? fontFamily, bool isDark = false}) {
+  static getThemeData(
+      {Color? themeColor, String? fontFamily, bool isDark = false}) {
     if (fontFamily != null) {
       currentFontFamily = fontFamily;
     }
@@ -125,7 +133,9 @@ class Utils {
         backgroundColor: themeColor,
       ),
       buttonTheme: ButtonThemeData(buttonColor: themeColor),
-      elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(themeColor))),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(themeColor))),
       fontFamily: currentFontFamily,
     );
   }
@@ -133,6 +143,7 @@ class Utils {
   static String currentFontFamily = "Roboto";
 
   static isLogin() {
+    // return true;
     return StoreUtil.hasData(Constant.KEY_TOKEN);
   }
 
@@ -148,7 +159,8 @@ class Utils {
     }
   }
 
-  static toPortal(BuildContext context, String message, String buttonText, {String url = "http://www.cairuoyu.com/flutter_portal"}) {
+  static toPortal(BuildContext context, String message, String buttonText,
+      {String url = "http://www.cairuoyu.com/flutter_portal"}) {
     cryAlertWidget(
       context,
       Container(

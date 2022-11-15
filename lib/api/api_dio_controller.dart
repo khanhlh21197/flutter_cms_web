@@ -6,6 +6,7 @@ import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/device_model.dart';
 import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/models/user_model.dart';
+import 'package:flutter_admin/models/user_station_model.dart';
 import 'package:get/get.dart' hide Response, FormData, MultipartFile;
 
 import 'custom_log.dart';
@@ -79,7 +80,6 @@ class ApiDioController {
         url,
         data: body,
       );
-      print('Response: ${response.data}');
       CustomLog.log(response);
       if (response.statusCode == 200) {
         if (response.data!['message'] == "success") {
@@ -115,7 +115,8 @@ class ApiDioController {
       CustomLog.log(response.data);
 
       if (response.statusCode == 200) {
-        if (response.data!['message'] == 'success') {
+        if (response.data!['message'] == 'success' ||
+            response.data!['message'] == 'true') {
           return asModel(response.data!);
         }
       } else if (response.statusCode == 403) {
@@ -231,8 +232,10 @@ class ApiDioController {
     return registerStatus;
   }
 
-  static Future<bool> loginAdmin(AdminModel adminModel) async {
+  static Future<AdminModel> loginAdmin(AdminModel adminModel) async {
     Dio dio = Dio(options);
+
+    AdminModel adminResponse = new AdminModel();
 
     bool loginStatus = false;
     await postMethods(
@@ -240,7 +243,10 @@ class ApiDioController {
       dio: dio,
       body: adminModel.toJson(),
       asModel: (map) {
-        if (map['message'] == 'success') {
+        if (map['message'] == 'success' && map['data'] != null) {
+          final response = map['data'] as List;
+          adminResponse =
+              response.map((e) => AdminModel.fromJson(e)).toList()[0];
           loginStatus = true;
           CryUtils.message('Đăng nhập thành công');
         } else {
@@ -250,7 +256,7 @@ class ApiDioController {
         }
       },
     );
-    return loginStatus;
+    return adminResponse;
   }
 
   static Future<List<AdminModel>> getAdmin(AdminModel adminModel) async {
@@ -348,6 +354,27 @@ class ApiDioController {
     return deleteUserStatus;
   }
 
+  static Future<bool> deleteUserStation(String userId) async {
+    Dio dio = Dio(options);
+
+    bool deleteUserStatus = false;
+    await deleteMethod(
+      url: ApiURL.deleteUser,
+      dio: dio,
+      body: {"userId": userId},
+      asModel: (map) {
+        if (map['message'] == 'success') {
+          deleteUserStatus = true;
+          CryUtils.message('Xóa user thành công');
+        } else {
+          CryUtils.message('Xóa user thất bại');
+          deleteUserStatus = false;
+        }
+      },
+    );
+    return deleteUserStatus;
+  }
+
   static Future<bool> registerUser(UserModel userModel) async {
     Dio dio = Dio(options);
 
@@ -369,6 +396,28 @@ class ApiDioController {
     return registerStatus;
   }
 
+  static Future<bool> registerUserStation(
+      UserStationModel userStationModel) async {
+    Dio dio = Dio(options);
+
+    bool registerStatus = false;
+    await postMethods(
+      url: ApiURL.registerUserStation,
+      dio: dio,
+      body: userStationModel.toJson(),
+      asModel: (map) {
+        if (map['message'] == 'success') {
+          registerStatus = true;
+          CryUtils.message('Đăng ký user trạm thành công');
+        } else {
+          CryUtils.message('Đăng ký user trạm thất bại');
+          registerStatus = false;
+        }
+      },
+    );
+    return registerStatus;
+  }
+
   static Future<bool> updateUser(UserModel userModel) async {
     Dio dio = Dio(options);
 
@@ -383,6 +432,28 @@ class ApiDioController {
           CryUtils.message('Cập nhật user thành công');
         } else {
           CryUtils.message('Cập nhật user thất bại');
+          updateUserStatus = false;
+        }
+      },
+    );
+    return updateUserStatus;
+  }
+
+  static Future<bool> updateUserStation(
+      UserStationModel userStationModel) async {
+    Dio dio = Dio(options);
+
+    bool updateUserStatus = false;
+    await putMethods(
+      url: ApiURL.updateUserStation,
+      dio: dio,
+      body: userStationModel.toJson(),
+      asModel: (map) {
+        if (map['message'] == 'success') {
+          updateUserStatus = true;
+          CryUtils.message('Cập nhật user trạm thành công');
+        } else {
+          CryUtils.message('Cập nhật user trạm thất bại');
           updateUserStatus = false;
         }
       },
@@ -438,6 +509,22 @@ class ApiDioController {
       asModel: (map) {
         final responseList = map as List;
         stations = responseList.map((e) => StationModel.fromJson(e)).toList();
+      },
+    );
+    return stations;
+  }
+
+  static Future<List<UserStationModel>> getAllUserStation() async {
+    Dio dio = Dio(options);
+
+    List<UserStationModel> stations = [];
+    await getData<List<UserStationModel>>(
+      url: ApiURL.getAllUserStation,
+      dio: dio,
+      asModel: (map) {
+        final responseList = map as List;
+        stations =
+            responseList.map((e) => UserStationModel.fromJson(e)).toList();
       },
     );
     return stations;
@@ -552,7 +639,7 @@ class ApiDioController {
       dio: dio,
       body: deviceModel.toJson(),
       asModel: (map) {
-        if (map['message'] == 'success') {
+        if (map['message'] == 'success' || map['message'] == 'true') {
           updateDeviceStatus = true;
           CryUtils.message('Cập nhật thiết bị thành công');
         } else {

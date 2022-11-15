@@ -15,11 +15,13 @@ import 'package:cry/model/page_model.dart';
 import 'package:cry/utils/cry_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
+import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/constants/constant_dict.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/pages/station/station_edit.dart';
 import 'package:flutter_admin/utils/dict_util.dart';
+import 'package:flutter_admin/utils/store_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -223,6 +225,10 @@ class StationDataSource extends DataGridSource {
       this.params = params;
     }
     List<StationModel> stations = (await ApiDioController.getAllStation());
+
+    if (stations.isNotEmpty) {
+      StoreUtil.write(Constant.EVN_STATIONS, stations);
+    }
 
     _rows = stations.map<DataGridRow>((v) {
       return DataGridRow(cells: [

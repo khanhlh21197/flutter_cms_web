@@ -919,6 +919,15 @@ class S {
     );
   }
 
+  String get userId {
+    return Intl.message(
+      'UserId',
+      name: 'UserId',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get pass {
     return Intl.message(
       'Password',

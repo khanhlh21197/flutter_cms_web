@@ -1,4 +1,5 @@
 class AdminModel {
+  String? adminId;
   String? user;
   String? pass;
   String? passmoi;
@@ -22,6 +23,7 @@ class AdminModel {
   AdminModel.fromJson(Map<String, dynamic> json)
       : user = json['user'],
         pass = json['pass'],
+        adminId = json['_id'],
         passmoi = json['passmoi'],
         name = json['name'],
         phone = json['phone'],

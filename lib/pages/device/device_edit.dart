@@ -6,12 +6,17 @@
 /// @description: 文章编辑
 import 'package:cry/cry_buttons.dart';
 import 'package:cry/form/cry_input.dart';
+import 'package:cry/form/cry_select.dart';
 import 'package:cry/utils/cry_utils.dart';
+import 'package:cry/vo/select_option_vo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/api/article_api.dart';
 import 'package:flutter_admin/generated/l10n.dart';
+import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/device_model.dart';
+import 'package:flutter_admin/models/station_model.dart';
+import 'package:flutter_admin/utils/cry_select_item_util.dart';
 
 class DeviceEdit extends StatefulWidget {
   final DeviceModel? deviceModel;
@@ -25,12 +30,39 @@ class DeviceEdit extends StatefulWidget {
 class _DeviceEditState extends State<DeviceEdit> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late DeviceModel deviceModel;
+  List<AdminModel> admins = [];
+  List<StationModel> stations = [];
+
+  List<SelectOptionVO> adminSelect = [];
+  List<SelectOptionVO> stationSelect = [];
 
   @override
   void initState() {
     deviceModel = widget.deviceModel ?? DeviceModel();
-
     super.initState();
+    initData();
+  }
+
+  void initData() async {
+    if (admins.isEmpty) {
+      admins = await ApiDioController.getAllAdmin();
+    }
+    if (stations.isEmpty) {
+      stations = await ApiDioController.getAllStation();
+    }
+
+    adminSelect = CrySelectItemUtil.getAdminIdSelectOptionList(admins);
+    stationSelect = CrySelectItemUtil.getStationIdSelectOptionList(stations);
+
+    if (deviceModel.adminId == null || deviceModel.adminId!.isEmpty) {
+      deviceModel.adminId = adminSelect[0].value as String?;
+    }
+
+    if (deviceModel.stationId == null || deviceModel.stationId!.isEmpty) {
+      deviceModel.stationId = stationSelect[0].value as String?;
+    }
+
+    setState(() {});
   }
 
   @override
@@ -49,20 +81,20 @@ class _DeviceEditState extends State<DeviceEdit> {
                   deviceModel.deviceId = v;
                 },
               ),
-              CryInput(
-                label: S.of(context).stationId,
-                value: deviceModel.stationId,
-                width: 400,
-                onSaved: (v) {
-                  deviceModel.stationId = v;
-                },
-              ),
-              CryInput(
+              CrySelect(
                 label: S.of(context).adminId,
+                dataList: adminSelect,
                 value: deviceModel.adminId,
-                width: 400,
                 onSaved: (v) {
                   deviceModel.adminId = v;
+                },
+              ),
+              CrySelect(
+                label: S.of(context).stationId,
+                dataList: stationSelect,
+                value: deviceModel.stationId,
+                onSaved: (v) {
+                  deviceModel.stationId = v;
                 },
               ),
               CryInput(
