@@ -153,6 +153,17 @@ class _StationMainState extends State<StationMain> {
             ),
             width: 80),
         GridColumn(
+            columnName: 'Number of device',
+            label: Container(
+              padding: EdgeInsets.all(8.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                S.of(context).numberOfDevice,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            width: 80),
+        GridColumn(
           columnName: 'Description',
           label: Container(
             padding: EdgeInsets.all(8.0),
@@ -281,6 +292,16 @@ class StationDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           stationModel.name ?? '--',
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.all(8),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          (stationModel.numberofdevice != null)
+              ? '${stationModel.numberofdevice}'
+              : '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),

@@ -26,18 +26,25 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class DeviceMain extends StatefulWidget {
+  const DeviceMain({Key? key, required this.stationId}) : super(key: key);
+
   @override
-  _DeviceMainState createState() => _DeviceMainState();
+  _DeviceMainState createState() => _DeviceMainState(stationId);
+
+  final String stationId;
 }
 
 class _DeviceMainState extends State<DeviceMain> {
+  final String stationId;
   late DeviceDataSource ds;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DeviceModel deviceModel = DeviceModel();
 
+  _DeviceMainState(this.stationId);
+
   @override
   void initState() {
-    ds = DeviceDataSource();
+    ds = DeviceDataSource(stationId);
     super.initState();
   }
 
@@ -238,14 +245,22 @@ class DeviceDataSource extends DataGridSource {
   PageModel pageModel = PageModel();
   Map params = {};
   List<DataGridRow> _rows = [];
+  final String stationId;
 
-  DeviceDataSource();
+  DeviceDataSource(this.stationId);
 
   loadData({Map? params}) async {
     if (params != null) {
       this.params = params;
     }
-    List<DeviceModel> devices = (await ApiDioController.getAllDevice());
+
+    List<DeviceModel> devices = [];
+
+    if (stationId.isEmpty) {
+      devices = (await ApiDioController.getAllDevice());
+    } else {
+      devices = await ApiDioController.getDeviceByStationId(stationId);
+    }
 
     _rows = devices.map<DataGridRow>((v) {
       return DataGridRow(cells: [

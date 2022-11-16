@@ -661,7 +661,6 @@ class ApiDioController {
       dio: dio,
       body: {"stationId": stationId},
       asModel: (map) {
-        final responseList = map as List;
         if (map['data'] != null) {
           final responseList = map['data'] as List;
           devices = responseList.map((e) => DeviceModel.fromJson(e)).toList();

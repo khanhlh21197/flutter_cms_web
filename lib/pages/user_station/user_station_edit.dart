@@ -71,7 +71,7 @@ class _UserStationEditState extends State<UserStationEdit> {
               CrySelect(
                 label: S.of(context).userId,
                 value: userStationModel.userId,
-                width: 200,
+                width: 300,
                 dataList: CrySelectItemUtil.getUserIdSelectOptionList(users),
                 onSaved: (v) {
                   userStationModel.userId = v;
@@ -80,7 +80,7 @@ class _UserStationEditState extends State<UserStationEdit> {
               CrySelect(
                 label: S.of(context).stationId,
                 value: userStationModel.stationId,
-                width: 200,
+                width: 300,
                 dataList:
                     CrySelectItemUtil.getStationIdSelectOptionList(stations),
                 onSaved: (v) {
@@ -90,7 +90,7 @@ class _UserStationEditState extends State<UserStationEdit> {
               CrySelect(
                 label: S.of(context).adminId,
                 value: userStationModel.adminId,
-                width: 200,
+                width: 300,
                 dataList: CrySelectItemUtil.getAdminIdSelectOptionList(admins),
                 onSaved: (v) {
                   userStationModel.adminId = v;

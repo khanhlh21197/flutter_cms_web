@@ -520,6 +520,15 @@ class S {
     );
   }
 
+  String get numberOfDevice {
+    return Intl.message(
+      'numberOfDevice',
+      name: 'Number of device',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Operating`
   String get operating {
     return Intl.message(

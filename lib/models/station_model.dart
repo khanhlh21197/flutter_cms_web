@@ -1,5 +1,6 @@
 class StationModel {
   String? stationId;
+  String? numberofdevice;
   String? adminId;
   String? name;
   String? description;
@@ -17,6 +18,8 @@ class StationModel {
   StationModel.fromJson(Map<String, dynamic> json)
       : adminId = json['adminId'] ?? '',
         stationId = json['stationId'] ?? '',
+        numberofdevice =
+            (json['numberofdevice'] != null) ? '${json['numberofdevice']}' : '',
         name = json['name'] ?? '',
         description = json['description'] ?? '',
         location = json['location'] ?? '';

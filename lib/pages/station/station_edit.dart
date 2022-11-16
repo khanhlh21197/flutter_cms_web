@@ -15,6 +15,7 @@ import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/station_model.dart';
+import 'package:flutter_admin/pages/device/device_main.dart';
 import 'package:flutter_admin/utils/cry_select_item_util.dart';
 import 'package:flutter_admin/utils/store_util.dart';
 
@@ -102,6 +103,10 @@ class _StationEditState extends State<StationEdit> {
         ],
       ),
     );
+    var devicesTable = Expanded(
+        child: DeviceMain(
+      stationId: stationModel.stationId!,
+    ));
     var result = Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).add),
@@ -109,7 +114,10 @@ class _StationEditState extends State<StationEdit> {
           CryButtons.save(context, save),
         ],
       ),
-      body: form,
+      body: Column(children: [
+        form,
+        devicesTable,
+      ]),
     );
     return result;
   }

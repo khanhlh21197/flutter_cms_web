@@ -4,21 +4,18 @@
 /// @date: 2021/6/21
 /// @version: 1.0
 /// @description: 注册
-
 import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:cry/common/application_context.dart';
 import 'package:cry/common/face_recognition.dart';
-import 'package:cry/common/face_service_import.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_admin/api/user_api.dart';
 import 'package:cry/cry.dart';
-import 'package:flutter_admin/models/user.dart';
-import 'package:cry/utils/cry_utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_admin/api/api_dio_controller.dart';
+import 'package:flutter_admin/models/admin_model.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+
 import '../generated/l10n.dart';
-import 'package:dio/dio.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -27,7 +24,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  User user = new User();
+  AdminModel adminModel = new AdminModel();
   String? password2 = "";
   bool isFaceRecognition = false;
   String? imagePath;
@@ -46,7 +43,8 @@ class _RegisterState extends State {
       child: Scaffold(
         body: isFaceRecognition
             ? FaceRecognition(
-                onFountFace: (CameraImage cameraImage, String imagePath, List<Face> faces) {
+                onFountFace: (CameraImage cameraImage, String imagePath,
+                    List<Face> faces) {
                   setState(() {
                     this.isFaceRecognition = false;
                     this.imagePath = imagePath;
@@ -103,9 +101,9 @@ class _RegisterState extends State {
                 border: OutlineInputBorder(),
                 labelText: S.of(context).username,
               ),
-              controller: TextEditingController(text: user.userName),
+              controller: TextEditingController(text: adminModel.user),
               onSaved: (v) {
-                user.userName = v;
+                adminModel.user = v;
               },
               validator: (v) {
                 return v!.isEmpty ? S.of(context).usernameRequired : null;
@@ -121,9 +119,9 @@ class _RegisterState extends State {
                 border: OutlineInputBorder(),
                 labelText: S.of(context).password,
               ),
-              controller: TextEditingController(text: user.password),
+              controller: TextEditingController(text: adminModel.pass),
               onSaved: (v) {
-                user.password = v;
+                adminModel.pass = v;
               },
               validator: (v) {
                 return v!.isEmpty ? S.of(context).passwordRequired : null;
@@ -145,11 +143,14 @@ class _RegisterState extends State {
                 password2 = v;
               },
               validator: (v) {
-                return password2 == user.password ? null : S.of(context).passwordMismatch;
+                return password2 == adminModel.pass
+                    ? null
+                    : S.of(context).passwordMismatch;
               },
             ),
           ),
-          if (this.imagePath != null) SizedBox(width: 100, child: Image.file(File(this.imagePath!))),
+          if (this.imagePath != null)
+            SizedBox(width: 100, child: Image.file(File(this.imagePath!))),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
@@ -190,9 +191,11 @@ class _RegisterState extends State {
                   _register();
                 },
                 style: ButtonStyle(
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0))),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40.0))),
                 ),
-                child: Text(S.of(context).register, style: TextStyle(color: Colors.white70, fontSize: 20)),
+                child: Text(S.of(context).register,
+                    style: TextStyle(color: Colors.white70, fontSize: 20)),
               ),
             ),
           ),
@@ -217,30 +220,35 @@ class _RegisterState extends State {
     Cry.pushNamed('/login');
   }
 
-  _register() {
+  _register() async {
     var form = formKey.currentState!;
     form.save();
     if (form.validate()) {
-      String faceData = '';
-      Map<String, dynamic> map = user.toMap();
-      map['file'] = null;
-      if (this.cameraImage != null && this.face != null) {
-        faceData = FaceService().toData(this.cameraImage!, this.face!);
-        map['face'] = faceData;
+      bool registerStatus = await ApiDioController.registerAdmin(adminModel);
 
-        var value = File(this.imagePath!).readAsBytesSync();
-        var file = MultipartFile.fromBytes(value, filename: 'test.png'); //todo
-        map['file'] = file;
-      }
-      FormData formData = FormData.fromMap(map);
-
-      UserApi.register(formData).then((v) {
-        if (!v.success!) {
-          return;
-        }
+      if (registerStatus) {
         _login();
-        CryUtils.message(S.of(context).registerSuccess);
-      });
+      }
+      // String faceData = '';
+      // Map<String, dynamic> map = user.toMap();
+      // map['file'] = null;
+      // if (this.cameraImage != null && this.face != null) {
+      //   faceData = FaceService().toData(this.cameraImage!, this.face!);
+      //   map['face'] = faceData;
+      //
+      //   var value = File(this.imagePath!).readAsBytesSync();
+      //   var file = MultipartFile.fromBytes(value, filename: 'test.png'); //todo
+      //   map['file'] = file;
+      // }
+      // FormData formData = FormData.fromMap(map);
+      //
+      // UserApi.register(formData).then((v) {
+      //   if (!v.success!) {
+      //     return;
+      //   }
+      //   _login();
+      //   CryUtils.message(S.of(context).registerSuccess);
+      // });
     }
   }
 }

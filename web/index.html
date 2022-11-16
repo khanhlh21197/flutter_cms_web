@@ -2,6 +2,22 @@
 <html>
 
 <head>
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <script>
+    var OneSignal = window.OneSignal || [];
+    var initConfig = {
+      appId: "15d7af90-30a3-45da-9d0d-94dc37e109ea",
+      persistNotification: true,
+      notifyButton: {
+          enable: true
+      },
+    };
+    OneSignal.push(function () {
+      OneSignal.init(initConfig);
+    });
+
+
+    </script>
     <!--
       If you are serving your web app in a path other than the root, change the
       href value below to reflect the base path you are serving from.
@@ -39,6 +55,30 @@
 @version: 1.0
 @description: 页面加载时显示loading
 -->
+
+<input type="hidden" id="osUserID" value="ERR"/>
+...
+<script>
+    var eUserID = document.getElementById('osUserID');
+    function getUserId() {
+      OneSignal.getUserId(function(osUserID) {
+        if (eUserID && osUserID) {
+          eUserID.value = osUserID;
+          }
+      });
+    }
+    OneSignal.push(function () {
+      OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+        if (isEnabled) getUserId();
+      });
+      OneSignal.on('subscriptionChange', function (isSubscribed) {
+        if (isSubscribed) getUserId();
+      });
+    });
+
+
+</script>
+
 <div id="loading">
     <div class="spinner">
         <div class="re1"></div>
@@ -117,6 +157,8 @@
       // Service workers not supported. Just drop the <script> tag.
       loadMainDartJs();
     }
+
+
 
 </script>
 </body>
