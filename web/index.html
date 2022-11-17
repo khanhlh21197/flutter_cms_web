@@ -2,22 +2,22 @@
 <html>
 
 <head>
-    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-    <script>
-    var OneSignal = window.OneSignal || [];
-    var initConfig = {
-      appId: "15d7af90-30a3-45da-9d0d-94dc37e109ea",
-      persistNotification: true,
-      notifyButton: {
-          enable: true
-      },
-    };
-    OneSignal.push(function () {
-      OneSignal.init(initConfig);
-    });
+    <!--    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>-->
+    <!--    <script>-->
+    <!--    var OneSignal = window.OneSignal || [];-->
+    <!--    var initConfig = {-->
+    <!--      appId: "15d7af90-30a3-45da-9d0d-94dc37e109ea",-->
+    <!--      persistNotification: true,-->
+    <!--      notifyButton: {-->
+    <!--          enable: true-->
+    <!--      },-->
+    <!--    };-->
+    <!--    OneSignal.push(function () {-->
+    <!--      OneSignal.init(initConfig);-->
+    <!--    });-->
 
 
-    </script>
+    <!--    </script>-->
     <!--
       If you are serving your web app in a path other than the root, change the
       href value below to reflect the base path you are serving from.
@@ -56,26 +56,51 @@
 @description: 页面加载时显示loading
 -->
 
-<input type="hidden" id="osUserID" value="ERR"/>
-...
-<script>
-    var eUserID = document.getElementById('osUserID');
-    function getUserId() {
-      OneSignal.getUserId(function(osUserID) {
-        if (eUserID && osUserID) {
-          eUserID.value = osUserID;
-          }
-      });
-    }
-    OneSignal.push(function () {
-      OneSignal.isPushNotificationsEnabled(function(isEnabled) {
-        if (isEnabled) getUserId();
-      });
-      OneSignal.on('subscriptionChange', function (isSubscribed) {
-        if (isSubscribed) getUserId();
-      });
-    });
+<!--<input type="hidden" id="osUserID" value="ERR"/>-->
+<!--...-->
+<!--<script>-->
+<!--    var eUserID = document.getElementById('osUserID');-->
+<!--    function getUserId() {-->
+<!--      OneSignal.getUserId(function(osUserID) {-->
+<!--        if (eUserID && osUserID) {-->
+<!--          eUserID.value = osUserID;-->
+<!--          }-->
+<!--      });-->
+<!--    }-->
+<!--    OneSignal.push(function () {-->
+<!--      OneSignal.isPushNotificationsEnabled(function(isEnabled) {-->
+<!--        if (isEnabled) getUserId();-->
+<!--      });-->
+<!--      OneSignal.on('subscriptionChange', function (isSubscribed) {-->
+<!--        if (isSubscribed) getUserId();-->
+<!--      });-->
+<!--    });-->
 
+
+<!--</script>-->
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCoa38-6iVRr1EkuvfXDaOciYc02dzqkpE",
+    authDomain: "flutter-ozon.firebaseapp.com",
+    projectId: "flutter-ozon",
+    storageBucket: "flutter-ozon.appspot.com",
+    messagingSenderId: "124122421484",
+    appId: "1:124122421484:web:381f28257305e596532dc9",
+    measurementId: "G-NT3H38CPHK"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 
 </script>
 
@@ -157,6 +182,7 @@
       // Service workers not supported. Just drop the <script> tag.
       loadMainDartJs();
     }
+
 
 
 

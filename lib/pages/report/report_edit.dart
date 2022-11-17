@@ -8,45 +8,60 @@ import 'package:cry/cry_buttons.dart';
 import 'package:cry/form/cry_input.dart';
 import 'package:cry/form/cry_select.dart';
 import 'package:cry/utils/cry_utils.dart';
+import 'package:cry/vo/select_option_vo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/api/article_api.dart';
-import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/admin_model.dart';
+import 'package:flutter_admin/models/device_model.dart';
 import 'package:flutter_admin/models/station_model.dart';
-import 'package:flutter_admin/pages/device/device_main.dart';
 import 'package:flutter_admin/utils/cry_select_item_util.dart';
-import 'package:flutter_admin/utils/store_util.dart';
 
-class StationEdit extends StatefulWidget {
-  final StationModel? stationModel;
+class DeviceEdit extends StatefulWidget {
+  final DeviceModel? deviceModel;
 
-  const StationEdit({Key? key, this.stationModel}) : super(key: key);
+  const DeviceEdit({Key? key, this.deviceModel}) : super(key: key);
 
   @override
-  _StationEditState createState() => _StationEditState();
+  _DeviceEditState createState() => _DeviceEditState();
 }
 
-class _StationEditState extends State<StationEdit> {
+class _DeviceEditState extends State<DeviceEdit> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  late StationModel stationModel;
+  late DeviceModel deviceModel;
   List<AdminModel> admins = [];
+  List<StationModel> stations = [];
+
+  List<SelectOptionVO> adminSelect = [];
+  List<SelectOptionVO> stationSelect = [];
 
   @override
   void initState() {
-    stationModel = widget.stationModel ?? StationModel();
-    stationModel.adminId = StoreUtil.read(Constant.ADMIN_ID)!;
-
-    initData();
+    deviceModel = widget.deviceModel ?? DeviceModel();
     super.initState();
+    initData();
   }
 
-  Future initData() async {
-    // admins = StoreUtil.readAdmins();
+  void initData() async {
     if (admins.isEmpty) {
       admins = await ApiDioController.getAllAdmin();
     }
+    if (stations.isEmpty) {
+      stations = await ApiDioController.getAllStation();
+    }
+
+    adminSelect = CrySelectItemUtil.getAdminIdSelectOptionList(admins);
+    stationSelect = CrySelectItemUtil.getStationIdSelectOptionList(stations);
+
+    if (deviceModel.adminId == null || deviceModel.adminId!.isEmpty) {
+      deviceModel.adminId = adminSelect[0].value as String?;
+    }
+
+    if (deviceModel.stationId == null || deviceModel.stationId!.isEmpty) {
+      deviceModel.stationId = stationSelect[0].value as String?;
+    }
+
     setState(() {});
   }
 
@@ -59,61 +74,56 @@ class _StationEditState extends State<StationEdit> {
           Wrap(
             children: [
               CryInput(
-                label: S.of(context).stationId,
-                value: stationModel.stationId,
+                label: S.of(context).deviceId,
+                value: deviceModel.deviceId,
                 width: 400,
                 onSaved: (v) {
-                  stationModel.stationId = v;
+                  deviceModel.deviceId = v;
                 },
               ),
               CrySelect(
                 label: S.of(context).adminId,
-                dataList: CrySelectItemUtil.getAdminIdSelectOptionList(admins),
-                value: stationModel.adminId,
+                dataList: adminSelect,
+                value: deviceModel.adminId,
                 onSaved: (v) {
-                  stationModel.adminId = v;
+                  deviceModel.adminId = v;
+                },
+              ),
+              CrySelect(
+                label: S.of(context).stationId,
+                dataList: stationSelect,
+                value: deviceModel.stationId,
+                onSaved: (v) {
+                  deviceModel.stationId = v;
                 },
               ),
               CryInput(
                 label: S.of(context).name,
-                value: stationModel.name,
+                value: deviceModel.name,
                 width: 400,
                 onSaved: (v) {
-                  stationModel.name = v;
+                  deviceModel.name = v;
                 },
               ),
               CryInput(
                 label: S.of(context).description,
-                value: stationModel.description,
+                value: deviceModel.description,
                 width: 400,
                 onSaved: (v) {
-                  stationModel.description = v;
+                  deviceModel.description = v;
                 },
               ),
               CryInput(
                 label: S.of(context).location,
-                value: stationModel.location,
+                value: deviceModel.location,
                 width: 400,
                 onSaved: (v) {
-                  stationModel.location = v;
+                  deviceModel.location = v;
                 },
               ),
             ],
           ),
         ],
-      ),
-    );
-    var devicesTable = Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.red,
-            width: 3,
-          ),
-        ),
-        child: DeviceMain(
-          stationId: stationModel.stationId!,
-        ),
       ),
     );
     var result = Scaffold(
@@ -123,21 +133,18 @@ class _StationEditState extends State<StationEdit> {
           CryButtons.save(context, save),
         ],
       ),
-      body: Column(children: [
-        form,
-        devicesTable,
-      ]),
+      body: form,
     );
     return result;
   }
 
   save() {
-    if (widget.stationModel == null) {
+    if (widget.deviceModel == null) {
       print('save');
-      action((data) async => await ApiDioController.registerStation(data));
+      action((data) async => await ApiDioController.registerDevice(data));
     } else {
       print('edit');
-      action((data) async => await ApiDioController.updateStation(data));
+      action((data) async => await ApiDioController.updateDevice(data));
     }
   }
 
@@ -155,7 +162,7 @@ class _StationEditState extends State<StationEdit> {
     }
     formKey.currentState!.save();
 
-    bool isSuccess = await action(stationModel);
+    bool isSuccess = await action(deviceModel);
     if (isSuccess) {
       CryUtils.message(S.of(context).success);
       Navigator.pop(context, true);
