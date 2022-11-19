@@ -23,10 +23,12 @@ import 'package:flutter_admin/pages/menu/menu_main.dart';
 import 'package:flutter_admin/pages/message/message_main.dart';
 import 'package:flutter_admin/pages/my_test.dart';
 import 'package:flutter_admin/pages/person/person_list.dart';
+import 'package:flutter_admin/pages/report/report_main.dart';
 import 'package:flutter_admin/pages/role/role_list.dart';
 import 'package:flutter_admin/pages/setting/setting_base.dart';
 import 'package:flutter_admin/pages/station/station_main.dart';
 import 'package:flutter_admin/pages/subsystem/subsystem_main.dart';
+import 'package:flutter_admin/pages/test/MyHomePage.dart';
 import 'package:flutter_admin/pages/user/user_main.dart';
 import 'package:flutter_admin/pages/userInfo/user_info_list.dart';
 import 'package:flutter_admin/pages/userInfo/user_info_mine.dart';
@@ -51,11 +53,13 @@ class Routes {
     '/articleMain': ArticleMain(),
     '/stationMain': StationMain(),
     '/userStationMain': UserStationMain(),
+    '/reportMain': ReportMain(),
     '/deviceMain': DeviceMain(
       stationId: '',
     ),
     '/adminMain': AdminMain(),
     '/userMain': UserMain(),
+    '/testMain': MyHomePage(),
     '/userInfoMine': UserInfoMine(),
     '/layout401': Page401(),
     '/layout404': Page404(),

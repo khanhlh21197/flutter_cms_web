@@ -11,7 +11,6 @@ import 'package:cry/cry_dialog.dart';
 import 'package:cry/form/cry_input.dart';
 import 'package:cry/form/cry_select.dart';
 import 'package:cry/form/cry_select_date.dart';
-import 'package:cry/model/page_model.dart';
 import 'package:cry/utils/cry_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
@@ -21,30 +20,25 @@ import 'package:flutter_admin/models/device_model.dart';
 import 'package:flutter_admin/pages/device/device_edit.dart';
 import 'package:flutter_admin/utils/dict_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
-import 'package:get/get.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-class DeviceMain extends StatefulWidget {
-  const DeviceMain({Key? key, required this.stationId}) : super(key: key);
+class ReportMain extends StatefulWidget {
+  const ReportMain({Key? key}) : super(key: key);
 
   @override
-  _DeviceMainState createState() => _DeviceMainState(stationId);
-
-  final String stationId;
+  _ReportMainState createState() => _ReportMainState();
 }
 
-class _DeviceMainState extends State<DeviceMain> {
-  final String stationId;
+class _ReportMainState extends State<ReportMain> {
   late DeviceDataSource ds;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DeviceModel deviceModel = DeviceModel();
 
-  _DeviceMainState(this.stationId);
+  _ReportMainState();
 
   @override
   void initState() {
-    ds = DeviceDataSource(stationId);
+    ds = DeviceDataSource();
     super.initState();
   }
 
@@ -204,25 +198,12 @@ class _DeviceMainState extends State<DeviceMain> {
         ),
       ],
     );
-    var pager = SfDataPagerTheme(
-      data: SfDataPagerThemeData(
-        brightness: Brightness.light,
-        selectedItemColor: Get.theme.primaryColor,
-      ),
-      child: SfDataPager(
-        delegate: ds,
-        pageCount: 10,
-        direction: Axis.horizontal,
-      ),
-    );
     var result = Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          form,
           buttonBar,
           Expanded(child: dataGrid),
-          pager,
         ],
       ),
     );
@@ -242,12 +223,10 @@ class _DeviceMainState extends State<DeviceMain> {
 }
 
 class DeviceDataSource extends DataGridSource {
-  PageModel pageModel = PageModel();
   Map params = {};
   List<DataGridRow> _rows = [];
-  final String stationId;
 
-  DeviceDataSource(this.stationId);
+  DeviceDataSource();
 
   loadData({Map? params}) async {
     if (params != null) {
@@ -255,12 +234,6 @@ class DeviceDataSource extends DataGridSource {
     }
 
     List<DeviceModel> devices = [];
-
-    if (stationId.isEmpty) {
-      devices = (await ApiDioController.getAllDevice());
-    } else {
-      devices = await ApiDioController.getDeviceByStationId(stationId);
-    }
 
     _rows = devices.map<DataGridRow>((v) {
       return DataGridRow(cells: [
@@ -273,12 +246,12 @@ class DeviceDataSource extends DataGridSource {
   @override
   List<DataGridRow> get rows => _rows;
 
-  @override
-  Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    pageModel.current = newPageIndex + 1;
-    await loadData();
-    return true;
-  }
+  // @override
+  // Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
+  //   pageModel.current = newPageIndex + 1;
+  //   await loadData();
+  //   return true;
+  // }
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {

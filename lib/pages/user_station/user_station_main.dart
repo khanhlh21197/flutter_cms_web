@@ -143,7 +143,7 @@ class _UserStationMainState extends State<UserStationMain> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          form,
+          // form,
           buttonBar,
           Expanded(child: dataGrid),
           pager,

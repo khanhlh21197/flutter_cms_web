@@ -185,7 +185,7 @@ class _AdminMainState extends State<AdminMain> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          form,
+          // form,
           buttonBar,
           Expanded(child: dataGrid),
           pager,

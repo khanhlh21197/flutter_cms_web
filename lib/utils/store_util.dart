@@ -105,6 +105,20 @@ class StoreUtil {
     var data = GetStorage().read(Constant.KEY_MENU_LIST);
     final menuJson = [
       {
+        "id": "testIdMenu",
+        "createTime": "2020-10-14 02:51:39",
+        "updateTime": null,
+        "name": "Test",
+        "nameEn": "Test",
+        "subsystemId": "1",
+        "icon": "dict",
+        "pid": null,
+        "url": "/testMain",
+        "module": null,
+        "remark": "",
+        "orderBy": 8
+      },
+      {
         "id": "ebf18e86fa0e086c629e1017a9972bc9",
         "createTime": "2020-10-14 02:51:39",
         "updateTime": null,
@@ -198,6 +212,20 @@ class StoreUtil {
         "icon": "role",
         "pid": null,
         "url": "/userMain",
+        "module": null,
+        "remark": "",
+        "orderBy": 1
+      },
+      {
+        "id": "reportMenuId",
+        "createTime": "2020-08-22 02:11:26",
+        "updateTime": "2021-08-27 07:42:38",
+        "name": "Report",
+        "nameEn": "Report",
+        "subsystemId": "1",
+        "icon": "role",
+        "pid": null,
+        "url": "/reportMain",
         "module": null,
         "remark": "",
         "orderBy": 1

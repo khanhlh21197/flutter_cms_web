@@ -18,16 +18,16 @@ import 'package:flutter_admin/models/device_model.dart';
 import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/utils/cry_select_item_util.dart';
 
-class DeviceEdit extends StatefulWidget {
+class ReportEdit extends StatefulWidget {
   final DeviceModel? deviceModel;
 
-  const DeviceEdit({Key? key, this.deviceModel}) : super(key: key);
+  const ReportEdit({Key? key, this.deviceModel}) : super(key: key);
 
   @override
-  _DeviceEditState createState() => _DeviceEditState();
+  _ReportEditState createState() => _ReportEditState();
 }
 
-class _DeviceEditState extends State<DeviceEdit> {
+class _ReportEditState extends State<ReportEdit> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late DeviceModel deviceModel;
   List<AdminModel> admins = [];
