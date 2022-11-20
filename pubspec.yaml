@@ -23,6 +23,7 @@ dependencies:
   syncfusion_flutter_charts: ^20.1.60+1
   syncfusion_flutter_datagrid: ^20.1.60
   syncfusion_flutter_datagrid_export: ^20.3.57-beta
+  mqtt_client: ^9.6.8
 
 dev_dependencies:
   flutter_test:

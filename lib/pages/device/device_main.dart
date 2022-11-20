@@ -19,6 +19,7 @@ import 'package:flutter_admin/constants/constant_dict.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/device_model.dart';
 import 'package:flutter_admin/pages/device/device_edit.dart';
+import 'package:flutter_admin/pages/mqtt/mqttBrowserWrapper.dart';
 import 'package:flutter_admin/utils/dict_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
@@ -36,6 +37,7 @@ class DeviceMain extends StatefulWidget {
 
 class _DeviceMainState extends State<DeviceMain> {
   final String stationId;
+  late MQTTBrowserWrapper mqttBrowserWrapper;
   late DeviceDataSource ds;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DeviceModel deviceModel = DeviceModel();
@@ -46,7 +48,16 @@ class _DeviceMainState extends State<DeviceMain> {
   void initState() {
     ds = DeviceDataSource(stationId);
     ds.loadData();
+    initMqtt();
     super.initState();
+  }
+
+  void initMqtt() async {
+    mqttBrowserWrapper = MQTTBrowserWrapper(() {
+      print('Connect success');
+    }, (p0) => print(p0));
+
+    mqttBrowserWrapper.prepareMqttClient('topic');
   }
 
   @override
