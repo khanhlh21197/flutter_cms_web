@@ -82,7 +82,7 @@ class _UserStationEditState extends State<UserStationEdit> {
                 value: userStationModel.stationId,
                 width: 300,
                 dataList:
-                    CrySelectItemUtil.getStationIdSelectOptionList(stations),
+                CrySelectItemUtil.getStationIdSelectOptionList(stations),
                 onSaved: (v) {
                   userStationModel.stationId = v;
                 },

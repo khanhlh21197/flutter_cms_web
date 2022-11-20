@@ -43,7 +43,6 @@ class _StationEditState extends State<StationEdit> {
   }
 
   Future initData() async {
-    // admins = StoreUtil.readAdmins();
     if (admins.isEmpty) {
       admins = await ApiDioController.getAllAdmin();
     }
@@ -103,19 +102,21 @@ class _StationEditState extends State<StationEdit> {
         ],
       ),
     );
-    var devicesTable = Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.red,
-            width: 3,
-          ),
-        ),
-        child: DeviceMain(
-          stationId: stationModel.stationId!,
-        ),
-      ),
-    );
+    var devicesTable = stationModel.stationId != null
+        ? Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.red,
+                  width: 3,
+                ),
+              ),
+              child: DeviceMain(
+                stationId: stationModel.stationId!,
+              ),
+            ),
+          )
+        : Container();
     var result = Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).add),

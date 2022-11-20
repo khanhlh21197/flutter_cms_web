@@ -17,7 +17,9 @@ import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/constants/constant_dict.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/device_model.dart';
+import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/pages/device/device_edit.dart';
+import 'package:flutter_admin/utils/cry_select_item_util.dart';
 import 'package:flutter_admin/utils/dict_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -33,13 +35,24 @@ class _ReportMainState extends State<ReportMain> {
   late DeviceDataSource ds;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DeviceModel deviceModel = DeviceModel();
+  List<StationModel> stations = [];
+  String day = '';
 
   _ReportMainState();
 
   @override
   void initState() {
     ds = DeviceDataSource();
+    initData();
     super.initState();
+  }
+
+  void initData() async {
+    if (stations.isEmpty) {
+      stations = await ApiDioController.getAllStation();
+    }
+
+    ds.loadData(stationId: 'evnStaion2', day: '7');
   }
 
   @override
@@ -56,56 +69,20 @@ class _ReportMainState extends State<ReportMain> {
       child: Wrap(
         alignment: WrapAlignment.start,
         children: [
-          CryInput(
-            label: S.of(context).deviceId,
-            value: deviceModel.deviceId,
-            width: 100,
-            onSaved: (v) {
-              deviceModel.deviceId = v;
-            },
-          ),
-          CryInput(
+          CrySelect(
             label: S.of(context).stationId,
+            dataList: CrySelectItemUtil.getStationIdSelectOptionList(stations),
             value: deviceModel.stationId,
-            width: 100,
             onSaved: (v) {
               deviceModel.stationId = v;
             },
           ),
-          CryInput(
-            label: S.of(context).adminId,
-            value: deviceModel.adminId,
-            width: 100,
-            onSaved: (v) {
-              deviceModel.adminId = v;
-            },
-          ),
           CrySelect(
-            label: S.of(context).name,
-            value: deviceModel.name,
-            width: 200,
-            dataList: DictUtil.getDictSelectOptionList(
-                ConstantDict.CODE_ARTICLE_STATUS),
+            label: S.of(context).day,
+            dataList: CrySelectItemUtil.getStationIdSelectOptionList(stations),
+            value: day,
             onSaved: (v) {
-              deviceModel.name = v;
-            },
-          ),
-          CrySelectDate(
-            context,
-            label: S.of(context).description,
-            value: deviceModel.description,
-            width: 200,
-            onSaved: (v) {
-              deviceModel.description = v;
-            },
-          ),
-          CrySelectDate(
-            context,
-            label: S.of(context).location,
-            value: deviceModel.location,
-            width: 200,
-            onSaved: (v) {
-              deviceModel.location = v;
+              day = v;
             },
           ),
         ],
@@ -148,7 +125,7 @@ class _ReportMainState extends State<ReportMain> {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          width: 80,
+          width: 100,
         ),
         GridColumn(
             columnName: 'Admin ID',
@@ -161,47 +138,13 @@ class _ReportMainState extends State<ReportMain> {
               ),
             ),
             width: 80),
-        GridColumn(
-            columnName: 'Name',
-            label: Container(
-              padding: EdgeInsets.all(8.0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                S.of(context).name,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            width: 80),
-        GridColumn(
-          columnName: 'Description',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).description,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          columnWidthMode: ColumnWidthMode.fill,
-        ),
-        GridColumn(
-          columnName: 'Location',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).location,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          width: 120,
-        ),
       ],
     );
     var result = Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          form,
           buttonBar,
           Expanded(child: dataGrid),
         ],
@@ -212,28 +155,33 @@ class _ReportMainState extends State<ReportMain> {
 
   query() {
     formKey.currentState!.save();
-    ds.loadData();
+    ds.loadData(stationId: 'evnStaion2', day: day ?? '7');
   }
 
   reset() async {
     deviceModel = DeviceModel();
     formKey.currentState!.reset();
-    await ds.loadData(params: {});
+    await ds.loadData();
   }
 }
 
 class DeviceDataSource extends DataGridSource {
-  Map params = {};
+  String stationId = '';
+  String day = '';
   List<DataGridRow> _rows = [];
 
   DeviceDataSource();
 
-  loadData({Map? params}) async {
-    if (params != null) {
-      this.params = params;
+  loadData({String? stationId, String? day}) async {
+    if (stationId != null) {
+      this.stationId = stationId;
+    }
+    if (day != null) {
+      this.day = day;
     }
 
-    List<DeviceModel> devices = [];
+    List<DeviceModel> devices =
+        await ApiDioController.queryStation(stationId, day);
 
     _rows = devices.map<DataGridRow>((v) {
       return DataGridRow(cells: [
@@ -269,7 +217,7 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          deviceModel.deviceId!,
+          deviceModel.deviceId ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -277,7 +225,7 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          deviceModel.stationId!,
+          deviceModel.stationId ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -285,31 +233,7 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          deviceModel.adminId ?? '--',
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      Container(
-        padding: const EdgeInsets.all(8),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          deviceModel.name ?? '--',
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      Container(
-        padding: const EdgeInsets.all(8),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          deviceModel.description ?? '--',
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      Container(
-        padding: const EdgeInsets.all(8),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          deviceModel.location ?? '--',
+          deviceModel.ozone != null ? '${deviceModel.ozone}' : '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),

@@ -23,7 +23,6 @@ import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/constants/constant_dict.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/station_model.dart';
-import 'package:flutter_admin/pages/station/StationController.dart';
 import 'package:flutter_admin/pages/station/station_edit.dart';
 import 'package:flutter_admin/utils/dict_util.dart';
 import 'package:flutter_admin/utils/store_util.dart';
@@ -40,11 +39,9 @@ class StationMain extends StatefulWidget {
 }
 
 class _StationMainState extends State<StationMain> {
-  StationController controller = Get.put(StationController());
   StationDataSource ds = StationDataSource();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   StationModel stationModel = StationModel();
-  GlobalKey<SfDataGridState> sfDataGridKey = GlobalKey<SfDataGridState>();
 
   @override
   void initState() {
@@ -119,7 +116,6 @@ class _StationMainState extends State<StationMain> {
       ),
     );
     var dataGrid = SfDataGrid(
-      key: sfDataGridKey,
       source: ds,
       columns: <GridColumn>[
         GridColumn(
@@ -144,7 +140,7 @@ class _StationMainState extends State<StationMain> {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          width: 80,
+          width: 100,
         ),
         GridColumn(
             columnName: 'Admin ID',
@@ -156,7 +152,7 @@ class _StationMainState extends State<StationMain> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 80),
+            width: 200),
         GridColumn(
             columnName: 'Name',
             label: Container(
@@ -178,7 +174,7 @@ class _StationMainState extends State<StationMain> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 80),
+            width: 150),
         GridColumn(
           columnName: 'Description',
           label: Container(
@@ -220,7 +216,7 @@ class _StationMainState extends State<StationMain> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          form,
+          // form,
           buttonBar,
           Expanded(child: dataGrid),
           pager,
@@ -240,26 +236,10 @@ class _StationMainState extends State<StationMain> {
   reset() async {
     stationModel = StationModel();
     formKey.currentState!.reset();
-    await ds.loadData(params: {});
-    print('loadData reset');
-  }
-
-  _exportExcel() async {
-    final Workbook workbook =
-        sfDataGridKey.currentState!.exportToExcelWorkbook();
-    final List<int> bytes = workbook.saveAsStream();
-    File('DataGrid.xlsx').writeAsBytes(bytes, flush: true);
-    workbook.dispose();
+    await ds.loadData();
   }
 
   Future<void> _createExcel() async {
-// Create a new Excel Document.
-    print('SFDataGridKey: $sfDataGridKey');
-    if (sfDataGridKey.currentState == null) {
-      CryUtils.message('Error');
-      return null;
-    }
-    print('Key current state: ${sfDataGridKey.currentState}');
     final Workbook workbook = Workbook();
 
     final Worksheet sheet = workbook.worksheets[0];
@@ -282,8 +262,6 @@ class _StationMainState extends State<StationMain> {
 }
 
 class StationDataSource extends DataGridSource {
-  StationController controller = Get.find();
-
   // PageModel pageModel = PageModel();
   Map params = {};
   List<DataGridRow> _rows = [];
@@ -308,11 +286,11 @@ class StationDataSource extends DataGridSource {
       workbook.dispose();
 
       //Download the output file in web.
-      AnchorElement(
-          href:
-              "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
-        ..setAttribute("download", "output.xlsx")
-        ..click();
+      // AnchorElement(
+      //     href:
+      //         "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
+      //   ..setAttribute("download", "output.xlsx")
+      //   ..click();
     }
 
     _rows = stations.map<DataGridRow>((v) {
@@ -431,7 +409,6 @@ class StationDataSource extends DataGridSource {
         await Utils.fullscreenDialog(StationEdit(stationModel: stationModel));
     if (result ?? false) {
       loadData();
-      print('loadData edit');
     }
   }
 }

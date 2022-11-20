@@ -522,7 +522,7 @@ class S {
 
   String get numberOfDevice {
     return Intl.message(
-      'numberOfDevice',
+      'Number of device',
       name: 'Number of device',
       desc: '',
       args: [],
@@ -995,6 +995,15 @@ class S {
     return Intl.message(
       'Station ID',
       name: 'stationId',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get day {
+    return Intl.message(
+      'Day',
+      name: 'Day',
       desc: '',
       args: [],
     );

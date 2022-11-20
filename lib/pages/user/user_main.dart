@@ -34,6 +34,7 @@ class _UserMainState extends State<UserMain> {
 
   @override
   void initState() {
+    ds.loadData();
     super.initState();
   }
 
@@ -139,7 +140,7 @@ class _UserMainState extends State<UserMain> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 80),
+            width: 200),
         GridColumn(
             columnName: 'Name',
             label: Container(
@@ -150,7 +151,7 @@ class _UserMainState extends State<UserMain> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 80),
+            width: 100),
         GridColumn(
           columnName: 'Description',
           label: Container(
@@ -222,7 +223,7 @@ class _UserMainState extends State<UserMain> {
   reset() async {
     userModel = UserModel();
     formKey.currentState!.reset();
-    await ds.loadData(params: {});
+    await ds.loadData();
   }
 }
 

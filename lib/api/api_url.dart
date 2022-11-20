@@ -28,6 +28,7 @@ class ApiURL {
   static const String getDeviceByStationId = "/getdevicetram";
   static const String updateDevice = "/updatedevice";
   static const String deleteDevice = "/deletedevice";
+  static const String queryStation = "/querydatatram";
 
   static String emptyImage =
       "https://clinicforspecialchildren.org/wp-content/uploads/2016/08/avatar-placeholder.gif";

@@ -45,6 +45,7 @@ class _DeviceMainState extends State<DeviceMain> {
   @override
   void initState() {
     ds = DeviceDataSource(stationId);
+    ds.loadData();
     super.initState();
   }
 
@@ -133,7 +134,7 @@ class _DeviceMainState extends State<DeviceMain> {
           width: 120,
         ),
         GridColumn(
-          columnName: 'Station ID',
+          columnName: 'Device ID',
           label: Container(
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.centerLeft,
@@ -142,7 +143,7 @@ class _DeviceMainState extends State<DeviceMain> {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          width: 80,
+          width: 100,
         ),
         GridColumn(
           columnName: 'Station ID',
@@ -154,7 +155,7 @@ class _DeviceMainState extends State<DeviceMain> {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          width: 80,
+          width: 100,
         ),
         GridColumn(
             columnName: 'Admin ID',
@@ -166,7 +167,7 @@ class _DeviceMainState extends State<DeviceMain> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 80),
+            width: 200),
         GridColumn(
             columnName: 'Name',
             label: Container(
@@ -219,7 +220,7 @@ class _DeviceMainState extends State<DeviceMain> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          form,
+          // form,
           buttonBar,
           Expanded(child: dataGrid),
           pager,
@@ -237,7 +238,7 @@ class _DeviceMainState extends State<DeviceMain> {
   reset() async {
     deviceModel = DeviceModel();
     formKey.currentState!.reset();
-    await ds.loadData(params: {});
+    await ds.loadData();
   }
 }
 

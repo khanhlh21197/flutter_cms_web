@@ -33,6 +33,7 @@ class _UserStationMainState extends State<UserStationMain> {
 
   @override
   void initState() {
+    ds.loadData();
     super.initState();
   }
 
@@ -60,10 +61,10 @@ class _UserStationMainState extends State<UserStationMain> {
           ),
           CryInput(
             label: S.of(context).name,
-            value: userStation.stationId,
+            value: userStation.username,
             width: 200,
             onSaved: (v) {
-              userStation.stationId = v;
+              userStation.username = v;
             },
           ),
           CryInput(
@@ -102,7 +103,7 @@ class _UserStationMainState extends State<UserStationMain> {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          width: 80,
+          width: 120,
         ),
         GridColumn(
             columnName: 'Admin ID',
@@ -114,7 +115,7 @@ class _UserStationMainState extends State<UserStationMain> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 80),
+            width: 200),
         GridColumn(
             columnName: 'Name',
             label: Container(
@@ -125,7 +126,7 @@ class _UserStationMainState extends State<UserStationMain> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 80),
+            width: 100),
       ],
     );
     var pager = SfDataPagerTheme(
@@ -161,7 +162,7 @@ class _UserStationMainState extends State<UserStationMain> {
   reset() async {
     userStation = UserStationModel();
     formKey.currentState!.reset();
-    await ds.loadData(params: {});
+    await ds.loadData();
   }
 }
 
@@ -211,7 +212,7 @@ class UserStationDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          userStation.userId ?? '--',
+          userStation.username ?? '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),

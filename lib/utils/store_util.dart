@@ -105,34 +105,6 @@ class StoreUtil {
     var data = GetStorage().read(Constant.KEY_MENU_LIST);
     final menuJson = [
       {
-        "id": "testIdMenu",
-        "createTime": "2020-10-14 02:51:39",
-        "updateTime": null,
-        "name": "Test",
-        "nameEn": "Test",
-        "subsystemId": "1",
-        "icon": "dict",
-        "pid": null,
-        "url": "/testMain",
-        "module": null,
-        "remark": "",
-        "orderBy": 8
-      },
-      {
-        "id": "ebf18e86fa0e086c629e1017a9972bc9",
-        "createTime": "2020-10-14 02:51:39",
-        "updateTime": null,
-        "name": "数据字典管理",
-        "nameEn": "Dict List",
-        "subsystemId": "1",
-        "icon": "dict",
-        "pid": null,
-        "url": "/dictList",
-        "module": null,
-        "remark": "",
-        "orderBy": 8
-      },
-      {
         "id": "d03a977b151634f66a117a8d552c5c05fb",
         "createTime": "2021-03-19 05:56:18",
         "updateTime": "2021-07-05 08:10:11",

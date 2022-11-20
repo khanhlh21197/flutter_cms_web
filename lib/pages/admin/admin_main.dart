@@ -34,6 +34,7 @@ class _AdminMainState extends State<AdminMain> {
 
   @override
   void initState() {
+    ds.loadData();
     super.initState();
   }
 
@@ -131,7 +132,7 @@ class _AdminMainState extends State<AdminMain> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 120),
+            width: 150),
         GridColumn(
           columnName: 'Description',
           label: Container(
@@ -142,7 +143,7 @@ class _AdminMainState extends State<AdminMain> {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          columnWidthMode: ColumnWidthMode.fill,
+          width: 150,
         ),
         GridColumn(
           columnName: 'Location',
@@ -203,7 +204,7 @@ class _AdminMainState extends State<AdminMain> {
   reset() async {
     adminModel = AdminModel();
     formKey.currentState!.reset();
-    await ds.loadData(params: {});
+    await ds.loadData();
   }
 }
 
