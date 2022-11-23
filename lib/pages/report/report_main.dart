@@ -8,19 +8,15 @@ import 'package:cry/cry.dart';
 import 'package:cry/cry_button_bar.dart';
 import 'package:cry/cry_buttons.dart';
 import 'package:cry/cry_dialog.dart';
-import 'package:cry/form/cry_input.dart';
 import 'package:cry/form/cry_select.dart';
-import 'package:cry/form/cry_select_date.dart';
 import 'package:cry/utils/cry_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
-import 'package:flutter_admin/constants/constant_dict.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/device_model.dart';
 import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/pages/device/device_edit.dart';
 import 'package:flutter_admin/utils/cry_select_item_util.dart';
-import 'package:flutter_admin/utils/dict_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -92,18 +88,6 @@ class _ReportMainState extends State<ReportMain> {
       source: ds,
       columns: <GridColumn>[
         GridColumn(
-          columnName: 'operation',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).operating,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          width: 120,
-        ),
-        GridColumn(
           columnName: 'Station ID',
           label: Container(
             padding: EdgeInsets.all(8.0),
@@ -138,6 +122,18 @@ class _ReportMainState extends State<ReportMain> {
               ),
             ),
             width: 80),
+        GridColumn(
+          columnName: 'operation',
+          label: Container(
+            padding: EdgeInsets.all(8.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              S.of(context).operating,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          width: 120,
+        ),
       ],
     );
     var result = Scaffold(
@@ -155,7 +151,7 @@ class _ReportMainState extends State<ReportMain> {
 
   query() {
     formKey.currentState!.save();
-    ds.loadData(stationId: 'evnStaion2', day: day ?? '7');
+    ds.loadData(stationId: 'evnStaion2', day: day);
   }
 
   reset() async {
@@ -205,14 +201,6 @@ class DeviceDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     DeviceModel deviceModel = row.getCells()[0].value;
     return DataGridRowAdapter(cells: [
-      CryButtonBar(
-        children: [
-          CryButtons.edit(Cry.context, () => edit(deviceModel: deviceModel),
-              showLabel: false),
-          CryButtons.delete(Cry.context, () => delete(deviceModel.deviceId),
-              showLabel: false),
-        ],
-      ),
       Container(
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
@@ -236,6 +224,14 @@ class DeviceDataSource extends DataGridSource {
           deviceModel.ozone != null ? '${deviceModel.ozone}' : '--',
           overflow: TextOverflow.ellipsis,
         ),
+      ),
+      CryButtonBar(
+        children: [
+          CryButtons.edit(Cry.context, () => edit(deviceModel: deviceModel),
+              showLabel: false),
+          CryButtons.delete(Cry.context, () => delete(deviceModel.deviceId),
+              showLabel: false),
+        ],
       ),
     ]);
   }

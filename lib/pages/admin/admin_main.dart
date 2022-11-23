@@ -5,6 +5,7 @@
 /// @version: 1.0
 /// @description:
 import 'package:cry/cry.dart';
+import 'package:cry/cry_button.dart';
 import 'package:cry/cry_button_bar.dart';
 import 'package:cry/cry_buttons.dart';
 import 'package:cry/cry_dialog.dart';
@@ -13,14 +14,17 @@ import 'package:cry/model/page_model.dart';
 import 'package:cry/utils/cry_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
+import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/pages/admin/admin_edit.dart';
+import 'package:flutter_admin/utils/excel_export.dart';
 import 'package:flutter_admin/utils/store_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:syncfusion_flutter_xlsio/xlsio.dart' hide Column;
 
 class AdminMain extends StatefulWidget {
   @override
@@ -45,6 +49,10 @@ class _AdminMainState extends State<AdminMain> {
         CryButtons.query(context, query),
         CryButtons.reset(context, reset),
         CryButtons.add(context, ds.edit),
+        CryButton(
+            iconData: Icons.reply,
+            label: S.of(context).exportExcel,
+            onPressed: exportExcel),
       ],
     );
     var form = Form(
@@ -196,6 +204,10 @@ class _AdminMainState extends State<AdminMain> {
     return result;
   }
 
+  Future<void> exportExcel() async {
+    await ExcelExportUtil.export(Constant.ADMIN_WORKBOOK, 'admins.xlsx');
+  }
+
   query() {
     formKey.currentState!.save();
     ds.loadData();
@@ -221,6 +233,9 @@ class AdminDataSource extends DataGridSource {
 
     if (admins.isNotEmpty) {
       StoreUtil.writeAdmins(admins);
+
+      ExcelExportUtil.createWorkbook(
+          Constant.ADMIN_WORKBOOK, _buildReportDataRows(admins));
     }
 
     _rows = admins.map<DataGridRow>((v) {
@@ -229,6 +244,23 @@ class AdminDataSource extends DataGridSource {
       ]);
     }).toList(growable: false);
     notifyDataSourceListeners();
+  }
+
+  List<ExcelDataRow> _buildReportDataRows(List<AdminModel> stations) {
+    List<ExcelDataRow> excelDataRows = <ExcelDataRow>[];
+
+    excelDataRows = stations.map<ExcelDataRow>((AdminModel dataRow) {
+      return ExcelDataRow(cells: <ExcelDataCell>[
+        ExcelDataCell(columnHeader: 'Admin', value: dataRow.adminId),
+        ExcelDataCell(columnHeader: 'Tài khoản', value: dataRow.user),
+        ExcelDataCell(columnHeader: 'Tên', value: dataRow.name),
+        ExcelDataCell(columnHeader: 'SĐT', value: dataRow.phone),
+        ExcelDataCell(columnHeader: 'Địa chỉ', value: dataRow.address),
+        ExcelDataCell(columnHeader: 'Ngày sinh', value: dataRow.birthDate),
+      ]);
+    }).toList();
+
+    return excelDataRows;
   }
 
   @override

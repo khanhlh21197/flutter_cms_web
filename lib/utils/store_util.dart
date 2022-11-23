@@ -33,12 +33,20 @@ class StoreUtil {
     GetStorage().write(Constant.EVN_STATIONS, stations);
   }
 
+  static writeWorkbook(String key, List<int> workbookBytes) {
+    GetStorage().write(key, workbookBytes);
+  }
+
   static writeAdmins(List<AdminModel> admins) {
     GetStorage().write(Constant.EVN_ADMINS, admins);
   }
 
   static writeUsers(List<UserModel> users) {
     GetStorage().write(Constant.EVN_USERS, users);
+  }
+
+  static List<int> readWorkbook(String key) {
+    return GetStorage().read(key) ?? [];
   }
 
   static List<StationModel> readStations() {

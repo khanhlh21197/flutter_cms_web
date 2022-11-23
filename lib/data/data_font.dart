@@ -5,8 +5,8 @@
 /// @version: 1.0
 /// @description:
 
-
 Map<String, String> fontFamilyMap = {
+  'arial': 'arial',
   'Roboto': 'Roboto',
   'RockSalt': 'RockSalt-Regular',
   'Bradhitc': 'BRADHITC',

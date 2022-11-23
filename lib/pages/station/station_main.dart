@@ -4,10 +4,6 @@
 /// @date: 2021/6/21
 /// @version: 1.0
 /// @description:
-import 'dart:convert';
-import 'dart:html' hide File;
-import 'dart:io';
-
 import 'package:cry/cry.dart';
 import 'package:cry/cry_button.dart';
 import 'package:cry/cry_button_bar.dart';
@@ -25,12 +21,12 @@ import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/pages/station/station_edit.dart';
 import 'package:flutter_admin/utils/dict_util.dart';
+import 'package:flutter_admin/utils/excel_export.dart';
 import 'package:flutter_admin/utils/store_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:syncfusion_flutter_datagrid_export/export.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' hide Column;
 
 class StationMain extends StatefulWidget {
@@ -60,7 +56,7 @@ class _StationMainState extends State<StationMain> {
         CryButton(
             iconData: Icons.reply,
             label: S.of(context).exportExcel,
-            onPressed: _createExcel),
+            onPressed: exportExcel),
       ],
     );
     var form = Form(
@@ -227,6 +223,10 @@ class _StationMainState extends State<StationMain> {
     return result;
   }
 
+  Future<void> exportExcel() async {
+    await ExcelExportUtil.export(Constant.STATION_WORKBOOK, 'stations.xlsx');
+  }
+
   query() {
     formKey.currentState!.save();
     ds.loadData();
@@ -237,27 +237,6 @@ class _StationMainState extends State<StationMain> {
     stationModel = StationModel();
     formKey.currentState!.reset();
     await ds.loadData();
-  }
-
-  Future<void> _createExcel() async {
-    final Workbook workbook = Workbook();
-
-    final Worksheet sheet = workbook.worksheets[0];
-
-    print('Stations: ${ds.stations}');
-
-    // sheet.importData(_buildReportDataRows(await ds.stations), 1, 1);
-
-    // Save and dispose the document.
-    final List<int> bytes = workbook.saveAsStream();
-    workbook.dispose();
-
-    //Download the output file in web.
-    AnchorElement(
-        href:
-            "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
-      ..setAttribute("download", "output.xlsx")
-      ..click();
   }
 }
 
@@ -274,23 +253,8 @@ class StationDataSource extends DataGridSource {
 
     if (stations.isNotEmpty) {
       StoreUtil.write(Constant.EVN_STATIONS, stations);
-
-      final Workbook workbook = Workbook();
-
-      final Worksheet sheet = workbook.worksheets[0];
-
-      sheet.importData(_buildReportDataRows(stations), 1, 1);
-
-      // Save and dispose the document.
-      final List<int> bytes = workbook.saveAsStream();
-      workbook.dispose();
-
-      //Download the output file in web.
-      // AnchorElement(
-      //     href:
-      //         "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
-      //   ..setAttribute("download", "output.xlsx")
-      //   ..click();
+      ExcelExportUtil.createWorkbook(
+          Constant.STATION_WORKBOOK, _buildReportDataRows(stations));
     }
 
     _rows = stations.map<DataGridRow>((v) {
@@ -306,11 +270,11 @@ class StationDataSource extends DataGridSource {
 
     excelDataRows = stations.map<ExcelDataRow>((StationModel dataRow) {
       return ExcelDataRow(cells: <ExcelDataCell>[
-        ExcelDataCell(columnHeader: 'StationID', value: dataRow.stationId),
-        ExcelDataCell(columnHeader: 'AdminID', value: dataRow.adminId),
-        ExcelDataCell(columnHeader: 'Name', value: dataRow.name),
-        ExcelDataCell(columnHeader: 'Description', value: dataRow.description),
-        ExcelDataCell(columnHeader: 'Location', value: dataRow.location),
+        ExcelDataCell(columnHeader: 'Mã trạm', value: dataRow.stationId),
+        ExcelDataCell(columnHeader: 'Admin', value: dataRow.adminId),
+        ExcelDataCell(columnHeader: 'Tên', value: dataRow.name),
+        ExcelDataCell(columnHeader: 'Ghi chú', value: dataRow.description),
+        ExcelDataCell(columnHeader: 'Vị trí', value: dataRow.location),
       ]);
     }).toList();
 

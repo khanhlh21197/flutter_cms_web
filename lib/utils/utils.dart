@@ -140,7 +140,7 @@ class Utils {
     );
   }
 
-  static String currentFontFamily = "Roboto";
+  static String currentFontFamily = "arial";
 
   static isLogin() {
     // return true;

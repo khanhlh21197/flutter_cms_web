@@ -40,6 +40,9 @@ flutter:
     - config/
     - PRIVACY
   fonts:
+    - family: arial
+      fonts:
+        - asset: assets/fonts/arial.ttf
     - family: Roboto
       fonts:
         - asset: assets/fonts/STXINWEI.woff2

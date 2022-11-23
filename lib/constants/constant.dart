@@ -14,6 +14,12 @@ class Constant {
   static const String KEY_CURRENT_USER_INFO = "currentUserInfo";
   static const String EVN_USER = "evnCurrentUserInfo";
   static const String EVN_STATIONS = "evnStations";
+  static const String STATION_WORKBOOK = "stationWorkbook";
+  static const String ADMIN_WORKBOOK = "adminWorkbook";
+  static const String USER_WORKBOOK = "userWorkbook";
+  static const String USER_STATION_WORKBOOK = "userStationWorkbook";
+  static const String DEVICE_WORKBOOK = "deviceWorkbook";
+  static const String REPORT_WORKBOOK = "reportWorkbook";
   static const String EVN_USERS = "evnUsers";
   static const String EVN_ADMINS = "evnAdmins";
   static const String ADMIN_ID = "adminId";

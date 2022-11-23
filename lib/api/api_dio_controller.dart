@@ -678,7 +678,26 @@ class ApiDioController {
     await postMethods(
       url: ApiURL.queryStation,
       dio: dio,
-      body: {"stationId": stationId ?? '', "day": day ?? ''},
+      body: {"stationId": stationId ?? '', "day": day ?? '1'},
+      asModel: (map) {
+        if (map['data'] != null) {
+          final responseList = map['data'] as List;
+          devices = responseList.map((e) => DeviceModel.fromJson(e)).toList();
+        }
+      },
+    );
+    return devices;
+  }
+
+  static Future<List<DeviceModel>> queryDetail(
+      String? deviceId, String? day) async {
+    Dio dio = Dio(options);
+
+    List<DeviceModel> devices = [];
+    await postMethods(
+      url: ApiURL.queryDetail,
+      dio: dio,
+      body: {"deviceId": deviceId ?? '', "day": day ?? '1'},
       asModel: (map) {
         if (map['data'] != null) {
           final responseList = map['data'] as List;

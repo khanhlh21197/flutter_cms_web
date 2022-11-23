@@ -54,7 +54,7 @@ class S {
   /// `Confirm`
   String get pageConfirm {
     return Intl.message(
-      'Confirm',
+      'Xác nhận',
       name: 'pageConfirm',
       desc: '',
       args: [],
@@ -64,7 +64,7 @@ class S {
   /// `Username`
   String get username {
     return Intl.message(
-      'Username',
+      'Tài khoản',
       name: 'username',
       desc: '',
       args: [],
@@ -74,7 +74,7 @@ class S {
   /// `Username is required`
   String get usernameRequired {
     return Intl.message(
-      'Username is required',
+      'Nhập tài khoản',
       name: 'usernameRequired',
       desc: '',
       args: [],
@@ -84,7 +84,7 @@ class S {
   /// `Password`
   String get password {
     return Intl.message(
-      'Password',
+      'Mật khẩu',
       name: 'password',
       desc: '',
       args: [],
@@ -94,7 +94,7 @@ class S {
   /// `Password is required`
   String get passwordRequired {
     return Intl.message(
-      'Password is required',
+      'Nhập mật khẩu',
       name: 'passwordRequired',
       desc: '',
       args: [],
@@ -104,7 +104,7 @@ class S {
   /// `Register`
   String get register {
     return Intl.message(
-      'Register',
+      'Đăng ký',
       name: 'register',
       desc: '',
       args: [],
@@ -114,7 +114,7 @@ class S {
   /// `Register a new account`
   String get registerNewAccount {
     return Intl.message(
-      'Register a new account',
+      'Đăng ký',
       name: 'registerNewAccount',
       desc: '',
       args: [],
@@ -124,7 +124,7 @@ class S {
   /// `Registration Successful`
   String get registerSuccess {
     return Intl.message(
-      'Registration Successful',
+      'Đăng ký thành công',
       name: 'registerSuccess',
       desc: '',
       args: [],
@@ -134,7 +134,7 @@ class S {
   /// `Clear Password`
   String get forgetPassword {
     return Intl.message(
-      'Clear Password',
+      'Quên mật khẩu',
       name: 'forgetPassword',
       desc: '',
       args: [],
@@ -144,7 +144,7 @@ class S {
   /// `login`
   String get login {
     return Intl.message(
-      'login',
+      'Đăng nhập',
       name: 'login',
       desc: '',
       args: [],
@@ -154,7 +154,7 @@ class S {
   /// `Confirm Password`
   String get confirmPassword {
     return Intl.message(
-      'Confirm Password',
+      'Nhập lại mật khẩu',
       name: 'confirmPassword',
       desc: '',
       args: [],
@@ -164,7 +164,7 @@ class S {
   /// `Passwords must be the same`
   String get passwordMismatch {
     return Intl.message(
-      'Passwords must be the same',
+      'Mật khẩu chưa khớp',
       name: 'passwordMismatch',
       desc: '',
       args: [],
@@ -174,7 +174,7 @@ class S {
   /// `Login with existing account`
   String get haveAccountLogin {
     return Intl.message(
-      'Login with existing account',
+      'Đăng nhập',
       name: 'haveAccountLogin',
       desc: '',
       args: [],
@@ -184,7 +184,7 @@ class S {
   /// `My Settings`
   String get mySettings {
     return Intl.message(
-      'My Settings',
+      'Cài đặt',
       name: 'mySettings',
       desc: '',
       args: [],
@@ -194,7 +194,7 @@ class S {
   /// `Information`
   String get information {
     return Intl.message(
-      'Information',
+      'Thông tin',
       name: 'information',
       desc: '',
       args: [],
@@ -204,7 +204,7 @@ class S {
   /// `Cancel`
   String get cancel {
     return Intl.message(
-      'Cancel',
+      'Hủy',
       name: 'cancel',
       desc: '',
       args: [],
@@ -214,7 +214,7 @@ class S {
   /// `Close`
   String get close {
     return Intl.message(
-      'Close',
+      'Đóng',
       name: 'close',
       desc: '',
       args: [],
@@ -224,7 +224,7 @@ class S {
   /// `Confirm`
   String get confirm {
     return Intl.message(
-      'Confirm',
+      'Xác nhận',
       name: 'confirm',
       desc: '',
       args: [],
@@ -324,7 +324,7 @@ class S {
   /// `Required`
   String get required {
     return Intl.message(
-      'Required',
+      'Bắt buộc',
       name: 'required',
       desc: '',
       args: [],
@@ -344,7 +344,7 @@ class S {
   /// `Gender`
   String get personGender {
     return Intl.message(
-      'Gender',
+      'Giới tính',
       name: 'personGender',
       desc: '',
       args: [],
@@ -354,7 +354,7 @@ class S {
   /// `Birthday`
   String get personBirthday {
     return Intl.message(
-      'Birthday',
+      'Ngày sinh',
       name: 'personBirthday',
       desc: '',
       args: [],
@@ -374,7 +374,7 @@ class S {
   /// `Save`
   String get save {
     return Intl.message(
-      'Save',
+      'Lưu',
       name: 'save',
       desc: '',
       args: [],
@@ -384,7 +384,7 @@ class S {
   /// `Saved Successfully`
   String get saved {
     return Intl.message(
-      'Saved Successfully',
+      'Lưu thành công',
       name: 'saved',
       desc: '',
       args: [],
@@ -394,7 +394,7 @@ class S {
   /// `Filter`
   String get query {
     return Intl.message(
-      'Filter',
+      'Tìm',
       name: 'query',
       desc: '',
       args: [],
@@ -404,7 +404,7 @@ class S {
   /// `Reset`
   String get reset {
     return Intl.message(
-      'Reset',
+      'Tải lại',
       name: 'reset',
       desc: '',
       args: [],
@@ -414,7 +414,7 @@ class S {
   /// `Add`
   String get add {
     return Intl.message(
-      'Add',
+      'Thêm',
       name: 'add',
       desc: '',
       args: [],
@@ -423,7 +423,7 @@ class S {
 
   String get update {
     return Intl.message(
-      'Update',
+      'Cập nhật',
       name: 'Update',
       desc: '',
       args: [],
@@ -433,7 +433,7 @@ class S {
   /// `Edit`
   String get edit {
     return Intl.message(
-      'Edit',
+      'Sửa',
       name: 'edit',
       desc: '',
       args: [],
@@ -453,7 +453,7 @@ class S {
   /// `Delete`
   String get delete {
     return Intl.message(
-      'Delete',
+      'Xóa',
       name: 'delete',
       desc: '',
       args: [],
@@ -463,7 +463,7 @@ class S {
   /// `Are you sure?`
   String get confirmDelete {
     return Intl.message(
-      'Are you sure?',
+      'Xác nhận xóa?',
       name: 'confirmDelete',
       desc: '',
       args: [],
@@ -513,7 +513,7 @@ class S {
   /// `Name`
   String get name {
     return Intl.message(
-      'Name',
+      'Tên',
       name: 'name',
       desc: '',
       args: [],
@@ -522,7 +522,7 @@ class S {
 
   String get numberOfDevice {
     return Intl.message(
-      'Number of device',
+      'Số thiết bị',
       name: 'Number of device',
       desc: '',
       args: [],
@@ -532,7 +532,7 @@ class S {
   /// `Operating`
   String get operating {
     return Intl.message(
-      'Operating',
+      'Tùy chọn',
       name: 'operating',
       desc: '',
       args: [],
@@ -921,7 +921,7 @@ class S {
 
   String get user {
     return Intl.message(
-      'Username',
+      'Tài khoản',
       name: 'Username',
       desc: '',
       args: [],
@@ -939,7 +939,7 @@ class S {
 
   String get pass {
     return Intl.message(
-      'Password',
+      'Mật khẩu',
       name: 'Password',
       desc: '',
       args: [],
@@ -948,7 +948,7 @@ class S {
 
   String get phone {
     return Intl.message(
-      'Phone',
+      'SĐT',
       name: 'Phone',
       desc: '',
       args: [],
@@ -957,7 +957,7 @@ class S {
 
   String get address {
     return Intl.message(
-      'Address',
+      'Địa chỉ',
       name: 'Address',
       desc: '',
       args: [],
@@ -966,7 +966,7 @@ class S {
 
   String get birthDate {
     return Intl.message(
-      'Birth Date',
+      'Ngày sinh',
       name: 'Birth Date',
       desc: '',
       args: [],
@@ -993,7 +993,7 @@ class S {
 
   String get stationId {
     return Intl.message(
-      'Station ID',
+      'Mã trạm',
       name: 'stationId',
       desc: '',
       args: [],
@@ -1002,7 +1002,7 @@ class S {
 
   String get day {
     return Intl.message(
-      'Day',
+      'Ngày',
       name: 'Day',
       desc: '',
       args: [],
@@ -1011,7 +1011,7 @@ class S {
 
   String get deviceId {
     return Intl.message(
-      'Device ID',
+      'Mã TB',
       name: 'deviceId',
       desc: '',
       args: [],
@@ -1020,7 +1020,7 @@ class S {
 
   String get location {
     return Intl.message(
-      'Location',
+      'Vị trí',
       name: 'location',
       desc: '',
       args: [],
@@ -1029,7 +1029,7 @@ class S {
 
   String get description {
     return Intl.message(
-      'Description',
+      'Ghi chú',
       name: 'description',
       desc: '',
       args: [],
@@ -1209,7 +1209,7 @@ class S {
   /// `Logout`
   String get logout {
     return Intl.message(
-      'Logout',
+      'Đăng xuất',
       name: 'logout',
       desc: '',
       args: [],

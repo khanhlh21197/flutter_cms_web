@@ -5,6 +5,7 @@
 /// @version: 1.0
 /// @description:
 import 'package:cry/cry.dart';
+import 'package:cry/cry_button.dart';
 import 'package:cry/cry_button_bar.dart';
 import 'package:cry/cry_buttons.dart';
 import 'package:cry/cry_dialog.dart';
@@ -15,16 +16,19 @@ import 'package:cry/model/page_model.dart';
 import 'package:cry/utils/cry_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
+import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/constants/constant_dict.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/device_model.dart';
 import 'package:flutter_admin/pages/device/device_edit.dart';
 import 'package:flutter_admin/pages/mqtt/mqttBrowserWrapper.dart';
 import 'package:flutter_admin/utils/dict_util.dart';
+import 'package:flutter_admin/utils/excel_export.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:syncfusion_flutter_xlsio/xlsio.dart' hide Column;
 
 class DeviceMain extends StatefulWidget {
   const DeviceMain({Key? key, required this.stationId}) : super(key: key);
@@ -67,6 +71,10 @@ class _DeviceMainState extends State<DeviceMain> {
         CryButtons.query(context, query),
         CryButtons.reset(context, reset),
         CryButtons.add(context, ds.edit),
+        CryButton(
+            iconData: Icons.reply,
+            label: S.of(context).exportExcel,
+            onPressed: exportExcel),
       ],
     );
     var form = Form(
@@ -241,6 +249,10 @@ class _DeviceMainState extends State<DeviceMain> {
     return result;
   }
 
+  Future<void> exportExcel() async {
+    await ExcelExportUtil.export(Constant.DEVICE_WORKBOOK, 'devices.xlsx');
+  }
+
   query() {
     formKey.currentState!.save();
     ds.loadData();
@@ -274,12 +286,34 @@ class DeviceDataSource extends DataGridSource {
       devices = await ApiDioController.getDeviceByStationId(stationId);
     }
 
+    if (devices.isNotEmpty) {
+      ExcelExportUtil.createWorkbook(
+          Constant.DEVICE_WORKBOOK, _buildReportDataRows(devices));
+    }
+
     _rows = devices.map<DataGridRow>((v) {
       return DataGridRow(cells: [
         DataGridCell(columnName: 'deviceModel', value: v),
       ]);
     }).toList(growable: false);
     notifyDataSourceListeners();
+  }
+
+  List<ExcelDataRow> _buildReportDataRows(List<DeviceModel> stations) {
+    List<ExcelDataRow> excelDataRows = <ExcelDataRow>[];
+
+    excelDataRows = stations.map<ExcelDataRow>((DeviceModel dataRow) {
+      return ExcelDataRow(cells: <ExcelDataCell>[
+        ExcelDataCell(columnHeader: 'Mã trạm', value: dataRow.stationId),
+        ExcelDataCell(columnHeader: 'Admin', value: dataRow.adminId),
+        ExcelDataCell(columnHeader: 'Mã thiết bị', value: dataRow.deviceId),
+        ExcelDataCell(columnHeader: 'Tên', value: dataRow.name),
+        ExcelDataCell(columnHeader: 'Ghi chú', value: dataRow.description),
+        ExcelDataCell(columnHeader: 'Vị trí', value: dataRow.location),
+      ]);
+    }).toList();
+
+    return excelDataRows;
   }
 
   @override
