@@ -29,4 +29,8 @@ class CrySelectItemUtil {
         .map((e) => SelectOptionVO(value: e.userId, label: e.userId))
         .toList();
   }
+
+  static List<SelectOptionVO> getDayNumberSelectOptionList(List<String> days) {
+    return days.map((e) => SelectOptionVO(value: e, label: e)).toList();
+  }
 }

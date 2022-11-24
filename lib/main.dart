@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
       key: UniqueKey(),
       builder: Cry.init,
       debugShowCheckedModeBanner: false,
-      title: 'FLUTTER_ADMIN',
+      title: 'EVN CMS',
       enableLog: false,
       theme: Utils.getThemeData(),
       darkTheme: Utils.getThemeData(isDark: true),

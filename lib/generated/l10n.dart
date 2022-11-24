@@ -421,6 +421,15 @@ class S {
     );
   }
 
+  String get deviceDetail {
+    return Intl.message(
+      'Chi tiết',
+      name: 'Chi tiết',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get update {
     return Intl.message(
       'Cập nhật',
@@ -533,7 +542,7 @@ class S {
   String get operating {
     return Intl.message(
       'Tùy chọn',
-      name: 'operating',
+      name: 'Tùy chọn',
       desc: '',
       args: [],
     );
@@ -986,6 +995,15 @@ class S {
     return Intl.message(
       'Admin ID',
       name: 'adminId',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get solanvuot {
+    return Intl.message(
+      'Số lần vượt',
+      name: 'Số lần vượt',
       desc: '',
       args: [],
     );

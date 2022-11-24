@@ -49,7 +49,7 @@ class _LoginState extends State<Login> {
 
   Widget _buildPageContent() {
     var appName = Text(
-      "FLUTTER_ADMIN",
+      "EVN CMS",
       style: TextStyle(fontSize: 16, color: Colors.blue),
       textScaleFactor: 3.2,
     );

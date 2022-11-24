@@ -10,12 +10,13 @@ import 'package:cry/cry_buttons.dart';
 import 'package:cry/cry_dialog.dart';
 import 'package:cry/form/cry_select.dart';
 import 'package:cry/utils/cry_utils.dart';
+import 'package:cry/vo/select_option_vo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/device_model.dart';
 import 'package:flutter_admin/models/station_model.dart';
-import 'package:flutter_admin/pages/device/device_edit.dart';
+import 'package:flutter_admin/pages/report/report_edit.dart';
 import 'package:flutter_admin/utils/cry_select_item_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -32,7 +33,9 @@ class _ReportMainState extends State<ReportMain> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DeviceModel deviceModel = DeviceModel();
   List<StationModel> stations = [];
-  String day = '';
+  List<SelectOptionVO> stationSelect = [];
+  List<String> days = ['7', '15', '30'];
+  String day = '7';
 
   _ReportMainState();
 
@@ -48,7 +51,12 @@ class _ReportMainState extends State<ReportMain> {
       stations = await ApiDioController.getAllStation();
     }
 
-    ds.loadData(stationId: 'evnStaion2', day: '7');
+    stationSelect = CrySelectItemUtil.getStationIdSelectOptionList(stations);
+    deviceModel.stationId = stations[0].stationId;
+
+    setState(() {});
+
+    // ds.loadData(stationId: 'evnStation2', day: '7');
   }
 
   @override
@@ -56,8 +64,6 @@ class _ReportMainState extends State<ReportMain> {
     var buttonBar = CryButtonBar(
       children: [
         CryButtons.query(context, query),
-        CryButtons.reset(context, reset),
-        CryButtons.add(context, ds.edit),
       ],
     );
     var form = Form(
@@ -67,7 +73,7 @@ class _ReportMainState extends State<ReportMain> {
         children: [
           CrySelect(
             label: S.of(context).stationId,
-            dataList: CrySelectItemUtil.getStationIdSelectOptionList(stations),
+            dataList: stationSelect,
             value: deviceModel.stationId,
             onSaved: (v) {
               deviceModel.stationId = v;
@@ -75,7 +81,7 @@ class _ReportMainState extends State<ReportMain> {
           ),
           CrySelect(
             label: S.of(context).day,
-            dataList: CrySelectItemUtil.getStationIdSelectOptionList(stations),
+            dataList: CrySelectItemUtil.getDayNumberSelectOptionList(days),
             value: day,
             onSaved: (v) {
               day = v;
@@ -97,31 +103,19 @@ class _ReportMainState extends State<ReportMain> {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          width: 80,
+          width: 120,
         ),
         GridColumn(
-          columnName: 'Station ID',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).stationId,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          width: 100,
-        ),
-        GridColumn(
-            columnName: 'Admin ID',
+            columnName: 'Số lần vượt',
             label: Container(
               padding: EdgeInsets.all(8.0),
               alignment: Alignment.centerLeft,
               child: Text(
-                S.of(context).adminId,
+                S.of(context).solanvuot,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 80),
+            width: 120),
         GridColumn(
           columnName: 'operation',
           label: Container(
@@ -151,7 +145,7 @@ class _ReportMainState extends State<ReportMain> {
 
   query() {
     formKey.currentState!.save();
-    ds.loadData(stationId: 'evnStaion2', day: day);
+    ds.loadData(stationId: 'evnStation2', day: day);
   }
 
   reset() async {
@@ -213,21 +207,14 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          deviceModel.stationId ?? '--',
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      Container(
-        padding: const EdgeInsets.all(8),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          deviceModel.ozone != null ? '${deviceModel.ozone}' : '--',
+          deviceModel.solanvuot != null ? '${deviceModel.solanvuot}' : '--',
           overflow: TextOverflow.ellipsis,
         ),
       ),
       CryButtonBar(
         children: [
-          CryButtons.edit(Cry.context, () => edit(deviceModel: deviceModel),
+          CryButtons.edit(
+              Cry.context, () => edit(deviceModel: deviceModel, day: day),
               showLabel: false),
           CryButtons.delete(Cry.context, () => delete(deviceModel.deviceId),
               showLabel: false),
@@ -245,9 +232,11 @@ class DeviceDataSource extends DataGridSource {
     });
   }
 
-  edit({DeviceModel? deviceModel}) async {
-    var result =
-        await Utils.fullscreenDialog(DeviceEdit(deviceModel: deviceModel));
+  edit({DeviceModel? deviceModel, String? day}) async {
+    var result = await Utils.fullscreenDialog(ReportEdit(
+      deviceModel: deviceModel,
+      day: day,
+    ));
     if (result ?? false) {
       loadData();
     }

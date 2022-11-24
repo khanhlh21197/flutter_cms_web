@@ -11,6 +11,7 @@ class DeviceModel {
   String? status;
   String? notifi;
   int? ozone;
+  int? solanvuot;
 
   DeviceModel({
     this.deviceId,
@@ -28,18 +29,19 @@ class DeviceModel {
   });
 
   DeviceModel.fromJson(Map<String, dynamic> json)
-      : deviceId = json['deviceId'],
-        stationId = json['stationId'],
-        adminId = json['adminId'],
-        name = json['name'],
-        description = json['description'],
-        location = json['location'],
-        threshold1 = json['threshold1'],
-        threshold2 = json['threshold2'],
-        threshold3 = json['threshold3'],
-        notifi = json['notifi'],
-        ozone = json['ozone'],
-        status = json['status'];
+      : deviceId = json['deviceId'] ?? '',
+        stationId = json['stationId'] ?? '',
+        adminId = json['adminId'] ?? '',
+        name = json['name'] ?? '',
+        description = json['description'] ?? '',
+        location = json['location'] ?? '',
+        threshold1 = json['threshold1'] ?? '',
+        threshold2 = json['threshold2'] ?? '',
+        threshold3 = json['threshold3'] ?? '',
+        notifi = json['notifi'] ?? '',
+        ozone = json['ozone'] ?? 0,
+        solanvuot = json['solanvuot'] ?? 0,
+        status = json['status'] ?? '';
 
   Map<String, dynamic> toJson() => {
         'deviceId': deviceId,
