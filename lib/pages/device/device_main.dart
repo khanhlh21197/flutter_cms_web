@@ -68,7 +68,6 @@ class _DeviceMainState extends State<DeviceMain> {
   Widget build(BuildContext context) {
     var buttonBar = CryButtonBar(
       children: [
-        CryButtons.query(context, query),
         CryButtons.reset(context, reset),
         CryButtons.add(context, ds.edit),
         CryButton(
@@ -147,6 +146,7 @@ class _DeviceMainState extends State<DeviceMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).operating,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -159,6 +159,7 @@ class _DeviceMainState extends State<DeviceMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).deviceId,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -171,10 +172,11 @@ class _DeviceMainState extends State<DeviceMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).stationId,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          width: 100,
+          width: 120,
         ),
         GridColumn(
             columnName: 'Admin ID',
@@ -183,6 +185,7 @@ class _DeviceMainState extends State<DeviceMain> {
               alignment: Alignment.centerLeft,
               child: Text(
                 S.of(context).adminId,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -194,10 +197,11 @@ class _DeviceMainState extends State<DeviceMain> {
               alignment: Alignment.centerLeft,
               child: Text(
                 S.of(context).name,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 80),
+            width: 150),
         GridColumn(
           columnName: 'Description',
           label: Container(
@@ -205,6 +209,7 @@ class _DeviceMainState extends State<DeviceMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).description,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -217,6 +222,7 @@ class _DeviceMainState extends State<DeviceMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).location,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -342,7 +348,8 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          deviceModel.deviceId!,
+          deviceModel.deviceId ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -350,7 +357,8 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          deviceModel.stationId!,
+          deviceModel.stationId ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -359,6 +367,7 @@ class DeviceDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           deviceModel.adminId ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -367,6 +376,7 @@ class DeviceDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           deviceModel.name ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -375,6 +385,7 @@ class DeviceDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           deviceModel.description ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -383,6 +394,7 @@ class DeviceDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           deviceModel.location ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),

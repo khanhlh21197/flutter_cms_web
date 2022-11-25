@@ -121,22 +121,24 @@ class _UserMainState extends State<UserMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).operating,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
           width: 120,
         ),
         GridColumn(
-          columnName: 'Station ID',
+          columnName: 'user',
           label: Container(
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).user,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          width: 80,
+          width: 120,
         ),
         GridColumn(
             columnName: 'Admin ID',
@@ -145,6 +147,7 @@ class _UserMainState extends State<UserMain> {
               alignment: Alignment.centerLeft,
               child: Text(
                 S.of(context).adminId,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -156,6 +159,7 @@ class _UserMainState extends State<UserMain> {
               alignment: Alignment.centerLeft,
               child: Text(
                 S.of(context).name,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -167,6 +171,7 @@ class _UserMainState extends State<UserMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).phone,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -179,6 +184,7 @@ class _UserMainState extends State<UserMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).address,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -191,6 +197,7 @@ class _UserMainState extends State<UserMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).birthDate,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -309,6 +316,7 @@ class UserDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           userModel.user ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -317,6 +325,7 @@ class UserDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           userModel.adminId ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -325,6 +334,7 @@ class UserDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           userModel.name ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -333,6 +343,7 @@ class UserDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           userModel.phone ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -341,6 +352,7 @@ class UserDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           userModel.address ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -349,6 +361,7 @@ class UserDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           userModel.birthDate ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),

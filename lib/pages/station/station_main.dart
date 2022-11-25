@@ -111,91 +111,103 @@ class _StationMainState extends State<StationMain> {
         ],
       ),
     );
-    var dataGrid = SfDataGrid(
-      source: ds,
-      columns: <GridColumn>[
-        GridColumn(
-          columnName: 'operation',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).operating,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          width: 120,
-        ),
-        GridColumn(
-          columnName: 'Station ID',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).stationId,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          width: 100,
-        ),
-        GridColumn(
-            columnName: 'Admin ID',
+    var dataGrid = SfDataGridTheme(
+      data: SfDataGridThemeData(
+          rowHoverTextStyle:
+              TextStyle(color: Colors.red, fontFamily: 'BeVietnamPro-Medium')),
+      child: SfDataGrid(
+        source: ds,
+        columns: <GridColumn>[
+          GridColumn(
+            columnName: 'operation',
             label: Container(
               padding: EdgeInsets.all(8.0),
               alignment: Alignment.centerLeft,
               child: Text(
-                S.of(context).adminId,
+                S.of(context).operating,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 200),
-        GridColumn(
-            columnName: 'Name',
+            width: 120,
+          ),
+          GridColumn(
+            columnName: 'Station ID',
             label: Container(
               padding: EdgeInsets.all(8.0),
               alignment: Alignment.centerLeft,
               child: Text(
-                S.of(context).name,
+                S.of(context).stationId,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 80),
-        GridColumn(
-            columnName: 'Number of device',
+            width: 120,
+          ),
+          GridColumn(
+              columnName: 'Admin ID',
+              label: Container(
+                padding: EdgeInsets.all(8.0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  S.of(context).adminId,
+                  style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              width: 200),
+          GridColumn(
+              columnName: 'Name',
+              label: Container(
+                padding: EdgeInsets.all(8.0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  S.of(context).name,
+                  style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              width: 150),
+          GridColumn(
+              columnName: 'Number of device',
+              label: Container(
+                padding: EdgeInsets.all(8.0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  S.of(context).numberOfDevice,
+                  style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              width: 150),
+          GridColumn(
+            columnName: 'Description',
             label: Container(
               padding: EdgeInsets.all(8.0),
               alignment: Alignment.centerLeft,
               child: Text(
-                S.of(context).numberOfDevice,
+                S.of(context).description,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            width: 150),
-        GridColumn(
-          columnName: 'Description',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).description,
-              overflow: TextOverflow.ellipsis,
-            ),
+            columnWidthMode: ColumnWidthMode.fill,
           ),
-          columnWidthMode: ColumnWidthMode.fill,
-        ),
-        GridColumn(
-          columnName: 'Location',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).location,
-              overflow: TextOverflow.ellipsis,
+          GridColumn(
+            columnName: 'Location',
+            label: Container(
+              padding: EdgeInsets.all(8.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                S.of(context).location,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
+            width: 120,
           ),
-          width: 120,
-        ),
-      ],
+        ],
+      ),
     );
     var pager = SfDataPagerTheme(
       data: SfDataPagerThemeData(
@@ -310,6 +322,7 @@ class StationDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           stationModel.stationId ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -318,6 +331,7 @@ class StationDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           stationModel.adminId ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -326,6 +340,7 @@ class StationDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           stationModel.name ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -336,6 +351,7 @@ class StationDataSource extends DataGridSource {
           (stationModel.numberofdevice != null)
               ? '${stationModel.numberofdevice}'
               : '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -345,6 +361,7 @@ class StationDataSource extends DataGridSource {
         child: Text(
           stationModel.description ?? '--',
           overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
         ),
       ),
       Container(
@@ -353,6 +370,7 @@ class StationDataSource extends DataGridSource {
         child: Text(
           stationModel.location ?? '--',
           overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
         ),
       ),
     ]);

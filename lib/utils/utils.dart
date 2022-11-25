@@ -140,7 +140,7 @@ class Utils {
     );
   }
 
-  static String currentFontFamily = "arial";
+  static String currentFontFamily = "BeVietnamPro-Medium";
 
   static isLogin() {
     // return true;

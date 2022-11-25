@@ -88,6 +88,7 @@ class _UserStationMainState extends State<UserStationMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).operating,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -100,6 +101,7 @@ class _UserStationMainState extends State<UserStationMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).user,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -112,6 +114,7 @@ class _UserStationMainState extends State<UserStationMain> {
               alignment: Alignment.centerLeft,
               child: Text(
                 S.of(context).adminId,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -123,6 +126,7 @@ class _UserStationMainState extends State<UserStationMain> {
               alignment: Alignment.centerLeft,
               child: Text(
                 S.of(context).name,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -213,6 +217,7 @@ class UserStationDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           userStation.username ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -221,6 +226,7 @@ class UserStationDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           userStation.adminId ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -229,6 +235,7 @@ class UserStationDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           userStation.stationId ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),

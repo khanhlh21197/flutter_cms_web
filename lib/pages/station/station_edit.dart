@@ -105,11 +105,14 @@ class _StationEditState extends State<StationEdit> {
     var devicesTable = stationModel.stationId != null
         ? Expanded(
             child: Container(
+              height: 300,
+              margin: const EdgeInsets.all(15),
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.red,
-                  width: 3,
-                ),
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.blue,
+                boxShadow: [
+                  BoxShadow(color: Colors.green, spreadRadius: 3),
+                ],
               ),
               child: DeviceMain(
                 stationId: stationModel.stationId!,

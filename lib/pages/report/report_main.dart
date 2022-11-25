@@ -100,6 +100,7 @@ class _ReportMainState extends State<ReportMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).deviceId,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -112,6 +113,7 @@ class _ReportMainState extends State<ReportMain> {
               alignment: Alignment.centerLeft,
               child: Text(
                 S.of(context).solanvuot,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -123,6 +125,7 @@ class _ReportMainState extends State<ReportMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).operating,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -200,6 +203,7 @@ class DeviceDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           deviceModel.deviceId ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -208,6 +212,7 @@ class DeviceDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           deviceModel.solanvuot != null ? '${deviceModel.solanvuot}' : '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),

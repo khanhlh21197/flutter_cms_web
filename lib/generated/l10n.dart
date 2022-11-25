@@ -523,7 +523,7 @@ class S {
   String get name {
     return Intl.message(
       'Tên',
-      name: 'name',
+      name: 'Tên',
       desc: '',
       args: [],
     );
@@ -939,7 +939,7 @@ class S {
 
   String get userId {
     return Intl.message(
-      'UserId',
+      'Mã User',
       name: 'UserId',
       desc: '',
       args: [],
@@ -993,7 +993,7 @@ class S {
 
   String get adminId {
     return Intl.message(
-      'Admin ID',
+      'Mã admin',
       name: 'adminId',
       desc: '',
       args: [],

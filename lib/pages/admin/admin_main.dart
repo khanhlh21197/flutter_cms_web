@@ -113,6 +113,7 @@ class _AdminMainState extends State<AdminMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).operating,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -125,6 +126,7 @@ class _AdminMainState extends State<AdminMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).user,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -137,6 +139,7 @@ class _AdminMainState extends State<AdminMain> {
               alignment: Alignment.centerLeft,
               child: Text(
                 S.of(context).name,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -148,6 +151,7 @@ class _AdminMainState extends State<AdminMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).phone,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -160,6 +164,7 @@ class _AdminMainState extends State<AdminMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).address,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -172,6 +177,7 @@ class _AdminMainState extends State<AdminMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).birthDate,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -290,6 +296,7 @@ class AdminDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           adminModel.user ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -298,6 +305,7 @@ class AdminDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           adminModel.name ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -306,6 +314,7 @@ class AdminDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           adminModel.phone ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -314,6 +323,7 @@ class AdminDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           adminModel.address ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -322,6 +332,7 @@ class AdminDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           adminModel.birthDate ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),

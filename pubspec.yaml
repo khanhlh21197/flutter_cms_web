@@ -40,9 +40,9 @@ flutter:
     - config/
     - PRIVACY
   fonts:
-    - family: arial
+    - family: BeVietnamPro-Medium
       fonts:
-        - asset: assets/fonts/arial.ttf
+        - asset: assets/fonts/BeVietnamPro-Medium.ttf
     - family: Roboto
       fonts:
         - asset: assets/fonts/STXINWEI.woff2
