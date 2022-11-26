@@ -2,11 +2,13 @@ import 'package:cry/utils/cry_utils.dart';
 import 'package:cry/vo/select_option_vo.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_admin/api/api_url.dart';
+import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/device_model.dart';
 import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/models/user_model.dart';
 import 'package:flutter_admin/models/user_station_model.dart';
+import 'package:flutter_admin/utils/store_util.dart';
 import 'package:get/get.dart' hide Response, FormData, MultipartFile;
 
 import 'custom_log.dart';
@@ -84,6 +86,8 @@ class ApiDioController {
       if (response.statusCode == 200) {
         if (response.data!['message'] == "success") {
           return asModel(response.data!);
+        } else {
+          CryUtils.message('Thất bại');
         }
       }
       return null;
@@ -259,6 +263,32 @@ class ApiDioController {
     return adminResponse;
   }
 
+  static Future<UserModel> loginUser(UserModel userModel) async {
+    Dio dio = Dio(options);
+
+    UserModel userResponse = new UserModel();
+
+    bool loginStatus = false;
+    await postMethods(
+      url: ApiURL.loginUser,
+      dio: dio,
+      body: userModel.toJson(),
+      asModel: (map) {
+        if (map['message'] == 'success' && map['data'] != null) {
+          final response = map['data'] as List;
+          userResponse = response.map((e) => UserModel.fromJson(e)).toList()[0];
+          loginStatus = true;
+          CryUtils.message('Đăng nhập thành công');
+        } else {
+          print('else');
+          CryUtils.message('Đăng nhập thất bại');
+          loginStatus = false;
+        }
+      },
+    );
+    return userResponse;
+  }
+
   static Future<List<AdminModel>> getAdmin(AdminModel adminModel) async {
     Dio dio = Dio(options);
 
@@ -286,6 +316,10 @@ class ApiDioController {
       asModel: (map) {
         if (map['message'] == 'success') {
           updateAdminStatus = true;
+          final response = map['data'] as List;
+          AdminModel adminResponse =
+              response.map((e) => AdminModel.fromJson(e)).toList()[0];
+          StoreUtil.write(Constant.EVN_ADMIN, adminResponse);
           CryUtils.message('Xóa admin thành công');
         } else {
           CryUtils.message('Xóa admin thất bại');
@@ -697,7 +731,7 @@ class ApiDioController {
     await postMethods(
       url: ApiURL.queryDetail,
       dio: dio,
-      body: {"deviceId": deviceId ?? '', "day": day ?? '1'},
+      body: {"deviceId": deviceId ?? '', "day": day ?? '7', 'nguong': '5'},
       asModel: (map) {
         if (map['data'] != null) {
           final responseList = map['data'] as List;

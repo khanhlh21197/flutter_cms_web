@@ -34,7 +34,7 @@ class _ReportEditState extends State<ReportEdit> {
     deviceModel = widget.deviceModel ?? DeviceModel();
     day = widget.day ?? '7';
     ds = DeviceDataSource();
-    ds.loadData(deviceId: deviceModel.deviceId);
+    ds.loadData(deviceId: deviceModel.deviceId, day: day);
     super.initState();
   }
 
@@ -50,10 +50,11 @@ class _ReportEditState extends State<ReportEdit> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).deviceId,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          width: 80,
+          width: 120,
         ),
         GridColumn(
           columnName: 'Station ID',
@@ -62,45 +63,36 @@ class _ReportEditState extends State<ReportEdit> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).stationId,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          width: 100,
-        ),
-        GridColumn(
-            columnName: 'Admin ID',
-            label: Container(
-              padding: EdgeInsets.all(8.0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                S.of(context).adminId,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            width: 80),
-        GridColumn(
-            columnName: 'Số lần vượt',
-            label: Container(
-              padding: EdgeInsets.all(8.0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                S.of(context).solanvuot,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            width: 120),
-        GridColumn(
-          columnName: 'operation',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).operating,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
           ),
           width: 120,
         ),
+        GridColumn(
+            columnName: 'Ozone',
+            label: Container(
+              padding: EdgeInsets.all(8.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                S.of(context).ozone,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            width: 120),
+        GridColumn(
+            columnName: 'Time',
+            label: Container(
+              padding: EdgeInsets.all(8.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                S.of(context).time,
+                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            width: 250),
       ],
     );
     var result = Scaffold(
@@ -191,6 +183,7 @@ class DeviceDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           deviceModel.deviceId ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -199,14 +192,7 @@ class DeviceDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           deviceModel.stationId ?? '--',
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      Container(
-        padding: const EdgeInsets.all(8),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          deviceModel.solanvuot != null ? '${deviceModel.solanvuot}' : '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -215,6 +201,16 @@ class DeviceDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           deviceModel.ozone != null ? '${deviceModel.ozone}' : '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.all(8),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          deviceModel.time != null ? '${deviceModel.time}' : '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
       ),

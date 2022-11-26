@@ -38,6 +38,7 @@ class _StationMainState extends State<StationMain> {
   StationDataSource ds = StationDataSource();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   StationModel stationModel = StationModel();
+  bool isAdmin = StoreUtil.read(Constant.IS_ADMIN) ?? false;
 
   @override
   void initState() {
@@ -50,9 +51,9 @@ class _StationMainState extends State<StationMain> {
   Widget build(BuildContext context) {
     var buttonBar = CryButtonBar(
       children: [
-        CryButtons.query(context, query),
+        // CryButtons.query(context, query),
         CryButtons.reset(context, reset),
-        CryButtons.add(context, ds.edit),
+        isAdmin ? CryButtons.add(context, ds.edit) : Container(),
         CryButton(
             iconData: Icons.reply,
             label: S.of(context).exportExcel,
@@ -256,6 +257,7 @@ class StationDataSource extends DataGridSource {
   // PageModel pageModel = PageModel();
   Map params = {};
   List<DataGridRow> _rows = [];
+  bool isAdmin = StoreUtil.read(Constant.IS_ADMIN) ?? false;
 
   loadData({Map? params}) async {
     if (params != null) {
@@ -309,14 +311,18 @@ class StationDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     StationModel stationModel = row.getCells()[0].value;
     return DataGridRowAdapter(cells: [
-      CryButtonBar(
-        children: [
-          CryButtons.edit(Cry.context, () => edit(stationModel: stationModel),
-              showLabel: false),
-          CryButtons.delete(Cry.context, () => delete(stationModel.stationId),
-              showLabel: false),
-        ],
-      ),
+      isAdmin
+          ? CryButtonBar(
+              children: [
+                CryButtons.edit(
+                    Cry.context, () => edit(stationModel: stationModel),
+                    showLabel: false),
+                CryButtons.delete(
+                    Cry.context, () => delete(stationModel.stationId),
+                    showLabel: false),
+              ],
+            )
+          : Container(),
       Container(
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,

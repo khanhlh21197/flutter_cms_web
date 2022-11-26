@@ -24,6 +24,7 @@ import 'package:flutter_admin/pages/device/device_edit.dart';
 import 'package:flutter_admin/pages/mqtt/mqttBrowserWrapper.dart';
 import 'package:flutter_admin/utils/dict_util.dart';
 import 'package:flutter_admin/utils/excel_export.dart';
+import 'package:flutter_admin/utils/store_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -45,6 +46,7 @@ class _DeviceMainState extends State<DeviceMain> {
   late DeviceDataSource ds;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DeviceModel deviceModel = DeviceModel();
+  bool isAdmin = StoreUtil.read(Constant.IS_ADMIN) ?? false;
 
   _DeviceMainState(this.stationId);
 
@@ -69,7 +71,7 @@ class _DeviceMainState extends State<DeviceMain> {
     var buttonBar = CryButtonBar(
       children: [
         CryButtons.reset(context, reset),
-        CryButtons.add(context, ds.edit),
+        isAdmin ? CryButtons.add(context, ds.edit) : Container(),
         CryButton(
             iconData: Icons.reply,
             label: S.of(context).exportExcel,
@@ -276,6 +278,7 @@ class DeviceDataSource extends DataGridSource {
   Map params = {};
   List<DataGridRow> _rows = [];
   final String stationId;
+  bool isAdmin = StoreUtil.read(Constant.IS_ADMIN) ?? false;
 
   DeviceDataSource(this.stationId);
 
@@ -336,14 +339,18 @@ class DeviceDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     DeviceModel deviceModel = row.getCells()[0].value;
     return DataGridRowAdapter(cells: [
-      CryButtonBar(
-        children: [
-          CryButtons.edit(Cry.context, () => edit(deviceModel: deviceModel),
-              showLabel: false),
-          CryButtons.delete(Cry.context, () => delete(deviceModel.deviceId),
-              showLabel: false),
-        ],
-      ),
+      isAdmin
+          ? CryButtonBar(
+              children: [
+                CryButtons.edit(
+                    Cry.context, () => edit(deviceModel: deviceModel),
+                    showLabel: false),
+                CryButtons.delete(
+                    Cry.context, () => delete(deviceModel.deviceId),
+                    showLabel: false),
+              ],
+            )
+          : Container(),
       Container(
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,

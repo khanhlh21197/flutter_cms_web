@@ -5,6 +5,7 @@
 /// @version: 1.0
 /// @description:
 import 'package:cry/cry.dart';
+import 'package:cry/cry_button.dart';
 import 'package:cry/cry_button_bar.dart';
 import 'package:cry/cry_buttons.dart';
 import 'package:cry/cry_dialog.dart';
@@ -13,13 +14,17 @@ import 'package:cry/model/page_model.dart';
 import 'package:cry/utils/cry_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
+import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/user_station_model.dart';
 import 'package:flutter_admin/pages/user_station/user_station_edit.dart';
+import 'package:flutter_admin/utils/excel_export.dart';
+import 'package:flutter_admin/utils/store_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:syncfusion_flutter_xlsio/xlsio.dart' hide Column;
 
 class UserStationMain extends StatefulWidget {
   @override
@@ -30,6 +35,7 @@ class _UserStationMainState extends State<UserStationMain> {
   UserStationDataSource ds = UserStationDataSource();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   UserStationModel userStation = UserStationModel();
+  bool isAdmin = StoreUtil.read(Constant.IS_ADMIN) ?? false;
 
   @override
   void initState() {
@@ -41,9 +47,13 @@ class _UserStationMainState extends State<UserStationMain> {
   Widget build(BuildContext context) {
     var buttonBar = CryButtonBar(
       children: [
-        CryButtons.query(context, query),
+        // CryButtons.query(context, query),
         CryButtons.reset(context, reset),
-        CryButtons.add(context, ds.edit),
+        isAdmin ? CryButtons.add(context, ds.edit) : Container(),
+        CryButton(
+            iconData: Icons.reply,
+            label: S.of(context).exportExcel,
+            onPressed: exportExcel),
       ],
     );
     var form = Form(
@@ -168,12 +178,18 @@ class _UserStationMainState extends State<UserStationMain> {
     formKey.currentState!.reset();
     await ds.loadData();
   }
+
+  Future<void> exportExcel() async {
+    await ExcelExportUtil.export(
+        Constant.USER_STATION_WORKBOOK, 'user_station.xlsx');
+  }
 }
 
 class UserStationDataSource extends DataGridSource {
   PageModel pageModel = PageModel();
   Map params = {};
   List<DataGridRow> _rows = [];
+  bool isAdmin = StoreUtil.read(Constant.IS_ADMIN) ?? false;
 
   loadData({Map? params}) async {
     if (params != null) {
@@ -182,11 +198,17 @@ class UserStationDataSource extends DataGridSource {
     List<UserStationModel> userStations =
         (await ApiDioController.getAllUserStation());
 
+    if (userStations.isNotEmpty) {
+      ExcelExportUtil.createWorkbook(
+          Constant.USER_STATION_WORKBOOK, _buildReportDataRows(userStations));
+    }
+
     _rows = userStations.map<DataGridRow>((v) {
       return DataGridRow(cells: [
         DataGridCell(columnName: 'userModel', value: v),
       ]);
     }).toList(growable: false);
+
     notifyDataSourceListeners();
   }
 
@@ -200,18 +222,36 @@ class UserStationDataSource extends DataGridSource {
     return true;
   }
 
+  List<ExcelDataRow> _buildReportDataRows(List<UserStationModel> userStations) {
+    List<ExcelDataRow> excelDataRows = <ExcelDataRow>[];
+
+    excelDataRows = userStations.map<ExcelDataRow>((UserStationModel dataRow) {
+      return ExcelDataRow(cells: <ExcelDataCell>[
+        ExcelDataCell(columnHeader: 'Mã trạm', value: dataRow.stationId),
+        ExcelDataCell(columnHeader: 'Admin', value: dataRow.adminId),
+        ExcelDataCell(columnHeader: 'User', value: dataRow.username),
+      ]);
+    }).toList();
+
+    return excelDataRows;
+  }
+
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
     UserStationModel userStation = row.getCells()[0].value;
     return DataGridRowAdapter(cells: [
-      CryButtonBar(
-        children: [
-          CryButtons.edit(Cry.context, () => edit(userStation: userStation),
-              showLabel: false),
-          CryButtons.delete(Cry.context, () => delete(userStation.adminId),
-              showLabel: false),
-        ],
-      ),
+      isAdmin
+          ? CryButtonBar(
+              children: [
+                CryButtons.edit(
+                    Cry.context, () => edit(userStation: userStation),
+                    showLabel: false),
+                CryButtons.delete(
+                    Cry.context, () => delete(userStation.adminId),
+                    showLabel: false),
+              ],
+            )
+          : Container(),
       Container(
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,

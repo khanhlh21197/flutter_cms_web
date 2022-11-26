@@ -9,6 +9,7 @@ class DeviceModel {
   String? threshold2;
   String? threshold3;
   String? status;
+  String? time;
   String? notifi;
   int? ozone;
   int? solanvuot;
@@ -33,6 +34,7 @@ class DeviceModel {
         stationId = json['stationId'] ?? '',
         adminId = json['adminId'] ?? '',
         name = json['name'] ?? '',
+        time = json['time'] ?? '',
         description = json['description'] ?? '',
         location = json['location'] ?? '',
         threshold1 = json['threshold1'] ?? '',
@@ -48,6 +50,7 @@ class DeviceModel {
         'stationId': stationId,
         'adminId': adminId,
         'name': name,
+        'time': time,
         'description': description,
         'location': location,
         'threshold1': threshold1,

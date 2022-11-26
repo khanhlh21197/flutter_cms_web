@@ -31,7 +31,8 @@ class LayoutSetting extends StatelessWidget {
     );
     var menuDisplayType = CryToggleButtons(
       [
-        SelectOptionVO(value: MenuDisplayType.drawer, label: S.of(context).drawer),
+        SelectOptionVO(
+            value: MenuDisplayType.drawer, label: S.of(context).drawer),
         SelectOptionVO(value: MenuDisplayType.side, label: S.of(context).side),
       ],
       defaultValue: layoutController.menuDisplayType,
@@ -40,7 +41,10 @@ class LayoutSetting extends StatelessWidget {
       },
     );
     var themeMode = Switch(
-      onChanged: (nightMode) => {Get.changeTheme(context.isDarkMode ? ThemeData.light() : ThemeData.dark())},
+      onChanged: (nightMode) => {
+        Get.changeTheme(
+            context.isDarkMode ? ThemeData.light() : ThemeData.dark())
+      },
       value: context.isDarkMode,
     );
     return Drawer(

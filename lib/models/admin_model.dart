@@ -7,12 +7,14 @@ class AdminModel {
   String? phone;
   String? address;
   String? birthDate;
+  String? gender;
   String? playerId;
 
   AdminModel({
     this.user,
     this.pass,
     this.passmoi,
+    this.gender,
     this.name,
     this.phone,
     this.address,
@@ -23,6 +25,7 @@ class AdminModel {
   AdminModel.fromJson(Map<String, dynamic> json)
       : user = json['user'],
         pass = json['pass'],
+        gender = json['gender'],
         adminId = json['_id'],
         passmoi = json['passmoi'],
         name = json['name'],
@@ -36,6 +39,7 @@ class AdminModel {
         'pass': pass,
         'passmoi': passmoi,
         'name': name,
+        'gender': gender,
         'phone': phone,
         'address': address,
         'birthDate': birthDate,

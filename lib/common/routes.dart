@@ -54,9 +54,7 @@ class Routes {
     '/stationMain': StationMain(),
     '/userStationMain': UserStationMain(),
     '/reportMain': ReportMain(),
-    '/deviceMain': DeviceMain(
-      stationId: '',
-    ),
+    '/deviceMain': DeviceMain(stationId: ''),
     '/adminMain': AdminMain(),
     '/userMain': UserMain(),
     '/testMain': MyHomePage(),

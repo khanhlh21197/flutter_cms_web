@@ -35,10 +35,24 @@ class _DeviceEditState extends State<DeviceEdit> {
 
   List<SelectOptionVO> adminSelect = [];
   List<SelectOptionVO> stationSelect = [];
+  List<SelectOptionVO> thresholds = [
+    SelectOptionVO(value: '5', label: '5'),
+    SelectOptionVO(value: '10', label: '10'),
+    SelectOptionVO(value: '15', label: '15'),
+  ];
 
   @override
   void initState() {
     deviceModel = widget.deviceModel ?? DeviceModel();
+    if (deviceModel.threshold1 == null || deviceModel.threshold1 == '') {
+      deviceModel.threshold1 = '5';
+    }
+    if (deviceModel.threshold2 == null || deviceModel.threshold2 == '') {
+      deviceModel.threshold2 = '10';
+    }
+    if (deviceModel.threshold3 == null || deviceModel.threshold3 == '') {
+      deviceModel.threshold3 = '15';
+    }
     super.initState();
     initData();
   }
@@ -119,6 +133,33 @@ class _DeviceEditState extends State<DeviceEdit> {
                 width: 400,
                 onSaved: (v) {
                   deviceModel.location = v;
+                },
+              ),
+              CrySelect(
+                label: S.of(context).threshold1,
+                dataList: thresholds,
+                value: deviceModel.threshold1,
+                width: 400,
+                onSaved: (v) {
+                  deviceModel.threshold1 = v;
+                },
+              ),
+              CrySelect(
+                label: S.of(context).threshold2,
+                dataList: thresholds,
+                width: 400,
+                value: deviceModel.threshold2,
+                onSaved: (v) {
+                  deviceModel.threshold2 = v;
+                },
+              ),
+              CrySelect(
+                label: S.of(context).threshold3,
+                dataList: thresholds,
+                width: 400,
+                value: deviceModel.threshold3,
+                onSaved: (v) {
+                  deviceModel.threshold3 = v;
                 },
               ),
             ],

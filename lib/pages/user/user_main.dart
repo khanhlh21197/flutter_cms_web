@@ -35,6 +35,7 @@ class _UserMainState extends State<UserMain> {
   UserDataSource ds = UserDataSource();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   UserModel userModel = UserModel();
+  bool isAdmin = StoreUtil.read(Constant.IS_ADMIN) ?? false;
 
   @override
   void initState() {
@@ -46,9 +47,9 @@ class _UserMainState extends State<UserMain> {
   Widget build(BuildContext context) {
     var buttonBar = CryButtonBar(
       children: [
-        CryButtons.query(context, query),
+        // CryButtons.query(context, query),
         CryButtons.reset(context, reset),
-        CryButtons.add(context, ds.edit),
+        isAdmin ? CryButtons.add(context, ds.edit) : Container(),
         CryButton(
             iconData: Icons.reply,
             label: S.of(context).exportExcel,
@@ -250,6 +251,7 @@ class UserDataSource extends DataGridSource {
   PageModel pageModel = PageModel();
   Map params = {};
   List<DataGridRow> _rows = [];
+  bool isAdmin = StoreUtil.read(Constant.IS_ADMIN) ?? false;
 
   loadData({Map? params}) async {
     if (params != null) {
@@ -303,14 +305,16 @@ class UserDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     UserModel userModel = row.getCells()[0].value;
     return DataGridRowAdapter(cells: [
-      CryButtonBar(
-        children: [
-          CryButtons.edit(Cry.context, () => edit(userModel: userModel),
-              showLabel: false),
-          CryButtons.delete(Cry.context, () => delete(userModel.user),
-              showLabel: false),
-        ],
-      ),
+      isAdmin
+          ? CryButtonBar(
+              children: [
+                CryButtons.edit(Cry.context, () => edit(userModel: userModel),
+                    showLabel: false),
+                CryButtons.delete(Cry.context, () => delete(userModel.user),
+                    showLabel: false),
+              ],
+            )
+          : Container(),
       Container(
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,

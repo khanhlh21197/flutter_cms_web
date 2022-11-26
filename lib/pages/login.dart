@@ -12,6 +12,7 @@ import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/user.dart';
 import 'package:flutter_admin/models/user_info.dart';
+import 'package:flutter_admin/models/user_model.dart';
 import 'package:flutter_admin/pages/common/lang_switch.dart';
 import 'package:flutter_admin/utils/store_util.dart';
 
@@ -26,10 +27,12 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   User user = new User();
   AdminModel adminModel = AdminModel();
+  UserModel userModel = UserModel();
   String error = "";
   FocusNode focusNodeUserName = FocusNode();
   FocusNode focusNodePassword = FocusNode();
   bool isFaceRecognition = false;
+  bool isAdmin = true;
 
   @override
   void initState() {
@@ -79,11 +82,11 @@ class _LoginState extends State<Login> {
       color: Colors.cyan.shade100,
       child: ListView(
         children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [LangSwitch()],
-          ),
+          // Column(
+          //   crossAxisAlignment: CrossAxisAlignment.end,
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [LangSwitch()],
+          // ),
           Center(child: appName),
           SizedBox(height: 20.0),
           _buildLoginForm(),
@@ -134,6 +137,7 @@ class _LoginState extends State<Login> {
                         ),
                         onSaved: (v) {
                           adminModel.user = v;
+                          userModel.user = v;
                         },
                         validator: (v) {
                           return v!.isEmpty
@@ -162,6 +166,7 @@ class _LoginState extends State<Login> {
                         ),
                         onSaved: (v) {
                           adminModel.pass = v;
+                          userModel.pass = v;
                         },
                         validator: (v) {
                           return v!.isEmpty
@@ -174,12 +179,25 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('User'),
+                        Switch(
+                            value: isAdmin,
+                            onChanged: (v) {
+                              isAdmin = v;
+                              setState(() {});
+                            }),
+                        Text('Admin'),
+                      ],
+                    ),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         if (ApplicationContext.instance.cameras.length > 0)
                           TextButton(
                             child: Text(
-                              '人脸登录',
+                              '123',
                               style: TextStyle(color: Colors.blue),
                             ),
                             onPressed: () {
@@ -250,16 +268,25 @@ class _LoginState extends State<Login> {
       return;
     }
     form.save();
-
-    AdminModel adminResponse = await ApiDioController.loginAdmin(adminModel);
-    if (adminResponse == new AdminModel()) {
-      focusNodePassword.requestFocus();
-      return;
+    StoreUtil.write(Constant.IS_ADMIN, isAdmin);
+    if (isAdmin) {
+      AdminModel adminResponse = await ApiDioController.loginAdmin(adminModel);
+      if (adminResponse == new AdminModel()) {
+        focusNodePassword.requestFocus();
+        return;
+      }
+      _loginAdminSuccess(adminResponse);
+    } else {
+      UserModel userResponse = await ApiDioController.loginUser(userModel);
+      if (userResponse == new UserModel()) {
+        focusNodePassword.requestFocus();
+        return;
+      }
+      _loginUserSuccess(userResponse);
     }
-    _loginSuccess(adminResponse);
   }
 
-  _loginSuccess(AdminModel adminResponse) async {
+  _loginAdminSuccess(AdminModel adminResponse) async {
     StoreUtil.write(Constant.KEY_TOKEN,
         'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwic3ViIjoiZGIyODhkOTUxYzM5MGFmYjA4YzgzNDEwODhiZDkwZmEiLCJpc3MiOiJ1c2VyIiwiaWF0IjoxNjY4NDg3NjQxfQ.jpyNYSphFD9Tu63HcOETPq_1uVrhgx5YNCOHDMN-M7U');
     StoreUtil.write(
@@ -288,8 +315,49 @@ class _LoginState extends State<Login> {
                 deptName: 'dd')
             .toMap());
 
-    StoreUtil.write(Constant.EVN_USER, adminResponse);
+    StoreUtil.write(Constant.EVN_ADMIN, adminResponse);
     StoreUtil.write(Constant.ADMIN_ID, adminResponse.adminId);
+
+    // await StoreUtil.loadDict();
+    // await StoreUtil.loadSubsystem();
+    // await StoreUtil.loadMenuData();
+    // await StoreUtil.loadDefaultTabs();
+    StoreUtil.init();
+
+    Cry.pushNamed('/');
+  }
+
+  _loginUserSuccess(UserModel userResponse) async {
+    StoreUtil.write(Constant.KEY_TOKEN,
+        'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwic3ViIjoiZGIyODhkOTUxYzM5MGFmYjA4YzgzNDEwODhiZDkwZmEiLCJpc3MiOiJ1c2VyIiwiaWF0IjoxNjY4NDg3NjQxfQ.jpyNYSphFD9Tu63HcOETPq_1uVrhgx5YNCOHDMN-M7U');
+    StoreUtil.write(
+        Constant.KEY_CURRENT_USER_INFO,
+        UserInfo(
+                id: 'ef8297d1c7333cdc6aeefa96bb8fb89f',
+                createTime: '2020-08-20 02:39:35',
+                updateTime: '2022-11-12 19:09:30',
+                userId: 'db288d951c390afb08c8341088bd90fa',
+                nickName: 'cry',
+                avatarUrl:
+                    'http://www.cairuoyu.com/f/p4/u-20221113030922885766914130.png',
+                gender: '1',
+                country: 'null',
+                province: 'null',
+                city: 'null',
+                name: '怎么来的',
+                school: 'null',
+                major: 'null',
+                birthday: '2025-04-11',
+                entrance: 'null',
+                hometown: '吉林省,通化市,柳河县',
+                memo: 'null',
+                deptId: 'c69bf9ba666a60545addbace63103fdb',
+                userName: 'admin',
+                deptName: 'dd')
+            .toMap());
+
+    StoreUtil.write(Constant.EVN_USER, userResponse);
+    StoreUtil.write(Constant.USER_ID, userResponse.userId);
 
     // await StoreUtil.loadDict();
     // await StoreUtil.loadSubsystem();

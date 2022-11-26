@@ -61,6 +61,10 @@ class _ReportMainState extends State<ReportMain> {
 
   @override
   Widget build(BuildContext context) {
+    CrySelectItemUtil.getDayNumberSelectOptionList(days).forEach((element) {
+      print('Value: ${element.value}');
+      print('Label: ${element.label}');
+    });
     var buttonBar = CryButtonBar(
       children: [
         CryButtons.query(context, query),
@@ -84,6 +88,7 @@ class _ReportMainState extends State<ReportMain> {
             dataList: CrySelectItemUtil.getDayNumberSelectOptionList(days),
             value: day,
             onSaved: (v) {
+              print('Day: $v');
               day = v;
             },
           ),
@@ -124,7 +129,7 @@ class _ReportMainState extends State<ReportMain> {
             padding: EdgeInsets.all(8.0),
             alignment: Alignment.centerLeft,
             child: Text(
-              S.of(context).operating,
+              S.of(context).deviceDetail,
               style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
               overflow: TextOverflow.ellipsis,
             ),
@@ -221,8 +226,6 @@ class DeviceDataSource extends DataGridSource {
           CryButtons.edit(
               Cry.context, () => edit(deviceModel: deviceModel, day: day),
               showLabel: false),
-          CryButtons.delete(Cry.context, () => delete(deviceModel.deviceId),
-              showLabel: false),
         ],
       ),
     ]);
@@ -238,6 +241,7 @@ class DeviceDataSource extends DataGridSource {
   }
 
   edit({DeviceModel? deviceModel, String? day}) async {
+    print('Day select: $day');
     var result = await Utils.fullscreenDialog(ReportEdit(
       deviceModel: deviceModel,
       day: day,

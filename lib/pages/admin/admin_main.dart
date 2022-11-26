@@ -46,7 +46,7 @@ class _AdminMainState extends State<AdminMain> {
   Widget build(BuildContext context) {
     var buttonBar = CryButtonBar(
       children: [
-        CryButtons.query(context, query),
+        // CryButtons.query(context, query),
         CryButtons.reset(context, reset),
         CryButtons.add(context, ds.edit),
         CryButton(

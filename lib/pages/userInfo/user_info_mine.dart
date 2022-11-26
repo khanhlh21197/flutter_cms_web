@@ -3,7 +3,7 @@
 /// @github: https://github.com/cairuoyu/flutter_admin
 /// @date: 2021/6/21
 /// @version: 1.0
-/// @description: 
+/// @description:
 
 import 'package:cry/cry_button_bar.dart';
 import 'package:cry/cry_image_upload.dart';
@@ -14,6 +14,7 @@ import 'package:cry/form/cry_select_date.dart';
 import 'package:cry/utils/adaptive_util.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/api/file_api.dart';
 import 'package:flutter_admin/api/user_info_api.dart';
 import 'package:cry/cry_button.dart';
@@ -21,6 +22,7 @@ import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/constants/constant_dict.dart';
 import 'package:cry/model/response_body_api.dart';
 import 'package:flutter_admin/generated/l10n.dart';
+import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/dept.dart';
 import 'package:flutter_admin/models/user_info.dart';
 import 'package:flutter_admin/pages/common/dept_selector.dart';
@@ -40,10 +42,17 @@ class UserInfoMine extends StatefulWidget {
 
 class _UserInfoMineState extends State<UserInfoMine> {
   UserInfo? userInfo;
+  late AdminModel adminModel;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
+    try {
+      adminModel = StoreUtil.read(Constant.EVN_ADMIN);
+    } catch (e) {
+      adminModel = new AdminModel();
+    }
+    ;
     this.userInfo = StoreUtil.getCurrentUserInfo();
     super.initState();
   }
@@ -59,7 +68,8 @@ class _UserInfoMineState extends State<UserInfoMine> {
           String filename = "test.png"; //todo
           String mimeType = mime(Path.basename(filename))!;
           var mediaType = MediaType.parse(mimeType);
-          MultipartFile file = MultipartFile.fromBytes(imageBytes, contentType: mediaType, filename: filename);
+          MultipartFile file = MultipartFile.fromBytes(imageBytes,
+              contentType: mediaType, filename: filename);
           FormData formData = FormData.fromMap({"file": file});
           FileApi.upload(formData).then((res) {
             this.userInfo!.avatarUrl = res.data;
@@ -69,20 +79,20 @@ class _UserInfoMineState extends State<UserInfoMine> {
     );
     List<Widget> propList = <Widget>[
       CryInput(
-        label: S.of(context).personName,
-        value: userInfo!.name,
-        onSaved: (v) => {userInfo!.name = v},
+        label: S.of(context).name,
+        value: adminModel.name,
+        onSaved: (v) => {adminModel.name = v},
         validator: (v) => v!.isEmpty ? S.of(context).required : null,
       ),
       CryInput(
-        label: S.of(context).personNickname,
-        value: userInfo!.nickName,
-        onSaved: (v) => {userInfo!.nickName = v},
+        label: S.of(context).user,
+        value: adminModel.user,
+        onSaved: (v) => {adminModel.user = v},
       ),
       CrySelectDate(
         context,
-        label: S.of(context).personBirthday,
-        value: userInfo!.birthday,
+        label: S.of(context).birthDate,
+        value: adminModel.birthDate,
         onSaved: (v) => {userInfo!.birthday = v},
       ),
       CrySelect(
@@ -91,17 +101,15 @@ class _UserInfoMineState extends State<UserInfoMine> {
         value: userInfo!.gender,
         onSaved: (v) => {userInfo!.gender = v},
       ),
-      CrySelectCustomWidget(
-        context,
-        label: S.of(context).personDepartment,
-        initialValue: userInfo!.deptId,
-        initialValueLabel: userInfo!.deptName,
-        popWidget: DeptSelector(),
-        getValueLabel: (Dept d) => d.name,
-        getValue: (Dept d) => d.id,
-        onSaved: (dynamic v) {
-          userInfo!.deptId = v;
-        },
+      CryInput(
+        label: S.of(context).phone,
+        value: adminModel.phone,
+        onSaved: (v) => {adminModel.phone = v},
+      ),
+      CryInput(
+        label: S.of(context).address,
+        value: adminModel.address,
+        onSaved: (v) => {adminModel.address = v},
       ),
     ];
     var form = _getForm(avatar, propList);
@@ -109,17 +117,24 @@ class _UserInfoMineState extends State<UserInfoMine> {
       children: <Widget>[
         CryButton(
           label: S.of(context).save,
-          onPressed: () {
+          onPressed: () async {
             FormState form = formKey.currentState!;
             if (!form.validate()) {
               return;
             }
             form.save();
-            UserInfoApi.saveOrUpdate(this.userInfo!.toMap()).then((ResponseBodyApi res) {
+            bool updateAdminStatus =
+                await ApiDioController.updateAdmin(adminModel);
+            if(!updateAdminStatus){
+              return;
+            }
+            UserInfoApi.saveOrUpdate(this.userInfo!.toMap())
+                .then((ResponseBodyApi res) {
               if (!res.success!) {
                 return;
               }
-              StoreUtil.write(Constant.KEY_CURRENT_USER_INFO, this.userInfo!.toMap());
+              StoreUtil.write(
+                  Constant.KEY_CURRENT_USER_INFO, this.userInfo!.toMap());
               CryUtils.message(S.of(context).saved);
             });
           },
@@ -177,6 +192,7 @@ class _UserInfoMineState extends State<UserInfoMine> {
                   Row(
                     children: [
                       propList[4],
+                      propList[5],
                     ],
                   ),
                 ],

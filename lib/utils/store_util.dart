@@ -110,6 +110,7 @@ class StoreUtil {
   }
 
   static List<Menu> getMenuList() {
+    var isAdmin = read(Constant.IS_ADMIN) ?? false;
     var data = GetStorage().read(Constant.KEY_MENU_LIST);
     final menuJson = [
       {
@@ -130,8 +131,8 @@ class StoreUtil {
         "id": "stationMenuId",
         "createTime": "2020-08-22 02:11:26",
         "updateTime": "2021-08-27 07:42:38",
-        "name": "Stations",
-        "nameEn": "Stations",
+        "name": "Quản lý trạm",
+        "nameEn": "Trạm",
         "subsystemId": "1",
         "icon": "role",
         "pid": null,
@@ -144,8 +145,8 @@ class StoreUtil {
         "id": "userStationMenuId",
         "createTime": "2020-08-22 02:11:26",
         "updateTime": "2021-08-27 07:42:38",
-        "name": "User Stations",
-        "nameEn": "User Stations",
+        "name": "Quản lý User Trạm",
+        "nameEn": "User Trạm",
         "subsystemId": "1",
         "icon": "role",
         "pid": null,
@@ -158,8 +159,8 @@ class StoreUtil {
         "id": "deviceMenuId",
         "createTime": "2020-08-22 02:11:26",
         "updateTime": "2021-08-27 07:42:38",
-        "name": "Devices",
-        "nameEn": "Devices",
+        "name": "Quản lý thiết bị",
+        "nameEn": "Thiết bị",
         "subsystemId": "1",
         "icon": "role",
         "pid": null,
@@ -169,24 +170,10 @@ class StoreUtil {
         "orderBy": 1
       },
       {
-        "id": "adminMenuId",
-        "createTime": "2020-08-22 02:11:26",
-        "updateTime": "2021-08-27 07:42:38",
-        "name": "Admins",
-        "nameEn": "Admins",
-        "subsystemId": "1",
-        "icon": "role",
-        "pid": null,
-        "url": "/adminMain",
-        "module": null,
-        "remark": "",
-        "orderBy": 1
-      },
-      {
         "id": "userMenuId",
         "createTime": "2020-08-22 02:11:26",
         "updateTime": "2021-08-27 07:42:38",
-        "name": "Users",
+        "name": "Quản lý Users",
         "nameEn": "Users",
         "subsystemId": "1",
         "icon": "role",
@@ -200,8 +187,8 @@ class StoreUtil {
         "id": "reportMenuId",
         "createTime": "2020-08-22 02:11:26",
         "updateTime": "2021-08-27 07:42:38",
-        "name": "Report",
-        "nameEn": "Report",
+        "name": "Báo cáo",
+        "nameEn": "Báo cáo",
         "subsystemId": "1",
         "icon": "role",
         "pid": null,
@@ -211,6 +198,25 @@ class StoreUtil {
         "orderBy": 1
       },
     ];
+
+    if (isAdmin) {
+      menuJson.add(
+        {
+          "id": "adminMenuId",
+          "createTime": "2020-08-22 02:11:26",
+          "updateTime": "2021-08-27 07:42:38",
+          "name": "Quản lý Admins",
+          "nameEn": "Admins",
+          "subsystemId": "1",
+          "icon": "role",
+          "pid": null,
+          "url": "/adminMain",
+          "module": null,
+          "remark": "",
+          "orderBy": 1
+        },
+      );
+    }
 
     return List.from(menuJson).map((e) => Menu.fromMap(e)).toList();
     return data == null

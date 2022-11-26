@@ -4,6 +4,7 @@ class ApiURL {
   // static const String baseUrl = "";
   static const String registerAdmin = "/registeradmin";
   static const String loginAdmin = "/loginadmin";
+  static const String loginUser = "/loginuser";
   static const String getAdmin = "/getadmin";
   static const String updateAdmin = "/updateadmin";
   static const String updateUser = "/updateuser";

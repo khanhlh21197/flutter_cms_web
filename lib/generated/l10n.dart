@@ -314,8 +314,8 @@ class S {
   /// `Personnel Name`
   String get personName {
     return Intl.message(
-      'Personnel Name',
-      name: 'personName',
+      'Tên',
+      name: 'Tên',
       desc: '',
       args: [],
     );
@@ -1000,6 +1000,24 @@ class S {
     );
   }
 
+  String get ozone {
+    return Intl.message(
+      'ozone',
+      name: 'ozone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get time {
+    return Intl.message(
+      'Thời gian',
+      name: 'Thời gian',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get solanvuot {
     return Intl.message(
       'Số lần vượt',
@@ -1040,6 +1058,33 @@ class S {
     return Intl.message(
       'Vị trí',
       name: 'location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get threshold1 {
+    return Intl.message(
+      'Ngưỡng 1',
+      name: 'Ngưỡng 1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get threshold2 {
+    return Intl.message(
+      'Ngưỡng 2',
+      name: 'Ngưỡng 2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get threshold3 {
+    return Intl.message(
+      'Ngưỡng 3',
+      name: 'Ngưỡng 3',
       desc: '',
       args: [],
     );
