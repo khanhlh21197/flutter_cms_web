@@ -126,19 +126,33 @@ class _StationMainState extends State<StationMain> {
       child: SfDataGrid(
         source: ds,
         columns: <GridColumn>[
-          GridColumn(
-            columnName: 'operation',
-            label: Container(
-              padding: EdgeInsets.all(8.0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                S.of(context).operating,
-                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            width: 120,
-          ),
+          isAdmin
+              ? GridColumn(
+                  columnName: 'operation',
+                  label: Container(
+                    padding: EdgeInsets.all(8.0),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      S.of(context).operating,
+                      style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  width: 120,
+                )
+              : GridColumn(
+                  columnName: 'operation',
+                  label: Container(
+                    padding: EdgeInsets.all(8.0),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      S.of(context).deviceDetail,
+                      style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  width: 120,
+                ),
           GridColumn(
             columnName: 'Station ID',
             label: Container(
@@ -319,18 +333,17 @@ class StationDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     StationModel stationModel = row.getCells()[0].value;
     return DataGridRowAdapter(cells: [
-      isAdmin
-          ? CryButtonBar(
-              children: [
-                CryButtons.edit(
-                    Cry.context, () => edit(stationModel: stationModel),
-                    showLabel: false),
-                CryButtons.delete(
-                    Cry.context, () => delete(stationModel.stationId),
-                    showLabel: false),
-              ],
-            )
-          : Container(),
+      CryButtonBar(
+        children: [
+          CryButtons.edit(Cry.context, () => edit(stationModel: stationModel),
+              showLabel: false),
+          isAdmin
+              ? CryButtons.delete(
+                  Cry.context, () => delete(stationModel.stationId),
+                  showLabel: false)
+              : Container(),
+        ],
+      ),
       Container(
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,

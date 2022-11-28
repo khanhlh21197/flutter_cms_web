@@ -184,7 +184,10 @@ class _DeviceMainState extends State<DeviceMain> {
             alignment: Alignment.centerLeft,
             child: Text(
               S.of(context).ozone,
-              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+              style: TextStyle(
+                  fontFamily: 'BeVietnamPro-Medium',
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -403,8 +406,11 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          deviceModel.ozone ?? '--',
-          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+          deviceModel.ozone != null ? '${deviceModel.ozone}' : '--',
+          style: TextStyle(
+              fontFamily: 'BeVietnamPro-Medium',
+              color: Colors.red,
+              fontWeight: FontWeight.bold),
           overflow: TextOverflow.ellipsis,
         ),
       ),

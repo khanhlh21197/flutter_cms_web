@@ -34,11 +34,14 @@ class _StationEditState extends State<StationEdit> {
   late StationModel stationModel;
   List<UserModel> admins = [];
   late MQTTBrowserWrapper mqttBrowserWrapper;
+  bool isAdmin = StoreUtil.read(Constant.IS_ADMIN) ?? false;
 
   @override
   void initState() {
     stationModel = widget.stationModel ?? StationModel();
-    stationModel.adminId = StoreUtil.read(Constant.ADMIN_ID)!;
+    if (isAdmin) {
+      stationModel.adminId = StoreUtil.read(Constant.ADMIN_ID)!;
+    }
 
     initData();
     super.initState();
@@ -132,7 +135,7 @@ class _StationEditState extends State<StationEdit> {
         ],
       ),
       body: Column(children: [
-        form,
+        isAdmin ? form : Container(),
         devicesTable,
       ]),
     );

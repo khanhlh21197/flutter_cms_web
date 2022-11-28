@@ -7,6 +7,7 @@ import 'constants.dart' as Constants;
 import 'models.dart';
 
 class MQTTBrowserWrapper {
+  int numberOfConnections = 0;
   late MqttBrowserClient client;
 
   MqttCurrentConnectionState connectionState = MqttCurrentConnectionState.IDLE;

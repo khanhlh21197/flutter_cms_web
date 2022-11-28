@@ -538,6 +538,15 @@ class S {
     );
   }
 
+  String get manageDevice {
+    return Intl.message(
+      'Quản lý thiết bị',
+      name: 'Number of device',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Operating`
   String get operating {
     return Intl.message(

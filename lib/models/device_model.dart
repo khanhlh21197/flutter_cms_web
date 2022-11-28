@@ -11,7 +11,7 @@ class DeviceModel {
   String? status;
   String? time;
   String? notifi;
-  String? ozone;
+  int? ozone;
   int? solanvuot;
 
   DeviceModel({
