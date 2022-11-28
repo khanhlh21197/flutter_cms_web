@@ -11,10 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/api/article_api.dart';
 import 'package:flutter_admin/generated/l10n.dart';
-import 'package:flutter_admin/models/admin_model.dart';
+import 'package:flutter_admin/models/user_model.dart';
 
 class AdminEdit extends StatefulWidget {
-  final AdminModel? adminModel;
+  final UserModel? adminModel;
 
   const AdminEdit({Key? key, this.adminModel}) : super(key: key);
 
@@ -24,11 +24,11 @@ class AdminEdit extends StatefulWidget {
 
 class _AdminEditState extends State<AdminEdit> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  late AdminModel adminModel;
+  late UserModel adminModel;
 
   @override
   void initState() {
-    adminModel = widget.adminModel ?? AdminModel();
+    adminModel = widget.adminModel ?? UserModel();
 
     super.initState();
   }
@@ -104,7 +104,9 @@ class _AdminEditState extends State<AdminEdit> {
     );
     var result = Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).add),
+        title: adminModel == UserModel()
+            ? Text(S.of(context).add)
+            : Text(S.of(context).update),
         actions: [
           CryButtons.save(context, save),
         ],

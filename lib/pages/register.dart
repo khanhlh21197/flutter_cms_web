@@ -12,7 +12,7 @@ import 'package:cry/common/face_recognition.dart';
 import 'package:cry/cry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
-import 'package:flutter_admin/models/admin_model.dart';
+import 'package:flutter_admin/models/user_model.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 
 import '../generated/l10n.dart';
@@ -24,7 +24,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  AdminModel adminModel = new AdminModel();
+  UserModel adminModel = new UserModel();
   String? password2 = "";
   bool isFaceRecognition = false;
   String? imagePath;

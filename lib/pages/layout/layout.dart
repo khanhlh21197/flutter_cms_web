@@ -10,7 +10,6 @@ import 'package:flutter_admin/generated/l10n.dart';
 import 'package:flutter_admin/models/menu.dart';
 import 'package:flutter_admin/pages/layout/layout_center.dart';
 import 'package:flutter_admin/pages/layout/layout_menu.dart';
-import 'package:flutter_admin/pages/layout/layout_setting.dart';
 import 'package:flutter_admin/utils/store_util.dart';
 import 'package:flutter_admin/utils/utils.dart';
 import 'package:get/get.dart';
@@ -24,7 +23,8 @@ class Layout extends StatefulWidget {
 
 class _LayoutState extends State {
   final GlobalKey<ScaffoldState> scaffoldStateKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<LayoutCenterState> layoutCenterKey = GlobalKey<LayoutCenterState>();
+  final GlobalKey<LayoutCenterState> layoutCenterKey =
+      GlobalKey<LayoutCenterState>();
 
   @override
   void initState() {
@@ -32,30 +32,33 @@ class _LayoutState extends State {
   }
 
   @override
-  Widget build(BuildContext context) => GetBuilder<LayoutController>(builder: (_) => _build(context));
+  Widget build(BuildContext context) =>
+      GetBuilder<LayoutController>(builder: (_) => _build(context));
 
   Widget _build(BuildContext context) {
-    var layoutMenu = LayoutMenu(onClick: (Menu menu) => Utils.openTab(menu.id!));
+    var layoutMenu =
+        LayoutMenu(onClick: (Menu menu) => Utils.openTab(menu.id!));
     LayoutController layoutController = Get.find();
-    var body = Utils.isMenuDisplayTypeDrawer(context) || layoutController.isMaximize
-        ? Row(children: [LayoutCenter(key: layoutCenterKey)])
-        : Row(
-            children: <Widget>[
-              layoutMenu,
-              VerticalDivider(
-                width: 2,
-                color: Colors.black12,
-                thickness: 2,
-              ),
-              LayoutCenter(key: layoutCenterKey),
-            ],
-          );
+    var body =
+        Utils.isMenuDisplayTypeDrawer(context) || layoutController.isMaximize
+            ? Row(children: [LayoutCenter(key: layoutCenterKey)])
+            : Row(
+                children: <Widget>[
+                  layoutMenu,
+                  VerticalDivider(
+                    width: 2,
+                    color: Colors.black12,
+                    thickness: 2,
+                  ),
+                  LayoutCenter(key: layoutCenterKey),
+                ],
+              );
     Scaffold subWidget = layoutController.isMaximize
         ? Scaffold(body: body)
         : Scaffold(
             key: scaffoldStateKey,
             drawer: layoutMenu,
-            endDrawer: LayoutSetting(),
+            // endDrawer: LayoutSetting(),
             body: body,
             appBar: getAppBar(),
           );
@@ -75,7 +78,7 @@ class _LayoutState extends State {
               child: IconButton(
                 icon: Icon(Icons.home),
                 onPressed: () {
-                  Utils.launchURL('http://www.cairuoyu.com');
+                  Utils.launchURL('http://tawux6.ddns.net:8201/');
                 },
               ))
           : Tooltip(
@@ -115,15 +118,15 @@ class _LayoutState extends State {
         //         ).toList()),
       ]),
       actions: <Widget>[
-        Tooltip(
-          message: 'Setting',
-          child: IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              scaffoldStateKey.currentState!.openEndDrawer();
-            },
-          ),
-        ),
+        // Tooltip(
+        //   message: 'Setting',
+        //   child: IconButton(
+        //     icon: Icon(Icons.settings),
+        //     onPressed: () {
+        //       scaffoldStateKey.currentState!.openEndDrawer();
+        //     },
+        //   ),
+        // ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: PopupMenuButton(

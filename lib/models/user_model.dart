@@ -34,7 +34,7 @@ class UserModel {
         phone = json['phone'],
         address = json['address'],
         birthDate = json['birthDate'],
-        adminId = json['adminId'],
+        adminId = json['_id'],
         playerId = json['playerId'];
 
   Map<String, dynamic> toJson() => {

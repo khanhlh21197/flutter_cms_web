@@ -18,6 +18,7 @@ class ApiURL {
   static const String registerStation = "/registertram";
   static const String getStation = "/gettram";
   static const String getAllStation = "/getalltram";
+  static const String getStationByUser = "/gettramid";
   static const String getAllUserStation = "/getallusertram";
   static const String getAllUser = "/getalluser";
   static const String getAllAdmin = "/getalladmin";

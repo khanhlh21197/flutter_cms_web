@@ -4,34 +4,30 @@
 /// @date: 2021/6/21
 /// @version: 1.0
 /// @description:
-
+import 'package:cry/cry_button.dart';
 import 'package:cry/cry_button_bar.dart';
 import 'package:cry/cry_image_upload.dart';
 import 'package:cry/form/cry_input.dart';
 import 'package:cry/form/cry_select.dart';
-import 'package:cry/form/cry_select_custom_widget.dart';
 import 'package:cry/form/cry_select_date.dart';
+import 'package:cry/model/response_body_api.dart';
 import 'package:cry/utils/adaptive_util.dart';
+import 'package:cry/utils/cry_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/api/file_api.dart';
 import 'package:flutter_admin/api/user_info_api.dart';
-import 'package:cry/cry_button.dart';
 import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/constants/constant_dict.dart';
-import 'package:cry/model/response_body_api.dart';
 import 'package:flutter_admin/generated/l10n.dart';
-import 'package:flutter_admin/models/admin_model.dart';
-import 'package:flutter_admin/models/dept.dart';
 import 'package:flutter_admin/models/user_info.dart';
-import 'package:flutter_admin/pages/common/dept_selector.dart';
-import 'package:cry/utils/cry_utils.dart';
+import 'package:flutter_admin/models/user_model.dart';
 import 'package:flutter_admin/utils/dict_util.dart';
 import 'package:flutter_admin/utils/store_util.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as Path;
-import 'package:http_parser/http_parser.dart';
 
 class UserInfoMine extends StatefulWidget {
   UserInfoMine();
@@ -42,15 +38,17 @@ class UserInfoMine extends StatefulWidget {
 
 class _UserInfoMineState extends State<UserInfoMine> {
   UserInfo? userInfo;
-  late AdminModel adminModel;
+  late UserModel adminModel;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool isAdmin = false;
 
   @override
   void initState() {
+    isAdmin = StoreUtil.read(Constant.IS_ADMIN);
     try {
-      adminModel = StoreUtil.read(Constant.EVN_ADMIN);
+      adminModel = StoreUtil.read(Constant.EVN_USER);
     } catch (e) {
-      adminModel = new AdminModel();
+      adminModel = new UserModel();
     }
     ;
     this.userInfo = StoreUtil.getCurrentUserInfo();
@@ -123,9 +121,14 @@ class _UserInfoMineState extends State<UserInfoMine> {
               return;
             }
             form.save();
-            bool updateAdminStatus =
-                await ApiDioController.updateAdmin(adminModel);
-            if(!updateAdminStatus){
+            bool updateAdminStatus = false;
+            if (isAdmin) {
+              updateAdminStatus =
+                  await ApiDioController.updateAdmin(adminModel);
+            } else {
+              updateAdminStatus = await ApiDioController.updateUser(adminModel);
+            }
+            if (!updateAdminStatus) {
               return;
             }
             UserInfoApi.saveOrUpdate(this.userInfo!.toMap())

@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/generated/l10n.dart';
-import 'package:flutter_admin/models/admin_model.dart';
+import 'package:flutter_admin/models/user_model.dart';
 import 'package:flutter_admin/pages/admin/admin_edit.dart';
 import 'package:flutter_admin/utils/excel_export.dart';
 import 'package:flutter_admin/utils/store_util.dart';
@@ -34,7 +34,7 @@ class AdminMain extends StatefulWidget {
 class _AdminMainState extends State<AdminMain> {
   AdminDataSource ds = AdminDataSource();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  AdminModel adminModel = AdminModel();
+  UserModel adminModel = UserModel();
 
   @override
   void initState() {
@@ -220,7 +220,7 @@ class _AdminMainState extends State<AdminMain> {
   }
 
   reset() async {
-    adminModel = AdminModel();
+    adminModel = UserModel();
     formKey.currentState!.reset();
     await ds.loadData();
   }
@@ -235,7 +235,7 @@ class AdminDataSource extends DataGridSource {
     if (params != null) {
       this.params = params;
     }
-    List<AdminModel> admins = (await ApiDioController.getAllAdmin());
+    List<UserModel> admins = (await ApiDioController.getAllAdmin());
 
     if (admins.isNotEmpty) {
       StoreUtil.writeAdmins(admins);
@@ -252,10 +252,10 @@ class AdminDataSource extends DataGridSource {
     notifyDataSourceListeners();
   }
 
-  List<ExcelDataRow> _buildReportDataRows(List<AdminModel> stations) {
+  List<ExcelDataRow> _buildReportDataRows(List<UserModel> stations) {
     List<ExcelDataRow> excelDataRows = <ExcelDataRow>[];
 
-    excelDataRows = stations.map<ExcelDataRow>((AdminModel dataRow) {
+    excelDataRows = stations.map<ExcelDataRow>((UserModel dataRow) {
       return ExcelDataRow(cells: <ExcelDataCell>[
         ExcelDataCell(columnHeader: 'Admin', value: dataRow.adminId),
         ExcelDataCell(columnHeader: 'Tài khoản', value: dataRow.user),
@@ -281,7 +281,7 @@ class AdminDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    AdminModel adminModel = row.getCells()[0].value;
+    UserModel adminModel = row.getCells()[0].value;
     return DataGridRowAdapter(cells: [
       CryButtonBar(
         children: [
@@ -348,7 +348,7 @@ class AdminDataSource extends DataGridSource {
     });
   }
 
-  edit({AdminModel? adminModel}) async {
+  edit({UserModel? adminModel}) async {
     var result =
         await Utils.fullscreenDialog(AdminEdit(adminModel: adminModel));
     if (result ?? false) {

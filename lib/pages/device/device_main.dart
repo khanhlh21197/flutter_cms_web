@@ -4,6 +4,8 @@
 /// @date: 2021/6/21
 /// @version: 1.0
 /// @description:
+import 'dart:convert';
+
 import 'package:cry/cry.dart';
 import 'package:cry/cry_button.dart';
 import 'package:cry/cry_button_bar.dart';
@@ -61,9 +63,17 @@ class _DeviceMainState extends State<DeviceMain> {
   void initMqtt() async {
     mqttBrowserWrapper = MQTTBrowserWrapper(() {
       print('Connect success');
-    }, (p0) => print(p0));
+    }, (message) {
+      print(message);
+      var deviceMqtt = DeviceModel.fromJson(jsonDecode(message));
+      ds.mqttUpdate(deviceMqtt);
+    });
 
-    mqttBrowserWrapper.prepareMqttClient('topic');
+    if (stationId.isNotEmpty) {
+      mqttBrowserWrapper.prepareMqttClient(stationId);
+    } else {
+      mqttBrowserWrapper.prepareMqttClient('topic');
+    }
   }
 
   @override
@@ -166,6 +176,19 @@ class _DeviceMainState extends State<DeviceMain> {
             ),
           ),
           width: 100,
+        ),
+        GridColumn(
+          columnName: 'Device ID',
+          label: Container(
+            padding: EdgeInsets.all(8.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              S.of(context).ozone,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          width: 80,
         ),
         GridColumn(
           columnName: 'Station ID',
@@ -279,15 +302,31 @@ class DeviceDataSource extends DataGridSource {
   List<DataGridRow> _rows = [];
   final String stationId;
   bool isAdmin = StoreUtil.read(Constant.IS_ADMIN) ?? false;
+  List<DeviceModel> devices = [];
 
   DeviceDataSource(this.stationId);
+
+  mqttUpdate(DeviceModel device) {
+    if (devices.isNotEmpty) {
+      devices.forEach((element) {
+        if (element.deviceId == device.deviceId) {
+          element.ozone = device.ozone;
+        }
+      });
+    }
+
+    _rows = devices.map<DataGridRow>((v) {
+      return DataGridRow(cells: [
+        DataGridCell(columnName: 'deviceModel', value: v),
+      ]);
+    }).toList(growable: false);
+    notifyDataSourceListeners();
+  }
 
   loadData({Map? params}) async {
     if (params != null) {
       this.params = params;
     }
-
-    List<DeviceModel> devices = [];
 
     if (stationId.isEmpty) {
       devices = (await ApiDioController.getAllDevice());
@@ -356,6 +395,15 @@ class DeviceDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           deviceModel.deviceId ?? '--',
+          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.all(8),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          deviceModel.ozone ?? '--',
           style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),

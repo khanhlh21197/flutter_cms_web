@@ -3,7 +3,6 @@ import 'package:cry/vo/select_option_vo.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_admin/api/api_url.dart';
 import 'package:flutter_admin/constants/constant.dart';
-import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/device_model.dart';
 import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/models/user_model.dart';
@@ -83,6 +82,7 @@ class ApiDioController {
         data: body,
       );
       CustomLog.log(response);
+      print('Response: $response');
       if (response.statusCode == 200) {
         if (response.data!['message'] == "success") {
           return asModel(response.data!);
@@ -215,7 +215,7 @@ class ApiDioController {
     return listDevice;
   }
 
-  static Future<bool> registerAdmin(AdminModel adminModel) async {
+  static Future<bool> registerAdmin(UserModel adminModel) async {
     Dio dio = Dio(options);
 
     bool registerStatus = false;
@@ -236,10 +236,10 @@ class ApiDioController {
     return registerStatus;
   }
 
-  static Future<AdminModel> loginAdmin(AdminModel adminModel) async {
+  static Future<UserModel> loginAdmin(UserModel adminModel) async {
     Dio dio = Dio(options);
 
-    AdminModel adminResponse = new AdminModel();
+    UserModel adminResponse = new UserModel();
 
     bool loginStatus = false;
     await postMethods(
@@ -250,7 +250,7 @@ class ApiDioController {
         if (map['message'] == 'success' && map['data'] != null) {
           final response = map['data'] as List;
           adminResponse =
-              response.map((e) => AdminModel.fromJson(e)).toList()[0];
+              response.map((e) => UserModel.fromJson(e)).toList()[0];
           loginStatus = true;
           CryUtils.message('Đăng nhập thành công');
         } else {
@@ -289,23 +289,23 @@ class ApiDioController {
     return userResponse;
   }
 
-  static Future<List<AdminModel>> getAdmin(AdminModel adminModel) async {
+  static Future<List<UserModel>> getAdmin(UserModel adminModel) async {
     Dio dio = Dio(options);
 
-    List<AdminModel> adminModels = [];
+    List<UserModel> adminModels = [];
     await postMethods(
       url: ApiURL.getAdmin,
       dio: dio,
       body: adminModel.toJson(),
       asModel: (map) {
         final responseList = map as List;
-        adminModels = responseList.map((e) => AdminModel.fromJson(e)).toList();
+        adminModels = responseList.map((e) => UserModel.fromJson(e)).toList();
       },
     );
     return adminModels;
   }
 
-  static Future<bool> updateAdmin(AdminModel adminModel) async {
+  static Future<bool> updateAdmin(UserModel adminModel) async {
     Dio dio = Dio(options);
 
     bool updateAdminStatus = false;
@@ -317,8 +317,8 @@ class ApiDioController {
         if (map['message'] == 'success') {
           updateAdminStatus = true;
           final response = map['data'] as List;
-          AdminModel adminResponse =
-              response.map((e) => AdminModel.fromJson(e)).toList()[0];
+          UserModel adminResponse =
+              response.map((e) => UserModel.fromJson(e)).toList()[0];
           StoreUtil.write(Constant.EVN_ADMIN, adminResponse);
           CryUtils.message('Xóa admin thành công');
         } else {
@@ -330,17 +330,17 @@ class ApiDioController {
     return updateAdminStatus;
   }
 
-  static Future<List<AdminModel>> updatePassAdmin(AdminModel adminModel) async {
+  static Future<List<UserModel>> updatePassAdmin(UserModel adminModel) async {
     Dio dio = Dio(options);
 
-    List<AdminModel> adminModels = [];
+    List<UserModel> adminModels = [];
     await postMethods(
       url: ApiURL.updatePassAdmin,
       dio: dio,
       body: adminModel.toJson(),
       asModel: (map) {
         final responseList = map as List;
-        adminModels = responseList.map((e) => AdminModel.fromJson(e)).toList();
+        adminModels = responseList.map((e) => UserModel.fromJson(e)).toList();
       },
     );
     return adminModels;
@@ -548,6 +548,24 @@ class ApiDioController {
     return stations;
   }
 
+  static Future<List<StationModel>> getStationByUser(Map params) async {
+    Dio dio = Dio(options);
+
+    List<StationModel> stations = [];
+    await postMethods(
+      url: ApiURL.getStationByUser,
+      dio: dio,
+      body: params,
+      asModel: (map) {
+        if (map['data'] != null) {
+          final responseList = map['data'] as List;
+          stations = responseList.map((e) => StationModel.fromJson(e)).toList();
+        }
+      },
+    );
+    return stations;
+  }
+
   static Future<List<UserStationModel>> getAllUserStation() async {
     Dio dio = Dio(options);
 
@@ -579,23 +597,23 @@ class ApiDioController {
     return stations;
   }
 
-  static Future<List<AdminModel>> getAllAdmin() async {
+  static Future<List<UserModel>> getAllAdmin() async {
     Dio dio = Dio(options);
 
-    List<AdminModel> admins = [];
-    await getData<List<AdminModel>>(
+    List<UserModel> admins = [];
+    await getData<List<UserModel>>(
       url: ApiURL.getAllAdmin,
       dio: dio,
       asModel: (map) {
         final responseList = map as List;
-        admins = responseList.map((e) => AdminModel.fromJson(e)).toList();
+        admins = responseList.map((e) => UserModel.fromJson(e)).toList();
       },
     );
     return admins;
   }
 
   static Future<List<SelectOptionVO>> getAdminIds() async {
-    List<AdminModel> admins = (await ApiDioController.getAllAdmin());
+    List<UserModel> admins = (await ApiDioController.getAllAdmin());
     return admins
         .map((e) => SelectOptionVO(value: e.user, label: e.user))
         .toList();

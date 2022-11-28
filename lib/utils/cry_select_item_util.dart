@@ -5,13 +5,12 @@
 /// @version: 1.0
 /// @description: 数据字典工具
 import 'package:cry/vo/select_option_vo.dart';
-import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/models/user_model.dart';
 
 class CrySelectItemUtil {
   static List<SelectOptionVO> getAdminIdSelectOptionList(
-      List<AdminModel> admins) {
+      List<UserModel> admins) {
     return admins
         .map((e) => SelectOptionVO(value: e.adminId, label: e.adminId))
         .toList();

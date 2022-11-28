@@ -39,10 +39,17 @@ class _StationMainState extends State<StationMain> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   StationModel stationModel = StationModel();
   bool isAdmin = StoreUtil.read(Constant.IS_ADMIN) ?? false;
+  String? userId = StoreUtil.read(Constant.USER_ID) ?? null;
 
   @override
   void initState() {
-    ds.loadData();
+    Map? params;
+    if (userId != null) {
+      params = {'userId': userId};
+    } else {
+      params = null;
+    }
+    ds.loadData(params: params);
     print('loadData initState');
     super.initState();
   }
@@ -257,13 +264,16 @@ class StationDataSource extends DataGridSource {
   // PageModel pageModel = PageModel();
   Map params = {};
   List<DataGridRow> _rows = [];
+  late List<StationModel> stations;
   bool isAdmin = StoreUtil.read(Constant.IS_ADMIN) ?? false;
 
   loadData({Map? params}) async {
     if (params != null) {
       this.params = params;
+      stations = (await ApiDioController.getStationByUser(params));
+    } else {
+      stations = (await ApiDioController.getAllStation());
     }
-    List<StationModel> stations = (await ApiDioController.getAllStation());
 
     if (stations.isNotEmpty) {
       StoreUtil.write(Constant.EVN_STATIONS, stations);
@@ -297,8 +307,6 @@ class StationDataSource extends DataGridSource {
 
   @override
   List<DataGridRow> get rows => _rows;
-
-  List<StationModel> get stations => stations;
 
   // @override
   // Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {

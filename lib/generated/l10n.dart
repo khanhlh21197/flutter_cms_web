@@ -145,7 +145,7 @@ class S {
   String get login {
     return Intl.message(
       'Đăng nhập',
-      name: 'login',
+      name: 'Đăng nhập',
       desc: '',
       args: [],
     );
@@ -415,7 +415,7 @@ class S {
   String get add {
     return Intl.message(
       'Thêm',
-      name: 'add',
+      name: 'Thêm',
       desc: '',
       args: [],
     );
@@ -433,7 +433,7 @@ class S {
   String get update {
     return Intl.message(
       'Cập nhật',
-      name: 'Update',
+      name: 'Cập nhật',
       desc: '',
       args: [],
     );
@@ -1152,7 +1152,7 @@ class S {
   /// `Export Excel`
   String get exportExcel {
     return Intl.message(
-      'Export Excel',
+      'Xuất Excel',
       name: 'exportExcel',
       desc: '',
       args: [],

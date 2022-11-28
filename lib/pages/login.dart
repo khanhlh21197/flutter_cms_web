@@ -9,11 +9,9 @@ import 'package:cry/cry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/constants/constant.dart';
-import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/user.dart';
 import 'package:flutter_admin/models/user_info.dart';
 import 'package:flutter_admin/models/user_model.dart';
-import 'package:flutter_admin/pages/common/lang_switch.dart';
 import 'package:flutter_admin/utils/store_util.dart';
 
 import '../generated/l10n.dart';
@@ -26,7 +24,6 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   User user = new User();
-  AdminModel adminModel = AdminModel();
   UserModel userModel = UserModel();
   String error = "";
   FocusNode focusNodeUserName = FocusNode();
@@ -87,14 +84,17 @@ class _LoginState extends State<Login> {
           //   mainAxisAlignment: MainAxisAlignment.end,
           //   children: [LangSwitch()],
           // ),
+          SizedBox(height: 20.0),
           Center(child: appName),
           SizedBox(height: 20.0),
           _buildLoginForm(),
           SizedBox(height: 20.0),
           Column(
             children: [
-              Text(S.of(context).admin + '：admin/admin'),
-              Text(S.of(context).loginTip),
+              Text(S.of(context).admin + '：admin/admin',
+                  style: TextStyle(fontFamily: 'BeVietnamPro-Medium')),
+              Text(S.of(context).loginTip,
+                  style: TextStyle(fontFamily: 'BeVietnamPro-Medium')),
             ],
           )
         ],
@@ -125,8 +125,10 @@ class _LoginState extends State<Login> {
                       padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                       child: TextFormField(
                         focusNode: focusNodeUserName,
-                        initialValue: adminModel.user,
-                        style: TextStyle(color: Colors.black),
+                        initialValue: userModel.user,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'BeVietnamPro-Medium'),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: S.of(context).username,
@@ -136,7 +138,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         onSaved: (v) {
-                          adminModel.user = v;
+                          userModel.user = v;
                           userModel.user = v;
                         },
                         validator: (v) {
@@ -154,8 +156,10 @@ class _LoginState extends State<Login> {
                       child: TextFormField(
                         focusNode: focusNodePassword,
                         obscureText: true,
-                        initialValue: adminModel.pass,
-                        style: TextStyle(color: Colors.black),
+                        initialValue: userModel.pass,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'BeVietnamPro-Medium'),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: S.of(context).password,
@@ -165,7 +169,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         onSaved: (v) {
-                          adminModel.pass = v;
+                          userModel.pass = v;
                           userModel.pass = v;
                         },
                         validator: (v) {
@@ -198,7 +202,9 @@ class _LoginState extends State<Login> {
                           TextButton(
                             child: Text(
                               '123',
-                              style: TextStyle(color: Colors.blue),
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontFamily: 'BeVietnamPro-Medium'),
                             ),
                             onPressed: () {
                               setState(() {
@@ -209,14 +215,18 @@ class _LoginState extends State<Login> {
                         TextButton(
                           child: Text(
                             S.of(context).register,
-                            style: TextStyle(color: Colors.blue),
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontFamily: 'BeVietnamPro-Medium'),
                           ),
                           onPressed: _register,
                         ),
                         TextButton(
                           child: Text(
                             S.of(context).forgetPassword,
-                            style: TextStyle(color: Colors.black45),
+                            style: TextStyle(
+                                color: Colors.black45,
+                                fontFamily: 'BeVietnamPro-Medium'),
                           ),
                           onPressed: () {},
                         )
@@ -249,7 +259,10 @@ class _LoginState extends State<Login> {
                       borderRadius: BorderRadius.circular(40.0))),
                 ),
                 child: Text(S.of(context).login,
-                    style: TextStyle(color: Colors.white70, fontSize: 20)),
+                    style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 20,
+                        fontFamily: 'BeVietnamPro-Medium')),
               ),
             ),
           ),
@@ -269,62 +282,18 @@ class _LoginState extends State<Login> {
     }
     form.save();
     StoreUtil.write(Constant.IS_ADMIN, isAdmin);
-    if (isAdmin) {
-      AdminModel adminResponse = await ApiDioController.loginAdmin(adminModel);
-      if (adminResponse == new AdminModel()) {
-        focusNodePassword.requestFocus();
-        return;
-      }
-      _loginAdminSuccess(adminResponse);
+
+    UserModel userResponse;
+    if (!isAdmin) {
+      userResponse = await ApiDioController.loginUser(userModel);
     } else {
-      UserModel userResponse = await ApiDioController.loginUser(userModel);
-      if (userResponse == new UserModel()) {
-        focusNodePassword.requestFocus();
-        return;
-      }
-      _loginUserSuccess(userResponse);
+      userResponse = await ApiDioController.loginAdmin(userModel);
     }
-  }
-
-  _loginAdminSuccess(AdminModel adminResponse) async {
-    StoreUtil.write(Constant.KEY_TOKEN,
-        'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwic3ViIjoiZGIyODhkOTUxYzM5MGFmYjA4YzgzNDEwODhiZDkwZmEiLCJpc3MiOiJ1c2VyIiwiaWF0IjoxNjY4NDg3NjQxfQ.jpyNYSphFD9Tu63HcOETPq_1uVrhgx5YNCOHDMN-M7U');
-    StoreUtil.write(
-        Constant.KEY_CURRENT_USER_INFO,
-        UserInfo(
-                id: 'ef8297d1c7333cdc6aeefa96bb8fb89f',
-                createTime: '2020-08-20 02:39:35',
-                updateTime: '2022-11-12 19:09:30',
-                userId: 'db288d951c390afb08c8341088bd90fa',
-                nickName: 'cry',
-                avatarUrl:
-                    'http://www.cairuoyu.com/f/p4/u-20221113030922885766914130.png',
-                gender: '1',
-                country: 'null',
-                province: 'null',
-                city: 'null',
-                name: '怎么来的',
-                school: 'null',
-                major: 'null',
-                birthday: '2025-04-11',
-                entrance: 'null',
-                hometown: '吉林省,通化市,柳河县',
-                memo: 'null',
-                deptId: 'c69bf9ba666a60545addbace63103fdb',
-                userName: 'admin',
-                deptName: 'dd')
-            .toMap());
-
-    StoreUtil.write(Constant.EVN_ADMIN, adminResponse);
-    StoreUtil.write(Constant.ADMIN_ID, adminResponse.adminId);
-
-    // await StoreUtil.loadDict();
-    // await StoreUtil.loadSubsystem();
-    // await StoreUtil.loadMenuData();
-    // await StoreUtil.loadDefaultTabs();
-    StoreUtil.init();
-
-    Cry.pushNamed('/');
+    if (userResponse == new UserModel()) {
+      focusNodePassword.requestFocus();
+      return;
+    }
+    _loginUserSuccess(userResponse);
   }
 
   _loginUserSuccess(UserModel userResponse) async {
@@ -357,7 +326,11 @@ class _LoginState extends State<Login> {
             .toMap());
 
     StoreUtil.write(Constant.EVN_USER, userResponse);
-    StoreUtil.write(Constant.USER_ID, userResponse.userId);
+    if (isAdmin) {
+      StoreUtil.write(Constant.ADMIN_ID, userResponse.adminId);
+    } else {
+      StoreUtil.write(Constant.USER_ID, userResponse.userId);
+    }
 
     // await StoreUtil.loadDict();
     // await StoreUtil.loadSubsystem();

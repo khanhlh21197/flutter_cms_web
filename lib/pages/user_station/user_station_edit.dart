@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/api/article_api.dart';
 import 'package:flutter_admin/generated/l10n.dart';
-import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/models/user_model.dart';
 import 'package:flutter_admin/models/user_station_model.dart';
@@ -29,7 +28,7 @@ class UserStationEdit extends StatefulWidget {
 class _UserStationEditState extends State<UserStationEdit> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late UserStationModel userStationModel;
-  List<AdminModel> admins = [];
+  List<UserModel> admins = [];
   List<StationModel> stations = [];
   List<UserModel> users = [];
 
@@ -71,7 +70,7 @@ class _UserStationEditState extends State<UserStationEdit> {
               CrySelect(
                 label: S.of(context).userId,
                 value: userStationModel.userId,
-                width: 300,
+                width: 500,
                 dataList: CrySelectItemUtil.getUserIdSelectOptionList(users),
                 onSaved: (v) {
                   userStationModel.userId = v;
@@ -80,9 +79,9 @@ class _UserStationEditState extends State<UserStationEdit> {
               CrySelect(
                 label: S.of(context).stationId,
                 value: userStationModel.stationId,
-                width: 300,
+                width: 500,
                 dataList:
-                CrySelectItemUtil.getStationIdSelectOptionList(stations),
+                    CrySelectItemUtil.getStationIdSelectOptionList(stations),
                 onSaved: (v) {
                   userStationModel.stationId = v;
                 },
@@ -90,7 +89,7 @@ class _UserStationEditState extends State<UserStationEdit> {
               CrySelect(
                 label: S.of(context).adminId,
                 value: userStationModel.adminId,
-                width: 300,
+                width: 500,
                 dataList: CrySelectItemUtil.getAdminIdSelectOptionList(admins),
                 onSaved: (v) {
                   userStationModel.adminId = v;
@@ -103,7 +102,9 @@ class _UserStationEditState extends State<UserStationEdit> {
     );
     var result = Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).add),
+        title: userStationModel == UserStationModel()
+            ? Text(S.of(context).add)
+            : Text(S.of(context).update),
         actions: [
           CryButtons.save(context, save),
         ],

@@ -13,9 +13,10 @@ import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/api/article_api.dart';
 import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/generated/l10n.dart';
-import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/station_model.dart';
+import 'package:flutter_admin/models/user_model.dart';
 import 'package:flutter_admin/pages/device/device_main.dart';
+import 'package:flutter_admin/pages/mqtt/mqttBrowserWrapper.dart';
 import 'package:flutter_admin/utils/cry_select_item_util.dart';
 import 'package:flutter_admin/utils/store_util.dart';
 
@@ -31,7 +32,8 @@ class StationEdit extends StatefulWidget {
 class _StationEditState extends State<StationEdit> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late StationModel stationModel;
-  List<AdminModel> admins = [];
+  List<UserModel> admins = [];
+  late MQTTBrowserWrapper mqttBrowserWrapper;
 
   @override
   void initState() {
@@ -122,7 +124,9 @@ class _StationEditState extends State<StationEdit> {
         : Container();
     var result = Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).add),
+        title: stationModel == StationModel()
+            ? Text(S.of(context).add)
+            : Text(S.of(context).update),
         actions: [
           CryButtons.save(context, save),
         ],

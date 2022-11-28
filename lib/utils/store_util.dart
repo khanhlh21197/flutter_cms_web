@@ -11,7 +11,6 @@ import 'package:flutter_admin/api/dict_api.dart';
 import 'package:flutter_admin/api/menu_api.dart';
 import 'package:flutter_admin/api/subsystem_api.dart';
 import 'package:flutter_admin/constants/constant.dart';
-import 'package:flutter_admin/models/admin_model.dart';
 import 'package:flutter_admin/models/menu.dart';
 import 'package:flutter_admin/models/station_model.dart';
 import 'package:flutter_admin/models/subsystem.dart';
@@ -37,7 +36,7 @@ class StoreUtil {
     GetStorage().write(key, workbookBytes);
   }
 
-  static writeAdmins(List<AdminModel> admins) {
+  static writeAdmins(List<UserModel> admins) {
     GetStorage().write(Constant.EVN_ADMINS, admins);
   }
 
@@ -61,9 +60,9 @@ class StoreUtil {
     return users;
   }
 
-  static List<AdminModel> readAdmins() {
-    List<AdminModel> admins =
-        GetStorage().read(Constant.EVN_ADMINS) ?? <AdminModel>[];
+  static List<UserModel> readAdmins() {
+    List<UserModel> admins =
+        GetStorage().read(Constant.EVN_ADMINS) ?? <UserModel>[];
     print('readAdmins: $admins');
     return admins;
   }
