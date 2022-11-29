@@ -72,7 +72,7 @@ class _DeviceMainState extends State<DeviceMain> {
     if (stationId.isNotEmpty) {
       mqttBrowserWrapper.prepareMqttClient(stationId);
     } else {
-      mqttBrowserWrapper.prepareMqttClient('topic');
+      mqttBrowserWrapper.prepareMqttClient('E1.22');
     }
   }
 
@@ -107,14 +107,6 @@ class _DeviceMainState extends State<DeviceMain> {
             width: 100,
             onSaved: (v) {
               deviceModel.stationId = v;
-            },
-          ),
-          CryInput(
-            label: S.of(context).adminId,
-            value: deviceModel.adminId,
-            width: 100,
-            onSaved: (v) {
-              deviceModel.adminId = v;
             },
           ),
           CrySelect(
@@ -186,12 +178,25 @@ class _DeviceMainState extends State<DeviceMain> {
               S.of(context).ozone,
               style: TextStyle(
                   fontFamily: 'BeVietnamPro-Medium',
-                  color: Colors.red,
+                  color: Colors.blue,
                   fontWeight: FontWeight.bold),
               overflow: TextOverflow.ellipsis,
             ),
           ),
           width: 80,
+        ),
+        GridColumn(
+          columnName: 'Location',
+          label: Container(
+            padding: EdgeInsets.all(8.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              S.of(context).location,
+              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          width: 120,
         ),
         GridColumn(
           columnName: 'Station ID',
@@ -206,18 +211,6 @@ class _DeviceMainState extends State<DeviceMain> {
           ),
           width: 120,
         ),
-        GridColumn(
-            columnName: 'Admin ID',
-            label: Container(
-              padding: EdgeInsets.all(8.0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                S.of(context).adminId,
-                style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            width: 200),
         GridColumn(
             columnName: 'Name',
             label: Container(
@@ -242,19 +235,6 @@ class _DeviceMainState extends State<DeviceMain> {
             ),
           ),
           columnWidthMode: ColumnWidthMode.fill,
-        ),
-        GridColumn(
-          columnName: 'Location',
-          label: Container(
-            padding: EdgeInsets.all(8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              S.of(context).location,
-              style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          width: 120,
         ),
       ],
     );
@@ -380,6 +360,14 @@ class DeviceDataSource extends DataGridSource {
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
     DeviceModel deviceModel = row.getCells()[0].value;
+    Color textColor = Colors.blue;
+    if (deviceModel.ozone! > 50 && deviceModel.ozone! < 100) {
+      textColor = Colors.yellow;
+    } else if (deviceModel.ozone! > 100 && deviceModel.ozone! < 150) {
+      textColor = Colors.orange;
+    } else if ((deviceModel.ozone! > 150)) {
+      textColor = Colors.red;
+    }
     return DataGridRowAdapter(cells: [
       isAdmin
           ? CryButtonBar(
@@ -409,7 +397,7 @@ class DeviceDataSource extends DataGridSource {
           deviceModel.ozone != null ? '${deviceModel.ozone}' : '--',
           style: TextStyle(
               fontFamily: 'BeVietnamPro-Medium',
-              color: Colors.red,
+              color: textColor,
               fontWeight: FontWeight.bold),
           overflow: TextOverflow.ellipsis,
         ),
@@ -418,7 +406,7 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          deviceModel.stationId ?? '--',
+          deviceModel.location ?? '--',
           style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
@@ -427,7 +415,7 @@ class DeviceDataSource extends DataGridSource {
         padding: const EdgeInsets.all(8),
         alignment: Alignment.centerLeft,
         child: Text(
-          deviceModel.adminId ?? '--',
+          deviceModel.stationId ?? '--',
           style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),
@@ -446,15 +434,6 @@ class DeviceDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           deviceModel.description ?? '--',
-          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      Container(
-        padding: const EdgeInsets.all(8),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          deviceModel.location ?? '--',
           style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
           overflow: TextOverflow.ellipsis,
         ),

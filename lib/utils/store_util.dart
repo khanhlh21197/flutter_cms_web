@@ -113,20 +113,6 @@ class StoreUtil {
     var data = GetStorage().read(Constant.KEY_MENU_LIST);
     final menuJson = [
       {
-        "id": "d03a977b151634f66a117a8d552c5c05fb",
-        "createTime": "2021-03-19 05:56:18",
-        "updateTime": "2021-07-05 08:10:11",
-        "name": "文章管理",
-        "nameEn": "Article",
-        "subsystemId": "1",
-        "icon": "dept",
-        "pid": "45f78d3f93e1165e1ffdd114f81ad02c",
-        "url": "/articleMain",
-        "module": null,
-        "remark": "",
-        "orderBy": 9
-      },
-      {
         "id": "stationMenuId",
         "createTime": "2020-08-22 02:11:26",
         "updateTime": "2021-08-27 07:42:38",
@@ -169,20 +155,6 @@ class StoreUtil {
         "orderBy": 1
       },
       {
-        "id": "userMenuId",
-        "createTime": "2020-08-22 02:11:26",
-        "updateTime": "2021-08-27 07:42:38",
-        "name": "Quản lý Users",
-        "nameEn": "Users",
-        "subsystemId": "1",
-        "icon": "role",
-        "pid": null,
-        "url": "/userMain",
-        "module": null,
-        "remark": "",
-        "orderBy": 1
-      },
-      {
         "id": "reportMenuId",
         "createTime": "2020-08-22 02:11:26",
         "updateTime": "2021-08-27 07:42:38",
@@ -210,6 +182,22 @@ class StoreUtil {
           "icon": "role",
           "pid": null,
           "url": "/adminMain",
+          "module": null,
+          "remark": "",
+          "orderBy": 1
+        },
+      );
+      menuJson.add(
+        {
+          "id": "userMenuId",
+          "createTime": "2020-08-22 02:11:26",
+          "updateTime": "2021-08-27 07:42:38",
+          "name": "Quản lý Users",
+          "nameEn": "Users",
+          "subsystemId": "1",
+          "icon": "role",
+          "pid": null,
+          "url": "/userMain",
           "module": null,
           "remark": "",
           "orderBy": 1

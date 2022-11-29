@@ -35,7 +35,13 @@ class _ReportMainState extends State<ReportMain> {
   List<StationModel> stations = [];
   List<SelectOptionVO> stationSelect = [];
   List<String> days = ['7', '15', '30'];
+  List<SelectOptionVO> thresholds = [
+    SelectOptionVO(value: '50', label: 'Ngưỡng 1'),
+    SelectOptionVO(value: '100', label: 'Ngưỡng 2'),
+    SelectOptionVO(value: '150', label: 'Ngưỡng 3'),
+  ];
   String day = '7';
+  String nguong = '50';
 
   _ReportMainState();
 
@@ -90,6 +96,14 @@ class _ReportMainState extends State<ReportMain> {
             onSaved: (v) {
               print('Day: $v');
               day = v;
+            },
+          ),
+          CrySelect(
+            label: S.of(context).threshold,
+            dataList: thresholds,
+            value: nguong,
+            onSaved: (v) {
+              nguong = v;
             },
           ),
         ],
@@ -153,24 +167,25 @@ class _ReportMainState extends State<ReportMain> {
 
   query() {
     formKey.currentState!.save();
-    ds.loadData(stationId: 'evnStation2', day: day);
+    ds.loadData(stationId: deviceModel.stationId, day: day);
   }
 
   reset() async {
     deviceModel = DeviceModel();
     formKey.currentState!.reset();
-    await ds.loadData();
+    await ds.loadData(stationId: deviceModel.stationId, day: day);
   }
 }
 
 class DeviceDataSource extends DataGridSource {
   String stationId = '';
   String day = '';
+  String nguong = '50';
   List<DataGridRow> _rows = [];
 
   DeviceDataSource();
 
-  loadData({String? stationId, String? day}) async {
+  loadData({String? stationId, String? day, String? nguong}) async {
     if (stationId != null) {
       this.stationId = stationId;
     }
@@ -178,8 +193,12 @@ class DeviceDataSource extends DataGridSource {
       this.day = day;
     }
 
+    if (nguong != null) {
+      this.nguong = nguong;
+    }
+
     List<DeviceModel> devices =
-        await ApiDioController.queryStation(stationId, day);
+        await ApiDioController.queryStation(stationId, day, nguong);
 
     _rows = devices.map<DataGridRow>((v) {
       return DataGridRow(cells: [

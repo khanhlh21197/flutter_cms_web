@@ -20,6 +20,11 @@ class MQTTBrowserWrapper {
   MQTTBrowserWrapper(this.onConnectedCallback, this.onMessageArrived);
 
   Future<void> prepareMqttClient(String topic) async {
+    numberOfConnections++;
+    if (numberOfConnections >= 3) {
+      print('Over retry times');
+      return;
+    }
     _setupMqttClient();
     await _connectClient();
     _subscribeToTopic(topic);

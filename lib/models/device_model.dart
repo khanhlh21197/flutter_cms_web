@@ -41,7 +41,7 @@ class DeviceModel {
         threshold2 = json['threshold2'] ?? '',
         threshold3 = json['threshold3'] ?? '',
         notifi = json['notifi'] ?? '',
-        ozone = json['ozone'] ?? '0',
+        ozone = json['ozone'] is int ? json['ozone'] : 0,
         solanvuot = json['solanvuot'] ?? 0,
         status = json['status'] ?? '';
 

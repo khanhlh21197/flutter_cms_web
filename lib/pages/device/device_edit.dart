@@ -36,9 +36,9 @@ class _DeviceEditState extends State<DeviceEdit> {
   List<SelectOptionVO> adminSelect = [];
   List<SelectOptionVO> stationSelect = [];
   List<SelectOptionVO> thresholds = [
-    SelectOptionVO(value: '5', label: '5'),
-    SelectOptionVO(value: '10', label: '10'),
-    SelectOptionVO(value: '15', label: '15'),
+    SelectOptionVO(value: '50', label: '50'),
+    SelectOptionVO(value: '100', label: '100'),
+    SelectOptionVO(value: '150', label: '150'),
   ];
 
   @override

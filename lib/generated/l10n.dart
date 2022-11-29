@@ -1054,6 +1054,15 @@ class S {
     );
   }
 
+  String get threshold {
+    return Intl.message(
+      'Ngưỡng',
+      name: 'Day',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get deviceId {
     return Intl.message(
       'Mã TB',

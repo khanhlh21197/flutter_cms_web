@@ -201,7 +201,8 @@ class DeviceDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         child: Text(
           deviceModel.ozone != null ? '${deviceModel.ozone}' : '--',
-          style: TextStyle(fontFamily: 'BeVietnamPro-Medium'),
+          style:
+              TextStyle(fontFamily: 'BeVietnamPro-Medium', color: Colors.blue),
           overflow: TextOverflow.ellipsis,
         ),
       ),
