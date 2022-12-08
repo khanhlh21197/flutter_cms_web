@@ -16,6 +16,7 @@ import 'package:flutter_admin/pages/dash/dashboard.dart';
 import 'package:flutter_admin/pages/dept/dept_main.dart';
 import 'package:flutter_admin/pages/device/device_main.dart';
 import 'package:flutter_admin/pages/dict/dict_list.dart';
+import 'package:flutter_admin/pages/draggable/draggable_main.dart';
 import 'package:flutter_admin/pages/image/image_upload.dart';
 import 'package:flutter_admin/pages/layout/layout.dart';
 import 'package:flutter_admin/pages/login.dart';
@@ -52,6 +53,7 @@ class Routes {
     '/videoUpload': VideoUpload(),
     '/articleMain': ArticleMain(),
     '/stationMain': StationMain(),
+    '/draggableMain': DraggableMain(),
     '/userStationMain': UserStationMain(),
     '/reportMain': ReportMain(),
     '/deviceMain': DeviceMain(stationId: ''),
@@ -77,7 +79,8 @@ class Routes {
         url: '/userInfoMine',
         name: 'Thông tin cá nhân',
         nameEn: 'Thông tin cá nhân'),
-    TabPage(id: 'message', url: '/message', name: 'Đóng góp', nameEn: 'Feedback'),
+    TabPage(
+        id: 'message', url: '/message', name: 'Đóng góp', nameEn: 'Feedback'),
   ];
 
   static init() {

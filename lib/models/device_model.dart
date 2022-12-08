@@ -13,6 +13,8 @@ class DeviceModel {
   String? notifi;
   int? ozone;
   int? solanvuot;
+  double? x;
+  double? y;
 
   DeviceModel({
     this.deviceId,
@@ -27,6 +29,8 @@ class DeviceModel {
     this.status,
     this.notifi,
     this.ozone,
+    this.x,
+    this.y,
   });
 
   DeviceModel.fromJson(Map<String, dynamic> json)

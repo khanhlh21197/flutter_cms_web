@@ -746,14 +746,18 @@ class ApiDioController {
   }
 
   static Future<List<DeviceModel>> queryDetail(
-      String? deviceId, String? day) async {
+      String? deviceId, String? day, String? nguong) async {
     Dio dio = Dio(options);
 
     List<DeviceModel> devices = [];
     await postMethods(
       url: ApiURL.queryDetail,
       dio: dio,
-      body: {"deviceId": deviceId ?? '', "day": day ?? '7', 'nguong': '5'},
+      body: {
+        "deviceId": deviceId ?? '',
+        "day": day ?? '7',
+        'nguong': nguong ?? '50'
+      },
       asModel: (map) {
         if (map['data'] != null) {
           final responseList = map['data'] as List;

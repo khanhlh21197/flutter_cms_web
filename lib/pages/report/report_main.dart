@@ -167,13 +167,14 @@ class _ReportMainState extends State<ReportMain> {
 
   query() {
     formKey.currentState!.save();
-    ds.loadData(stationId: deviceModel.stationId, day: day);
+    ds.loadData(stationId: deviceModel.stationId, day: day, nguong: nguong);
   }
 
   reset() async {
     deviceModel = DeviceModel();
     formKey.currentState!.reset();
-    await ds.loadData(stationId: deviceModel.stationId, day: day);
+    await ds.loadData(
+        stationId: deviceModel.stationId, day: day, nguong: nguong);
   }
 }
 
@@ -264,6 +265,7 @@ class DeviceDataSource extends DataGridSource {
     var result = await Utils.fullscreenDialog(ReportEdit(
       deviceModel: deviceModel,
       day: day,
+      nguong: nguong,
     ));
     if (result ?? false) {
       loadData();

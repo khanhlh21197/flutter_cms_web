@@ -16,8 +16,10 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 class ReportEdit extends StatefulWidget {
   final DeviceModel? deviceModel;
   final String? day;
+  final String? nguong;
 
-  const ReportEdit({Key? key, this.deviceModel, this.day}) : super(key: key);
+  const ReportEdit({Key? key, this.deviceModel, this.day, this.nguong})
+      : super(key: key);
 
   @override
   _ReportEditState createState() => _ReportEditState();
@@ -27,14 +29,16 @@ class _ReportEditState extends State<ReportEdit> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late DeviceModel deviceModel;
   late String day;
+  late String nguong;
   late DeviceDataSource ds;
 
   @override
   void initState() {
     deviceModel = widget.deviceModel ?? DeviceModel();
     day = widget.day ?? '7';
+    nguong = widget.nguong ?? '50';
     ds = DeviceDataSource();
-    ds.loadData(deviceId: deviceModel.deviceId, day: day);
+    ds.loadData(deviceId: deviceModel.deviceId, day: day, nguong: nguong);
     super.initState();
   }
 
@@ -141,20 +145,25 @@ class _ReportEditState extends State<ReportEdit> {
 class DeviceDataSource extends DataGridSource {
   String deviceId = '';
   String day = '';
+  String nguong = '';
   List<DataGridRow> _rows = [];
 
   DeviceDataSource();
 
-  loadData({String? deviceId, String? day}) async {
+  loadData({String? deviceId, String? day, String? nguong}) async {
     if (deviceId != null) {
       this.deviceId = deviceId;
     }
     if (day != null) {
       this.day = day;
     }
+    if (nguong != null) {
+      this.nguong = nguong;
+    }
 
+    print('Nguong: $nguong');
     List<DeviceModel> devices =
-        await ApiDioController.queryDetail(deviceId, day);
+        await ApiDioController.queryDetail(deviceId, day, nguong);
 
     _rows = devices.map<DataGridRow>((v) {
       return DataGridRow(cells: [

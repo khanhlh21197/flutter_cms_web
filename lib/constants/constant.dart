@@ -24,6 +24,7 @@ class Constant {
   static const String REPORT_WORKBOOK = "reportWorkbook";
   static const String EVN_USERS = "evnUsers";
   static const String EVN_ADMINS = "evnAdmins";
+  static const String EVN_DEVICES = "evnDevices";
   static const String ADMIN_ID = "adminId";
   static const String USER_ID = "userId";
   static const String KEY_OPENED_TAB_PAGE_LIST = "openedTabPageList";
