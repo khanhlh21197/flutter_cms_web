@@ -9,6 +9,7 @@ class CanvasObject<T> {
   final double height;
   final Color mau;
   final T? child;
+  final String? id;
 
   CanvasObject({
     this.dx = 0,
@@ -17,6 +18,7 @@ class CanvasObject<T> {
     this.height = 100,
     this.mau = Colors.black,
     this.child,
+    this.id,
   });
 
   CanvasObject<T> copyWith({
@@ -26,6 +28,7 @@ class CanvasObject<T> {
     double? height,
     Color? mau,
     T? child,
+    String? id,
   }) {
     return CanvasObject<T>(
       dx: dx ?? this.dx,
@@ -38,6 +41,8 @@ class CanvasObject<T> {
   }
 
   Size get size => Size(width, height);
+
   Offset get offset => Offset(dx, dy);
+
   Rect get rect => offset & size;
 }

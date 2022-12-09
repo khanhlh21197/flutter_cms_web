@@ -32,7 +32,7 @@ class _State extends State<DraggableMain> {
   @override
   void initState() {
     _controller.init();
-    initWidget();
+    // initWidget();
     super.initState();
   }
 
@@ -42,23 +42,7 @@ class _State extends State<DraggableMain> {
     super.dispose();
   }
 
-  void initWidget() async {
-    // _controller.addObject(
-    //   CanvasObject(
-    //     dx: 0,
-    //     dy: 0,
-    //     height: MediaQuery.of(context).size.height,
-    //     width: MediaQuery.of(context).size.width,
-    //     child: Container(
-    //       decoration: new BoxDecoration(
-    //         image: new DecorationImage(
-    //           image: new AssetImage("assets/images/sodo.jpg"),
-    //           fit: BoxFit.cover,
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
+  void initWidget({double? stackX, double? stackY}) async {
     devices.forEach((element) {
       _controller.addObject(
         CanvasObject(
@@ -81,11 +65,40 @@ class _State extends State<DraggableMain> {
         ),
       );
     });
+
+    var bgObject = CanvasObject(
+      dx: 0,
+      dy: 0,
+      height: MediaQuery.of(context).size.height - stackY!,
+      width: MediaQuery.of(context).size.width - stackX!,
+      // height: 600,
+      // width: 800,
+      id: 'bgObject',
+      child: IgnorePointer(
+        child: Container(
+          // width: 800,
+          // height: 600,
+          height: MediaQuery.of(context).size.height - stackY,
+          width: MediaQuery.of(context).size.width - stackX,
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("assets/images/sodo.jpg"),
+              fit: BoxFit.fill,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    _controller.addObject(
+      bgObject,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<CanvasController>(
+        key: stackKey,
         stream: _controller.stream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -95,13 +108,16 @@ class _State extends State<DraggableMain> {
             );
           }
           final instance = snapshot.data;
+          RenderBox box =
+              stackKey.currentContext!.findRenderObject() as RenderBox;
+          Offset position =
+              box.localToGlobal(Offset.zero); //this is global position
+          double stackY = position.dy;
+          double stackX = position.dx;
+          print('change');
+
+          initWidget(stackX: stackX, stackY: stackY);
           return Stack(children: [
-            Image.asset(
-              "assets/images/sodo.jpg",
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            ),
             Scaffold(
               backgroundColor: Colors.transparent,
               appBar: AppBar(
@@ -173,6 +189,14 @@ class _State extends State<DraggableMain> {
                   }
                 },
                 onPointerMove: (details) {
+                  if (_controller.selectedObjectsIndices.length == 1) {
+                    if (_controller
+                            .objects[_controller.selectedObjectsIndices[0]]
+                            .id !=
+                        null) {
+                      return;
+                    }
+                  }
                   _controller.updateTouch(
                     details.pointer,
                     details.localPosition,
@@ -180,6 +204,14 @@ class _State extends State<DraggableMain> {
                   );
                 },
                 onPointerDown: (details) {
+                  if (_controller.selectedObjectsIndices.length == 1) {
+                    if (_controller
+                            .objects[_controller.selectedObjectsIndices[0]]
+                            .id !=
+                        null) {
+                      return;
+                    }
+                  }
                   _controller.addTouch(
                     details.pointer,
                     details.localPosition,
@@ -218,9 +250,11 @@ class _State extends State<DraggableMain> {
                               fit: BoxFit.fill,
                               child: SizedBox.fromSize(
                                 size: instance
-                                    .objects[instance.objects.length - 1].size,
+                                    .objects[instance.objects.length - 1]
+                                    .size,
                                 child: instance
-                                    .objects[instance.objects.length - 1].child,
+                                    .objects[instance.objects.length - 1]
+                                    .child,
                               ),
                             ),
                           ),
