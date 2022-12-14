@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_admin/models/device_model.dart';
 import 'package:flutter_admin/pages/draggable/canvas.dart';
 import 'package:flutter_admin/pages/draggable/canvas_object.dart';
+import 'package:flutter_admin/pages/layout/layout_menu_controller.dart';
 
 class DraggableMain extends StatefulWidget {
   const DraggableMain({Key? key}) : super(key: key);
@@ -12,8 +13,8 @@ class DraggableMain extends StatefulWidget {
 }
 
 class _State extends State<DraggableMain> {
-  GlobalKey stackKey = GlobalKey(); // declare a global key
   final _controller = CanvasController();
+  final layoutMenuController = LayoutMenuController();
 
   List<DeviceModel> devices = [
     DeviceModel(x: 15, y: 20, name: 'device1'),
@@ -32,8 +33,11 @@ class _State extends State<DraggableMain> {
   @override
   void initState() {
     _controller.init();
-    // initWidget();
     super.initState();
+    Future.delayed(Duration.zero, () {
+      initWidget();
+    });
+    print('menuController menuWidth: ${layoutMenuController.menuWidth}');
   }
 
   @override
@@ -66,20 +70,18 @@ class _State extends State<DraggableMain> {
       );
     });
 
+    var height = AppBar().preferredSize.height;
+
     var bgObject = CanvasObject(
       dx: 0,
       dy: 0,
-      height: MediaQuery.of(context).size.height - stackY!,
-      width: MediaQuery.of(context).size.width - stackX!,
-      // height: 600,
-      // width: 800,
+      height: MediaQuery.of(context).size.height - height * 3,
+      width: MediaQuery.of(context).size.width - 300,
       id: 'bgObject',
       child: IgnorePointer(
         child: Container(
-          // width: 800,
-          // height: 600,
-          height: MediaQuery.of(context).size.height - stackY,
-          width: MediaQuery.of(context).size.width - stackX,
+          height: MediaQuery.of(context).size.height - height * 3,
+          width: MediaQuery.of(context).size.width - 300,
           decoration: new BoxDecoration(
             image: new DecorationImage(
               image: new AssetImage("assets/images/sodo.jpg"),
@@ -98,7 +100,6 @@ class _State extends State<DraggableMain> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<CanvasController>(
-        key: stackKey,
         stream: _controller.stream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -108,15 +109,6 @@ class _State extends State<DraggableMain> {
             );
           }
           final instance = snapshot.data;
-          RenderBox box =
-              stackKey.currentContext!.findRenderObject() as RenderBox;
-          Offset position =
-              box.localToGlobal(Offset.zero); //this is global position
-          double stackY = position.dy;
-          double stackX = position.dx;
-          print('change');
-
-          initWidget(stackX: stackX, stackY: stackY);
           return Stack(children: [
             Scaffold(
               backgroundColor: Colors.transparent,
@@ -189,14 +181,6 @@ class _State extends State<DraggableMain> {
                   }
                 },
                 onPointerMove: (details) {
-                  if (_controller.selectedObjectsIndices.length == 1) {
-                    if (_controller
-                            .objects[_controller.selectedObjectsIndices[0]]
-                            .id !=
-                        null) {
-                      return;
-                    }
-                  }
                   _controller.updateTouch(
                     details.pointer,
                     details.localPosition,
@@ -204,14 +188,6 @@ class _State extends State<DraggableMain> {
                   );
                 },
                 onPointerDown: (details) {
-                  if (_controller.selectedObjectsIndices.length == 1) {
-                    if (_controller
-                            .objects[_controller.selectedObjectsIndices[0]]
-                            .id !=
-                        null) {
-                      return;
-                    }
-                  }
                   _controller.addTouch(
                     details.pointer,
                     details.localPosition,
@@ -250,11 +226,9 @@ class _State extends State<DraggableMain> {
                               fit: BoxFit.fill,
                               child: SizedBox.fromSize(
                                 size: instance
-                                    .objects[instance.objects.length - 1]
-                                    .size,
+                                    .objects[instance.objects.length - 1].size,
                                 child: instance
-                                    .objects[instance.objects.length - 1]
-                                    .child,
+                                    .objects[instance.objects.length - 1].child,
                               ),
                             ),
                           ),
@@ -296,16 +270,6 @@ class _State extends State<DraggableMain> {
                   ),
                 ),
               ),
-              // floatingActionButton: FloatingActionButton(
-              //   child: Icon(Icons.add),
-              //   backgroundColor: Colors.green,
-              //   onPressed: () {
-              //     setState(() {
-              //       print("doi mau");
-              //       test = Colors.pinkAccent;
-              //     });
-              //   },
-              // ),
             ),
           ]);
         });

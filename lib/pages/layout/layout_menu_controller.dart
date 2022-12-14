@@ -8,5 +8,6 @@
 import 'package:get/get.dart';
 
 class LayoutMenuController extends GetxController {
-
+  RxInt headerHeight = 0.obs;
+  RxDouble menuWidth = 0.0.obs;
 }
