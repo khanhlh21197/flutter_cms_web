@@ -37,7 +37,6 @@ class CanvasObject<T> {
       height: height ?? this.height,
       mau: mau ?? this.mau,
       child: child ?? this.child,
-      id: id,
     );
   }
 

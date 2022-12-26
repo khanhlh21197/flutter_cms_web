@@ -49,10 +49,6 @@ class CanvasController {
         _objects.removeAt(i);
       });
 
-  void removeAllObjects() => _update(() {
-        _objects.clear();
-      });
-
   /// Focus node for listening for keyboard shortcuts
   final focusNode = FocusNode();
 
@@ -161,12 +157,9 @@ class CanvasController {
       }
       for (final idx in _selectedObjects) {
         final widget = _objects[idx];
-        print('Move: ${_objects[idx].id}');
         final delta = (b - a) / scale;
         final _newOffset = widget.offset + delta;
-        final id = _objects[idx].id;
-        _objects[idx] =
-            widget.copyWith(dx: _newOffset.dx, dy: _newOffset.dy, id: id);
+        _objects[idx] = widget.copyWith(dx: _newOffset.dx, dy: _newOffset.dy);
       }
     } else if (touchCount == 2) {
       // Scale and Rotate Update

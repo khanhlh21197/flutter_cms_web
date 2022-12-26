@@ -17,6 +17,7 @@ import 'package:flutter_admin/pages/dept/dept_main.dart';
 import 'package:flutter_admin/pages/device/device_main.dart';
 import 'package:flutter_admin/pages/dict/dict_list.dart';
 import 'package:flutter_admin/pages/draggable/draggable_main.dart';
+import 'package:flutter_admin/pages/draggable_test/draggable_test_main.dart';
 import 'package:flutter_admin/pages/image/image_upload.dart';
 import 'package:flutter_admin/pages/layout/layout.dart';
 import 'package:flutter_admin/pages/login.dart';
@@ -54,6 +55,7 @@ class Routes {
     '/articleMain': ArticleMain(),
     '/stationMain': StationMain(),
     '/draggableMain': DraggableMain(),
+    '/draggableTestMain': DraggableTestMain(),
     '/userStationMain': UserStationMain(),
     '/reportMain': ReportMain(),
     '/deviceMain': DeviceMain(stationId: ''),

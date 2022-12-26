@@ -113,7 +113,7 @@ class StoreUtil {
     var data = GetStorage().read(Constant.KEY_MENU_LIST);
     final menuJson = [
       {
-        "id": "draggableId",
+        "id": "draggableTestId",
         "createTime": "2020-08-22 02:11:26",
         "updateTime": "2021-08-27 07:42:38",
         "name": "Draggable",
@@ -121,11 +121,25 @@ class StoreUtil {
         "subsystemId": "1",
         "icon": "role",
         "pid": null,
-        "url": "/draggableMain",
+        "url": "/draggableTestMain",
         "module": null,
         "remark": "",
         "orderBy": 1
       },
+      // {
+      //   "id": "draggableId",
+      //   "createTime": "2020-08-22 02:11:26",
+      //   "updateTime": "2021-08-27 07:42:38",
+      //   "name": "Draggable",
+      //   "nameEn": "Draggable",
+      //   "subsystemId": "1",
+      //   "icon": "role",
+      //   "pid": null,
+      //   "url": "/draggableMain",
+      //   "module": null,
+      //   "remark": "",
+      //   "orderBy": 1
+      // },
       {
         "id": "stationMenuId",
         "createTime": "2020-08-22 02:11:26",

@@ -13,8 +13,8 @@ class DeviceModel {
   String? notifi;
   int? ozone;
   int? solanvuot;
-  double? x;
-  double? y;
+  double? dx;
+  double? dy;
 
   DeviceModel({
     this.deviceId,
@@ -29,8 +29,8 @@ class DeviceModel {
     this.status,
     this.notifi,
     this.ozone,
-    this.x,
-    this.y,
+    this.dx,
+    this.dy,
   });
 
   DeviceModel.fromJson(Map<String, dynamic> json)
@@ -47,6 +47,8 @@ class DeviceModel {
         notifi = json['notifi'] ?? '',
         ozone = json['ozone'] is int ? json['ozone'] : 0,
         solanvuot = json['solanvuot'] ?? 0,
+        dx = json['dx'] ?? 0,
+        dy = json['dy'] ?? 0,
         status = json['status'] ?? '';
 
   Map<String, dynamic> toJson() => {
@@ -62,5 +64,7 @@ class DeviceModel {
         'threshold3': threshold3,
         'notifi': notifi,
         'status': status,
+        'x': dx,
+        'y': dy,
       };
 }

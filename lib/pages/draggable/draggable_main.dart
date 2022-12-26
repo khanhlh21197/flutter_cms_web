@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/models/device_model.dart';
 import 'package:flutter_admin/pages/draggable/canvas.dart';
 import 'package:flutter_admin/pages/draggable/canvas_object.dart';
@@ -15,16 +16,17 @@ class DraggableMain extends StatefulWidget {
 class _State extends State<DraggableMain> {
   final _controller = CanvasController();
   final layoutMenuController = LayoutMenuController();
+  List<DeviceModel> devices = [];
 
-  List<DeviceModel> devices = [
-    DeviceModel(x: 15, y: 20, name: 'device1'),
-    DeviceModel(x: 25, y: 30, name: 'device2'),
-    DeviceModel(x: 35, y: 40, name: 'device3'),
-    DeviceModel(x: 45, y: 50, name: 'device4'),
-    DeviceModel(x: 150, y: 120, name: 'device5'),
-    DeviceModel(x: 120, y: 150, name: 'device6'),
-    DeviceModel(x: 250, y: 200, name: 'device7'),
-  ];
+  // List<DeviceModel> devices = [
+  //   DeviceModel(dx: 15, dy: 20, name: 'device1'),
+  //   DeviceModel(dx: 25, dy: 30, name: 'device2'),
+  //   DeviceModel(dx: 35, dy: 40, name: 'device3'),
+  //   DeviceModel(dx: 45, dy: 50, name: 'device4'),
+  //   DeviceModel(dx: 150, dy: 120, name: 'device5'),
+  //   DeviceModel(dx: 120, dy: 150, name: 'device6'),
+  //   DeviceModel(dx: 250, dy: 200, name: 'device7'),
+  // ];
 
   List<Widget> positioneds = [];
   late double stackY;
@@ -34,9 +36,7 @@ class _State extends State<DraggableMain> {
   void initState() {
     _controller.init();
     super.initState();
-    Future.delayed(Duration.zero, () {
-      initWidget();
-    });
+    initWidget();
     print('menuController menuWidth: ${layoutMenuController.menuWidth}');
   }
 
@@ -47,13 +47,27 @@ class _State extends State<DraggableMain> {
   }
 
   void initWidget({double? stackX, double? stackY}) async {
+    devices = (await ApiDioController.getAllDevice());
+    if (devices.isEmpty) {
+      devices = [
+        DeviceModel(dx: 15, dy: 20, name: 'device1'),
+        DeviceModel(dx: 25, dy: 30, name: 'device2'),
+        DeviceModel(dx: 35, dy: 40, name: 'device3'),
+        DeviceModel(dx: 45, dy: 50, name: 'device4'),
+        DeviceModel(dx: 150, dy: 120, name: 'device5'),
+        DeviceModel(dx: 120, dy: 150, name: 'device6'),
+        DeviceModel(dx: 250, dy: 200, name: 'device7'),
+      ];
+    }
+    print('Device length: ${devices.length}');
+
     devices.forEach((element) {
       _controller.addObject(
         CanvasObject(
           width: 20,
           height: 20,
-          dx: element.x!,
-          dy: element.y!,
+          dx: element.dx!,
+          dy: element.dy!,
           child: Tooltip(
             message: element.name,
             child: Container(
@@ -76,12 +90,12 @@ class _State extends State<DraggableMain> {
       dx: 0,
       dy: 0,
       height: MediaQuery.of(context).size.height - height * 3,
-      width: MediaQuery.of(context).size.width - 300,
+      width: MediaQuery.of(context).size.width - 60,
       id: 'bgObject',
       child: IgnorePointer(
         child: Container(
           height: MediaQuery.of(context).size.height - height * 3,
-          width: MediaQuery.of(context).size.width - 300,
+          width: MediaQuery.of(context).size.width - 60,
           decoration: new BoxDecoration(
             image: new DecorationImage(
               image: new AssetImage("assets/images/sodo.jpg"),
