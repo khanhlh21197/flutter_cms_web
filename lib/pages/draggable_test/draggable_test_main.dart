@@ -1,6 +1,8 @@
+import 'dart:convert';
+import 'dart:html' as html;
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_admin/api/api_dio_controller.dart';
 import 'package:flutter_admin/constants/constant.dart';
 import 'package:flutter_admin/models/device_model.dart';
@@ -9,9 +11,6 @@ import 'package:flutter_admin/pages/draggable/canvas_object.dart';
 import 'package:flutter_admin/pages/draggable_test/measure_size.dart';
 import 'package:flutter_admin/pages/layout/layout_menu_controller.dart';
 import 'package:flutter_admin/utils/store_util.dart';
-
-import 'dart:convert';
-import 'dart:html' as html;
 
 class DraggableTestMain extends StatefulWidget {
   const DraggableTestMain({Key? key}) : super(key: key);
@@ -24,30 +23,48 @@ class _State extends State<DraggableTestMain> {
   final _controller = CanvasController();
   final layoutMenuController = LayoutMenuController();
   final GlobalKey key = GlobalKey();
-  List<DeviceModel> devices = [];
-
-  // List<DeviceModel> devices = [
-  //   DeviceModel(dx: 15, dy: 20, name: 'device1'),
-  //   DeviceModel(dx: 25, dy: 30, name: 'device2'),
-  //   DeviceModel(dx: 35, dy: 40, name: 'device3'),
-  //   DeviceModel(dx: 45, dy: 50, name: 'device4'),
-  //   DeviceModel(dx: 150, dy: 120, name: 'device5'),
-  //   DeviceModel(dx: 120, dy: 150, name: 'device6'),
-  //   DeviceModel(dx: 250, dy: 200, name: 'device7'),
-  // ];
+  List<DeviceModel> devices = [
+    DeviceModel(dx: 15, dy: 20, name: 'device1'),
+    DeviceModel(dx: 25, dy: 30, name: 'device2'),
+    DeviceModel(dx: 35, dy: 40, name: 'device3'),
+  ];
 
   List<Widget> positioneds = [];
   late double stackY;
   late double stackX;
 
+  bool editable = false;
+
   @override
   void initState() {
     // document.documentElement!.requestFullscreen();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     _controller.init();
     // getDevices();
-    initWidget();
+    initData();
+    initWidget(ratioHeight: 1.2, radioWidth: 1.2, firstInit: true);
     super.initState();
+  }
+
+  void initData() {
+    if (StoreUtil.read(Constant.KEY_CANVAS_OBJECTS) == null) {
+      return;
+    }
+    final objects =
+        jsonDecode(StoreUtil.read(Constant.KEY_CANVAS_OBJECTS)) as List;
+    print('Objects: $objects');
+    devices.clear();
+    objects.forEach((element) {
+      devices.add(DeviceModel(
+        dx: element['dx'],
+        dy: element['dy'],
+        name: element['id'],
+      ));
+    });
+
+    devices.forEach((element) {
+      print(element.toJson());
+    });
   }
 
   void getDevices() async {
@@ -60,28 +77,18 @@ class _State extends State<DraggableTestMain> {
     super.dispose();
   }
 
-  void initWidget({double? screenWidth, double? screenHeight}) async {
-    if (_controller.objects.isNotEmpty) {
+  void initWidget(
+      {double? sizeWidth,
+      double? sizeHeight,
+      double? radioWidth,
+      double? ratioHeight,
+      required bool firstInit}) async {
+    if (firstInit && _controller.objects.isNotEmpty) {
       _controller.objects.clear();
-
-      List<CanvasObject<Widget>> canvasObjects =
-          StoreUtil.read(Constant.KEY_CANVAS_OBJECTS);
-      print('CanvasObjects: ${canvasObjects.length}');
-      canvasObjects.forEach((element) {
-        _controller.addObject(element);
-      });
     }
 
-    if (devices.isEmpty) {
-      print('Devices empty');
-      devices = [
-        DeviceModel(dx: 15, dy: 20, name: 'device1'),
-        DeviceModel(dx: 25, dy: 30, name: 'device2'),
-        DeviceModel(dx: 35, dy: 40, name: 'device3'),
-      ];
-    }
-
-    print('Device length: ${devices.length}');
+    double bgWidth = (sizeWidth != null) ? sizeWidth : 1000;
+    double bgHeight = (sizeHeight != null) ? sizeHeight : 800;
 
     devices.forEach((element) {
       _controller.addObject(
@@ -89,10 +96,10 @@ class _State extends State<DraggableTestMain> {
           width: 20,
           height: 20,
           id: element.name,
-          dx: element.dx!,
-          dy: element.dy!,
+          dx: element.dx! * radioWidth!,
+          dy: element.dy! * ratioHeight!,
           child: Tooltip(
-            message: element.name,
+            message: element.name ?? 'Name',
             child: Container(
               height: 20,
               width: 20,
@@ -112,15 +119,15 @@ class _State extends State<DraggableTestMain> {
     var bgObject = CanvasObject(
       dx: 0,
       dy: 0,
-      height: 800,
-      width: 1000,
+      height: bgHeight,
+      width: bgWidth,
       // height: MediaQuery.of(context).size.height - height * 3,
       // width: MediaQuery.of(context).size.width - 120,
       id: 'bgObject',
       child: IgnorePointer(
         child: Container(
-          height: 800,
-          width: 1000,
+          height: bgHeight,
+          width: bgWidth,
           // height: MediaQuery.of(context).size.height - height * 3,
           // width: MediaQuery.of(context).size.width - 120,
           decoration: new BoxDecoration(
@@ -152,6 +159,12 @@ class _State extends State<DraggableTestMain> {
           final instance = snapshot.data;
           return MeasureSize(
             onChange: (size) {
+              initWidget(
+                  sizeWidth: size.size!.width,
+                  sizeHeight: size.size!.height,
+                  ratioHeight: size.ratioHeight,
+                  radioWidth: size.ratioWidth,
+                  firstInit: true);
               setState(() {
                 // initWidget(
                 //     screenWidth: size.size!.width,
@@ -165,6 +178,19 @@ class _State extends State<DraggableTestMain> {
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(
                   actions: [
+                    FocusScope(
+                      canRequestFocus: false,
+                      child: IconButton(
+                        tooltip: 'Edit',
+                        icon: Icon(Icons.edit),
+                        color: editable ? Theme.of(context).accentColor : null,
+                        onPressed: () {
+                          setState(() {
+                            editable = !editable;
+                          });
+                        },
+                      ),
+                    ),
                     FocusScope(
                       canRequestFocus: false,
                       child: IconButton(
@@ -246,11 +272,17 @@ class _State extends State<DraggableTestMain> {
                       details.position,
                     );
                   },
+                  //khanhlh
                   onPointerUp: (details) {
                     print('onPointerUp');
-                    // saveToFile(jsonEncode(_controller.objects));
-                    // StoreUtil.write(
-                    //     Constant.KEY_CANVAS_OBJECTS, _controller.objects);
+                    _controller.objects.forEach((element) {
+                      print(element.toJson());
+                    });
+                    var saveObjects = List.from(_controller.objects);
+                    saveObjects
+                        .removeWhere((element) => 'bgObject' == element.id);
+                    StoreUtil.write(
+                        Constant.KEY_CANVAS_OBJECTS, jsonEncode(saveObjects));
                     _controller.removeTouch(details.pointer);
                   },
                   onPointerCancel: (details) {
@@ -343,7 +375,7 @@ class _State extends State<DraggableTestMain> {
     return _tempPath.contains(Offset(dx, dy));
   }
 
-  void saveToFile(String text){
+  void saveToFile(String text) {
     final bytes = utf8.encode(text);
     final blob = html.Blob([bytes]);
     final url = html.Url.createObjectUrlFromBlob(blob);

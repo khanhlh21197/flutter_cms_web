@@ -2,14 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-class CanvasObject<T> {
-  final double dx;
-  final double dy;
-  final double width;
-  final double height;
-  final Color mau;
-  final T? child;
-  final String? id;
+class CanvasObject<T>{
+  double? dx;
+  double? dy;
+  double? width;
+  double? height;
+  Color? mau;
+  T? child;
+  String? id;
 
   CanvasObject({
     this.dx = 0,
@@ -41,9 +41,20 @@ class CanvasObject<T> {
     );
   }
 
-  Size get size => Size(width, height);
+  Size get size => Size(width!, height!);
 
-  Offset get offset => Offset(dx, dy);
+  Offset get offset => Offset(dx!, dy!);
 
   Rect get rect => offset & size;
+
+  CanvasObject.fromJson(Map<String, dynamic> json)
+      : dx = json['dx'],
+        dy = json['dy'],
+        id = json['id'];
+
+  Map<String, dynamic> toJson() => {
+        'dx': dx,
+        'dy': dy,
+        'id': id,
+      };
 }
